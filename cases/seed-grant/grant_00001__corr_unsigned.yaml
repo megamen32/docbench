@@ -1,0 +1,57 @@
+id: grant_00001__corr_unsigned
+benchmark: conformance
+ruleset: seed-grant-2026.1
+documents:
+  application_form:
+    kind: form
+    title: Grant application form 2026
+    fields:
+      applicant_name: Aurora Cultural Association
+      applicant_country: PL
+      months_registered: 26
+      submission_date: '2026-09-12'
+      legal_representative: Anna Kowalska
+      signature_present: false
+      requested_total_eur: 84200
+  budget:
+    kind: table
+    title: Itemised budget
+    fields: {}
+    table:
+      columns:
+      - category
+      - amount_eur
+      - share_pct
+      rows:
+      - category: personnel
+        amount_eur: 38000
+        share_pct: 45.1
+      - category: equipment
+        amount_eur: 25200
+        share_pct: 29.9
+      - category: outreach
+        amount_eur: 12000
+        share_pct: 14.3
+      - category: other
+        amount_eur: 9000
+        share_pct: 10.7
+      totals:
+        total: 84200
+  registration_cert:
+    kind: certificate
+    title: Registry extract
+    fields:
+      registry_number: KRS 0000123456
+      issued_on: '2026-08-30'
+      valid_until: '2029-08-30'
+  finance_statement:
+    kind: statement
+    title: Annual financial statement
+    fields:
+      period: FY2025
+      revenue_eur: 210000
+      spending_eur: 195000
+expected_findings: []
+generated_by:
+- 'drop_signature: signature dropped (application_form.signature_present=false)'
+notes: legal representative signature missing

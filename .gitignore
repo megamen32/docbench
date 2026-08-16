@@ -1,0 +1,16 @@
+# External benchmark checkouts (reproducible via scripts/fetch_external.sh)
+external/
+
+# Downloaded datasets (reproducible via `docbench datasets fetch`)
+datasets/data/
+
+# Runtime artifacts
+var/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+.secrets/
+.env
+var-download*.log

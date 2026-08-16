@@ -1,0 +1,47 @@
+# Dataset sidecar registry. Data lands in datasets/data/<name>/ (gitignored).
+# Fetch: `docbench datasets fetch --all` (or --only <name>).
+# source types:
+#   hf      — Hugging Face dataset repo, snapshot_download
+#   in_repo — data already shipped inside external/<external_dir> clone
+#   annex   — git-annex payload (kleister): needs git-annex binary, manual step
+entries:
+  - name: extractbench
+    source_type: hf
+    repo_id: llamaindex/ExtractBench
+    notes: "370 enterprise documents, 67 doc types; document + JSON schema -> structured JSON with grounding. Primary fork candidate."
+    license: Apache-2.0
+  - name: varex
+    source_type: hf
+    repo_id: ibm-research/VAREX
+    notes: "1777 US government forms, 21084 evaluable fields; image / layout text / plain text / multimodal variants."
+    license: Apache-2.0
+  - name: officeqa
+    source_type: hf
+    repo_id: databricks/officeqa
+    notes: "Grounded end-to-end QA over real financial documents (~5.4 GB). GATED repo: accept terms on the HF page, then pass HF_TOKEN to fetch."
+  - name: officeqa-pro-v2
+    source_type: hf
+    repo_id: databricks/officeqa-pro-v2
+    notes: "Harder multi-document financial corpus (~14 GB). GATED repo: accept terms on the HF page, then pass HF_TOKEN to fetch."
+  - name: citevqa
+    source_type: hf
+    repo_id: opendatalab/CiteVQA
+    notes: "QA gold with page/bbox provenance (~10 MB). PDFs are approval-gated on ModelScope (risemds/CiteVQA_PDF) — not auto-fetchable."
+    license: MIT
+  - name: ace
+    source_type: in_repo
+    external_dir: Fujitsu-Assessing-Compliance-in-Enterprise-Dataset
+    notes: "train.json (76 MB) + test.json in the clone: ~4700 compliance scenarios over 633 real contracts. Canonical-rules reasoning template."
+  - name: complibench
+    source_type: in_repo
+    external_dir: CompliBench
+    notes: "data/{airlines,healthcare,insurance} in the clone: guidelines + violations + harness. Error-generation template."
+  - name: taxcalcbench
+    source_type: in_repo
+    external_dir: tax-calc-bench
+    notes: "Expert tax cases shipped in the clone (~290 MB incl. images). Closed-scope 100%-correctness precedent."
+  - name: kleister-charity
+    source_type: annex
+    external_dir: kleister-charity
+    annex_remote: pub-aws-s3
+    notes: "Real UK charity annual reports (PDF). Payload via git-annex from S3: install git-annex, then run external/kleister-charity/annex-get-all-from-s3.sh"

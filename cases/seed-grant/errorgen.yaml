@@ -1,0 +1,43 @@
+# errorgen plan for the seed grant packet.
+# Mutations only - gold findings are recomputed by the deterministic oracle
+# at load time, so injected defects and expectations can never drift.
+source: valid_full.yaml
+ops:
+  - id: corr_missing_budget
+    op: remove_document
+    params: {doc_id: budget}
+    note: missing required document (also breaks form/budget consistency)
+  - id: corr_missing_registration
+    op: remove_document
+    params: {doc_id: registration_cert}
+    note: missing registry extract
+  - id: corr_over_budget
+    op: scale_number
+    params: {paths: [budget.totals.total, "budget.row.*.amount_eur"], factor: 1.6}
+    note: total over the 100k ceiling; shares stay valid
+  - id: corr_equipment_heavy
+    op: set_field
+    params: {path: budget.row.equipment.share_pct, value: 55.5}
+    note: equipment category over the 40% cap
+  - id: corr_late_submission
+    op: shift_date
+    params: {path: application_form.submission_date, days: 45}
+    note: submitted after the deadline
+  - id: corr_unsigned
+    op: drop_signature
+    params: {path: application_form.signature_present}
+    note: legal representative signature missing
+  - id: corr_unregistered
+    op: set_field
+    params: {path: application_form.months_registered, value: 3}
+    note: organisation too young for regular track
+  - id: corr_sum_mismatch
+    op: set_field
+    params:
+      path: application_form.requested_total_eur
+      value: {copy_from: budget.totals.total, delta: 5000}
+    note: form total contradicts budget total
+  - id: corr_wrong_period
+    op: set_field
+    params: {path: finance_statement.period, value: FY2024}
+    note: financial statement for the wrong reporting period

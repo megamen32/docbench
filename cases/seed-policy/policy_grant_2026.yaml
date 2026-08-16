@@ -1,0 +1,101 @@
+id: policy_grant_2026
+benchmark: rule_extraction
+notes: Prose intake policy of Example Foundation; gold ruleset equals rulesets/seed-grant-2026.1
+canonical_fields:
+  - application_form.months_registered
+  - budget.totals.total
+  - budget.row.equipment.share_pct
+  - documents.application_form.present
+  - documents.budget.present
+  - documents.registration_cert.present
+  - documents.finance_statement.present
+  - application_form.submission_date
+  - application_form.signature_present
+  - application_form.requested_total_eur
+  - finance_statement.period
+policy_document: |
+  EXAMPLE FOUNDATION — GRANT PROGRAMME 2026
+  Formal intake rules, version 2026.1 (canonical).
+
+  1. Eligibility. The applicant organisation must have been registered for at
+  least 12 months as of the submission date. This is a hard eligibility
+  criterion: applications from younger organisations are rejected automatically.
+
+  2. Budget ceiling. The total amount requested may not exceed EUR 100,000.
+  Requests above the ceiling are returned for correction.
+
+  3. Equipment share. Spending on equipment may not exceed 40% of the total budget.
+
+  4. Required documents. A complete intake packet consists of exactly these
+  documents: (a) the application form; (b) the itemised budget; (c) the
+  registration certificate, that is, the official registry extract; (d) the most
+  recent financial statement. A packet missing any of these documents cannot be
+  accepted and is rejected.
+
+  5. Deadline. Applications are accepted until 1 October 2026 inclusive. Later
+  submissions are returned.
+
+  6. Signature. The application form must carry the signature of the legal
+  representative. Unsigned forms are rejected.
+
+  7. Consistency. The total amount requested stated on the application form must
+  be identical to the total of the itemised budget.
+
+  8. Reporting period. The financial statement must cover the reporting period
+  FY2025. Statements for other periods are a formal defect.
+expected_rules:
+  - id: R001
+    description: Applicant organisation must be registered for at least 12 months at submission
+    severity: critical
+    category: eligibility
+    condition: {field: application_form.months_registered, op: ge, value: 12}
+  - id: R002
+    description: Total requested budget must not exceed 100000 EUR
+    severity: major
+    category: budget
+    condition: {field: budget.totals.total, op: le, value: 100000}
+  - id: R003
+    description: Equipment line must not exceed 40 percent of the total budget
+    severity: major
+    category: budget
+    condition: {field: budget.row.equipment.share_pct, op: le, value: 40}
+  - id: R004
+    description: Required document - signed application form
+    severity: critical
+    category: required_documents
+    condition: {field: documents.application_form.present, op: exists}
+  - id: R005
+    description: Required document - itemised budget
+    severity: critical
+    category: required_documents
+    condition: {field: documents.budget.present, op: exists}
+  - id: R006
+    description: Required document - registration certificate (registry extract)
+    severity: critical
+    category: required_documents
+    condition: {field: documents.registration_cert.present, op: exists}
+  - id: R007
+    description: Required document - most recent financial statement
+    severity: critical
+    category: required_documents
+    condition: {field: documents.finance_statement.present, op: exists}
+  - id: R008
+    description: Applications are accepted until 2026-10-01 inclusive
+    severity: major
+    category: deadlines
+    condition: {field: application_form.submission_date, op: le, value: "2026-10-01"}
+  - id: R009
+    description: Application form must be signed by the legal representative
+    severity: critical
+    category: formal
+    condition: {field: application_form.signature_present, op: eq, value: true}
+  - id: R010
+    description: Total requested on the application form must be identical to the budget total
+    severity: major
+    category: consistency
+    condition: {op: consistent, fields: [application_form.requested_total_eur, budget.totals.total]}
+  - id: R011
+    description: Financial statement must cover reporting period FY2025
+    severity: minor
+    category: reporting
+    condition: {field: finance_statement.period, op: eq, value: "FY2025"}

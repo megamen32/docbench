@@ -1,0 +1,59 @@
+id: seed-grant-2026.1
+version: "2026.1"
+institution: Example Foundation
+rules:
+  - id: R001
+    description: Applicant organisation must be registered for at least 12 months at submission
+    severity: critical
+    category: eligibility
+    condition: {field: application_form.months_registered, op: ge, value: 12}
+  - id: R002
+    description: Total requested budget must not exceed 100000 EUR
+    severity: major
+    category: budget
+    condition: {field: budget.totals.total, op: le, value: 100000}
+  - id: R003
+    description: Equipment line must not exceed 40 percent of the total budget
+    severity: major
+    category: budget
+    condition: {field: budget.row.equipment.share_pct, op: le, value: 40}
+  - id: R004
+    description: Required document - signed application form
+    severity: critical
+    category: required_documents
+    condition: {field: documents.application_form.present, op: exists}
+  - id: R005
+    description: Required document - itemised budget
+    severity: critical
+    category: required_documents
+    condition: {field: documents.budget.present, op: exists}
+  - id: R006
+    description: Required document - registration certificate (registry extract)
+    severity: critical
+    category: required_documents
+    condition: {field: documents.registration_cert.present, op: exists}
+  - id: R007
+    description: Required document - most recent financial statement
+    severity: critical
+    category: required_documents
+    condition: {field: documents.finance_statement.present, op: exists}
+  - id: R008
+    description: Applications are accepted until 2026-10-01 inclusive
+    severity: major
+    category: deadlines
+    condition: {field: application_form.submission_date, op: le, value: "2026-10-01"}
+  - id: R009
+    description: Application form must be signed by the legal representative
+    severity: critical
+    category: formal
+    condition: {field: application_form.signature_present, op: eq, value: true}
+  - id: R010
+    description: Total requested on the application form must be identical to the budget total
+    severity: major
+    category: consistency
+    condition: {op: consistent, fields: [application_form.requested_total_eur, budget.totals.total]}
+  - id: R011
+    description: Financial statement must cover reporting period FY2025
+    severity: minor
+    category: reporting
+    condition: {field: finance_statement.period, op: eq, value: "FY2025"}

@@ -1,0 +1,28 @@
+[project]
+name = "docbench"
+version = "0.1.0"
+description = "Document Conformance Benchmark: multimodal packets + canonical rules -> findings, evidence, disposition; plus rule extraction and controlled error generation."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.5",
+  "pyyaml>=6.0",
+  "requests>=2.31",
+  "huggingface_hub>=0.24",
+]
+
+[project.scripts]
+docbench = "docbench.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["docbench"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "smoke: end-to-end test that needs network + provider API key",
+]

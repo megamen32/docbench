@@ -1,0 +1,64 @@
+id: policy_foundation_v2
+benchmark: rule_extraction
+notes: Second policy with an exception clause and a temporal condition; Core-track reading is canonical.
+canonical_fields:
+  - org_v2.months_registered
+  - org_v2.total_requested
+  - documents.audit_report.present
+  - org_v2.submission_date
+  - org_v2.declared_headcount
+  - annual_report.headcount
+  - annual_report.ifrs
+policy_document: |
+  NORTHSTAR FUND — CORE GRANTS, INTAKE POLICY v2.4
+
+  Eligibility. Core-track applicants must have existed as registered
+  organisations for at least 24 months. Exception: organisations younger than
+  24 months may apply only to the Accelerator track; this policy governs the
+  Core track only.
+
+  Request ceiling. The total amount requested under a Core grant may not exceed
+  EUR 250,000.
+
+  Audit. Applications must include an independent audit report for the last
+  completed financial year. Packets without an audit report are rejected.
+
+  Deadline. The intake window for the 2027 cycle closes on 31 March 2027
+  inclusive.
+
+  Headcount consistency. The number of staff declared in the application must
+  be the same as the headcount stated in the annual report.
+
+  Reporting standard. Annual reports must be prepared under IFRS. Non-IFRS
+  reports are treated as a formal defect only.
+expected_rules:
+  - id: N001
+    description: Core-track applicants must be registered for at least 24 months
+    severity: critical
+    category: eligibility
+    condition: {field: org_v2.months_registered, op: ge, value: 24}
+  - id: N002
+    description: Total requested under a Core grant must not exceed 250000 EUR
+    severity: major
+    category: budget
+    condition: {field: org_v2.total_requested, op: le, value: 250000}
+  - id: N003
+    description: Required document - independent audit report for the last financial year
+    severity: critical
+    category: required_documents
+    condition: {field: documents.audit_report.present, op: exists}
+  - id: N004
+    description: Intake window closes 2027-03-31 inclusive
+    severity: major
+    category: deadlines
+    condition: {field: org_v2.submission_date, op: le, value: "2027-03-31"}
+  - id: N005
+    description: Declared staff headcount must match the annual report headcount
+    severity: major
+    category: consistency
+    condition: {op: consistent, fields: [org_v2.declared_headcount, annual_report.headcount]}
+  - id: N006
+    description: Annual report must be prepared under IFRS
+    severity: minor
+    category: reporting
+    condition: {field: annual_report.ifrs, op: eq, value: true}
