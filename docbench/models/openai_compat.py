@@ -16,7 +16,7 @@ from .base import Completion
 
 class OpenAICompatRunner:
     def __init__(self, spec: ModelSpec, cache_dir: Path | None = None,
-                 timeout: float = 180.0, max_retries: int = 4, offline: bool = False):
+                 timeout: float = 180.0, max_retries: int = 6, offline: bool = False):
         self.spec = spec
         self.model_key = spec.key
         self.alias = spec.alias
@@ -48,7 +48,7 @@ class OpenAICompatRunner:
                 return self._call(messages, temperature, max_tokens, cache_key)
             except _Retryable as e:
                 last_err = e
-                time.sleep(min(2 ** attempt * 1.5, 20.0))
+                time.sleep(min(2 ** attempt * 2.0, 45.0))
         raise RuntimeError(f"{self.model_key}: request failed after {self.max_retries} retries") from last_err
 
     # -- internals ----------------------------------------------------------

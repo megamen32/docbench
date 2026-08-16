@@ -3,6 +3,17 @@
 # ~/.config/docbench/env (chmod 600). Prices are USD per 1M tokens and only
 # used for reporting; adjust them here when real invoices are known.
 providers:
+  zai:
+    label: Z.ai (session coding plan, OpenAI facade)
+    base_url_env: DOCBENCH_ZAI_BASE_URL
+    base_url_default: https://api.z.ai/api/paas/v4
+    api_key_env: DOCBENCH_ZAI_API_KEY
+    models:
+      glm-4.7-flash:
+        alias: GLM-4.7-Flash
+        price_in_per_m: 0.0
+        price_out_per_m: 0.0
+        price_source: free flash tier (assumed), verify against invoice
   minimax:
     label: MiniMax (OpenAI-compatible)
     base_url_env: DOCBENCH_MINIMAX_BASE_URL
