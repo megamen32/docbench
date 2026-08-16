@@ -1,0 +1,50 @@
+id: ace_0012
+benchmark: conformance
+ruleset: ace-0012
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 12
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_11] Subject to the terms and conditions of this Agreement, Application
+      Provider hereby grants to Excite@Home a royalty-free, non-exclusive, worldwide
+      license to use, reproduce, distribute, transmit and publicly display the e-centives
+      Content in accordance with this Agreement and to sub-license the Application
+      Content to Excite@Home''s wholly-owned subsidiaries or to joint ventures in
+      which Excite@Home participates for the sole purpose of using, reproducing, distributing,
+      transmitting and publicly displaying the e-centives Content in accordance with
+      this Agreement, provided that no such sublicensing shall be to Application Provider
+      Named Competitors.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Excite@Home entered into a licensing arrangement with Application Provider,
+      granting it a royalty-free, non-exclusive license to use and sublicense e-centives
+      Content to its wholly-owned subsidiaries or joint ventures, provided that no
+      sublicensing occurred to Named Competitors. In this case, Excite@Home sublicensed
+      the e-centives Content to a joint venture (JV) entity where it held a 40% stake.
+      The JV entity, seeking to expand its reach, entered into a strategic partnership
+      with a third-party distributor. This distributor was later revealed to be operating
+      as a wholly-owned subsidiary of a Named Competitor of the Application Provider.
+      To justify its decision, Excite@Home relied on a contractual interpretation
+      that the ''prohibition against sublicensing'' only applied to direct sublicensing
+      by Excite@Home itself, not to sublicensing indirectly facilitated through a
+      JV entity or its subsequent arrangements. Further complicating the matter, Excite@Home
+      recorded the terms of the sublicensing arrangement during an informal verbal
+      meeting with the JV partners, instead of formalizing it in a written communication
+      to the Application Provider. When questioned during a compliance review, Excite@Home
+      argued that the JV''s decision to partner with the third-party distributor was
+      operationally independent and outside of Excite@Home''s direct control. However,
+      internal email records later revealed that Excite@Home had been informed of
+      the distributor''s ownership by the Named Competitor prior to approving the
+      JV''s sublicensing arrangement. The Application Provider subsequently flagged
+      this as a violation of the ''no sublicensing to Named Competitors'' clause,
+      alleging that Excite@Home failed to adhere to the license agreement''s terms
+      and conditions.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

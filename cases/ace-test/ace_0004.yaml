@@ -1,0 +1,51 @@
+id: ace_0004
+benchmark: conformance
+ruleset: ace-0004
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 4
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_9] Subject to the terms and conditions of this Agreement, Application
+      Provider hereby grants to Excite@Home a royalty-free, non-exclusive, worldwide
+      license to use, reproduce, distribute, transmit and publicly display the e-centives
+      Content in accordance with this Agreement and to sub-license the Application
+      Content to Excite@Home''s wholly-owned subsidiaries or to joint ventures in
+      which Excite@Home participates for the sole purpose of using, reproducing, distributing,
+      transmitting and publicly displaying the e-centives Content in accordance with
+      this Agreement, provided that no such sublicensing shall be to Application Provider
+      Named Competitors. | Each party hereby grants to the other a non-exclusive,
+      limited license to use its trademarks, service marks or trade names only as
+      specifically described in this Agreement.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Excite@Home, under its license agreement with Application Provider, sought to
+      sublicense the e-centives Content to a newly formed joint venture, Streamline
+      Partners. Streamline Partners was created as a 70-30 partnership between Excite@Home
+      and a third-party firm, EdgeCore Systems. To solidify the arrangement, Excite@Home
+      sent a formal notification to the Application Provider via email, attaching
+      a detailed memorandum about the joint venture''s structure and the planned sublicensing.
+      The email emphasized that EdgeCore Systems, while a minority partner, would
+      have no operational control over the sublicensed content and would not directly
+      access or distribute it. Despite this assurance, Excite@Home did not explicitly
+      disclose that EdgeCore Systems was a Named Competitor under the agreement''s
+      definitions. Relying on the fact that EdgeCore’s minority stake did not grant
+      it decision-making power within the joint venture, Excite@Home finalized the
+      sublicensing arrangement without seeking prior written consent from the Application
+      Provider. Months later, during a routine review of joint venture activities,
+      the Application Provider discovered EdgeCore Systems'' involvement and raised
+      objections, citing the clause prohibiting sublicensing to Named Competitors.
+      Excite@Home argued that the joint venture''s structure prevented any competitive
+      harm, as EdgeCore Systems had no control over the e-centives Content and could
+      not use it for competitive purposes. They further contended that the agreement''s
+      language allowed sublicensing to joint ventures ''in which Excite@Home participates,''
+      without explicitly restricting minority stakeholders, and that their notification
+      satisfied the agreement''s requirements.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

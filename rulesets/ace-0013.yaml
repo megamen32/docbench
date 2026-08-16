@@ -1,0 +1,44 @@
+id: ace-0013
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_8
+  description: 'On termination of the provision of the Services by HealthGate to the
+    Publishers for whatever reason, HealthGate shall at the Publishers'' option: (i)
+    grant to the Publishers a non-exclusive non-transferable licence to use the Proprietary
+    Software for the purposes of using, developing, enhancing and maintaining the
+    Site and carrying out any or all of the activities previously carried out by HealthGate
+    or on its behalf under this Agreement (ii) exercise best endeavours to grant to
+    the Publishers a non-exclusive non-transferable licence to use the Third Party
+    Software for the Site when and to the extent requested by the Publishers. | Developing,
+    together with the Publishers, a plan for the orderly transition of Services ("Transition
+    Plan") then being performed by HealthGate from HealthGate to the Publishers or
+    such successor provider of Services. | Providing reasonable training for personnel
+    of the Publishers in the performance of the Services then being transitioned to
+    the Publishers or such successor provider of Services. | The period of liaison
+    will commence as soon as notice has been given of termination of this Agreement,
+    and will continue for a maximum period of 3 months after termination; | Upon termination
+    of this Agreement and for a period of six (6) months thereafter, the Publishers
+    will have the following rights and obligations: 33.1. Commencing upon any notice
+    of termination by the Publishers, HealthGate will comply with the Publishers''
+    reasonable directions, and will provide to the Publishers any and all termination
+    assistance reasonably requested by the Publishers to allow the Services to continue
+    and to facilitate the orderly transfer of responsibility for the Services to the
+    Publishers or a successor provider of Services designated by the Publishers. The
+    termination assistance to be provided to the Publishers by HealthGate may include
+    the following: 33.1.1. Continuing to perform, for a reasonable period (as determined
+    by the Publishers) of up to six (6) months following the termination date, any
+    or all of the Services then being performed by HealthGate. | HealthGate agrees
+    that at the time of termination of this Agreement, it will render all assistance,
+    provide all documentation and undertake all actions to the extent necessary to
+    effect an orderly assumption of the Services by the Publishers or, at the Publishers''
+    option, by a replacement contractor; | If HealthGate is then using any Equipment
+    leased or owned by the Publishers to provide services to any third party, HealthGate
+    may continue to use that Equipment for that purpose until such time as HealthGate
+    can reasonably transition to other equipment. | HealthGate will liaise with the
+    Publishers, making available for such purposes such HealthGate liaison staff as
+    the Publishers may reasonably require, and acting in all good faith, to ensure
+    a mutually satisfactory license to the Publishers or, at the Publishers'' option,
+    to a replacement contractor.'
+  severity: major
+  category: contract_clause

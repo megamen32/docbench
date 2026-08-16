@@ -169,7 +169,13 @@ def disposition_for(findings: list[Finding], rules: list[Rule]) -> Disposition:
 
 
 def gold_for(case: Case, ruleset: Ruleset) -> tuple[list[Finding], Disposition]:
-    """Manual gold wins when declared; otherwise the oracle recomputes it."""
+    """Manual gold wins when declared; otherwise the oracle recomputes it.
+    disposition-scope gold (external datasets with scenario labels only)
+    trusts expected_disposition and carries no per-rule gold."""
+    if case.gold_scope == "disposition":
+        if case.expected_disposition is None:
+            raise ValueError(f"case {case.id}: gold_scope=disposition requires expected_disposition")
+        return [], case.expected_disposition
     if case.expected_findings:
         disp = case.expected_disposition or disposition_for(case.expected_findings, ruleset.rules)
         return case.expected_findings, disp

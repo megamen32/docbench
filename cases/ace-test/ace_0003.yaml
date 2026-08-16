@@ -1,0 +1,49 @@
+id: ace_0003
+benchmark: conformance
+ruleset: ace-0003
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 3
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_6] For those countries where a specific license is required for a
+      joint owner of a Joint Invention or Joint Improvement to practice such Joint
+      Invention or Joint Improvement, in such country, each Party hereby grants to
+      the other Party a perpetual, irrevocable, non-exclusive, worldwide, royalty-free,
+      fully paid-up license, transferable and sublicensable, under such Party''s right,
+      title and interest in and to such Joint Invention or Joint Improvement to freely
+      exploit such Joint Invention or Joint Improvement in such country, subject to
+      the terms and conditions of this Agreement and the licenses granted hereunder.
+      | As between the Parties, the Parties shall jointly own all Inventions (including
+      Improvements) developed, conceived or reduced to practice jointly by or on behalf
+      of both Bioeq and Licensee (such Inventions, Joint Inventions, and such Improvements,
+      Joint Improvements), and all Intellectual Property Rights and Know-How therein.
+      | Each Party hereby assigns to the other Party a joint equal and undivided interest
+      in and to all Joint Inventions (including Joint Improvements) to effect such
+      joint ownership of such Joint Inventions (including Joint Improvements).
+
+
+      SCENARIO UNDER REVIEW:
+
+      Bioeq and Licensee jointly develop a new pharmaceutical compound that qualifies
+      as a Joint Improvement under their agreement. The compound requires a specific
+      license to be practiced in Country X due to local intellectual property laws.
+      Bioeq grants Licensee the required royalty-free license, as stipulated in the
+      clause, through an unconventional method: instead of issuing a formal written
+      license agreement, Bioeq includes the grant in a shared digital collaboration
+      document during a virtual project meeting. The document is later annotated with
+      a timestamp and stored in a shared cloud repository accessible to Licensee.
+      Licensee accepts the license implicitly by beginning commercialization efforts
+      in Country X. However, during an audit, a third-party reviewer flags Bioeq''s
+      method of granting the license as questionable, citing the absence of a traditional
+      signed legal document. Bioeq defends its approach, arguing that the clause does
+      not specify the format of the license grant, only that the license must be granted
+      and comply with the terms provided. Additionally, both parties jointly own the
+      compound and had previously assigned joint ownership interests, further supporting
+      the permissibility of the license grant.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

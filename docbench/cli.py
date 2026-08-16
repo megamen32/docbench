@@ -42,6 +42,14 @@ def main(argv: list[str] | None = None) -> int:
 
     p_models = sub.add_parser("models", help="list configured models")
 
+    p_conv = sub.add_parser("convert", help="convert an external dataset into docbench cases")
+    p_conv.add_argument("--source", required=True, choices=["ace"])
+    p_conv.add_argument("--input",
+                        default=str(REPO_ROOT / "external/Fujitsu-Assessing-Compliance-in-Enterprise-Dataset/test.json"))
+    p_conv.add_argument("--n", type=int, default=30)
+    p_conv.add_argument("--cases-dir", default=None)
+    p_conv.add_argument("--ruleset-dir", default=str(REPO_ROOT / "rulesets"))
+
     p_report = sub.add_parser("report", help="merge run results into one markdown report")
     p_report.add_argument("runs", nargs="+", help="results.json files or run dirs")
     p_report.add_argument("--out", default=None)
@@ -96,6 +104,15 @@ def main(argv: list[str] | None = None) -> int:
             price = f"${m.price_in}/${m.price_out} per 1M" if m.price_in is not None else "no price"
             print(f"{m.key:<26} {m.alias:<28} {m.provider:<10} {price}"
                   + ("" if m.api_key else "  [NO KEY]"))
+        return 0
+
+    if args.cmd == "convert":
+        from .converters import convert_ace
+        cases_dir = Path(args.cases_dir) if args.cases_dir else REPO_ROOT / "cases" / f"{args.source}-test"
+        written = convert_ace(Path(args.input), args.n, cases_dir, Path(args.ruleset_dir))
+        n_pos = sum(1 for _, d in written if d == "accept")
+        print(f"converted {len(written)} cases -> {cases_dir} "
+              f"({n_pos} compliant / {len(written) - n_pos} non-compliant)")
         return 0
 
     if args.cmd == "report":

@@ -1,0 +1,18 @@
+id: ace-0004
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_9
+  description: Subject to the terms and conditions of this Agreement, Application
+    Provider hereby grants to Excite@Home a royalty-free, non-exclusive, worldwide
+    license to use, reproduce, distribute, transmit and publicly display the e-centives
+    Content in accordance with this Agreement and to sub-license the Application Content
+    to Excite@Home's wholly-owned subsidiaries or to joint ventures in which Excite@Home
+    participates for the sole purpose of using, reproducing, distributing, transmitting
+    and publicly displaying the e-centives Content in accordance with this Agreement,
+    provided that no such sublicensing shall be to Application Provider Named Competitors.
+    | Each party hereby grants to the other a non-exclusive, limited license to use
+    its trademarks, service marks or trade names only as specifically described in
+    this Agreement.
+  severity: major
+  category: contract_clause

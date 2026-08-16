@@ -1,0 +1,31 @@
+id: ace-0025
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_6
+  description: If Tripath terminates pursuant to Subsection 18.1 or 18.2, or if Distributor
+    terminates pursuant to Subsection 18.3, Tripath will purchase and Distributor
+    will resell to Tripath Distributor's inventory of Products (excluding -6- Distributor
+    Agreement discontinued and demonstration Products) which Tripath determines to
+    be undamaged and in good condition (including, at Tripath's option on-site inspection).
+    The price for such inventory will be the price actually paid by the Distributor,
+    less any prior credit or allowances. | If Distributor terminates pursuant to Subsection
+    18.1 or 18.2, or if Tripath terminates pursuant to Subsection 18.3, Tripath may,
+    at its option, purchase and Distributor will resell to Tripath all or part of
+    Distributor's inventory at the price set forth in Subsection 18.4, less a ten
+    percent restocking charge. | Upon termination of this Agreement, Distributor will
+    immediately cease all further use of Tripath's trademarks, trade names or service
+    marks except as may be required in the sale of Products in inventory.
+  severity: major
+  category: contract_clause
+- id: evidence_7
+  description: The foregoing provisions of this section 19 state the entire liability
+    and obligations of Tripath and the exclusive remedy of Distributor and its customers,
+    with respect to any actual or alleged intellectual property infringement by the
+    Products. | Neither Tripath nor Distributor will be liable for any incidental
+    or consequential | damages (including, without limitation, damages for loss of
+    business profits, business interruption, loss of business information, or other
+    pecuniary loss) arising out of this Agreement, even if advised of the possibility
+    of such damages.
+  severity: major
+  category: contract_clause

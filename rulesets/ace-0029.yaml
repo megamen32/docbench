@@ -1,0 +1,29 @@
+id: ace-0029
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_7
+  description: Subject to any limitations which NTC communicates to ALFA AESAR in
+    writing, NTC hereby grants ALFA AESAR a license to use, exhibit, excerpt, reformat,
+    modify, reproduce, publish, publicly perform and transmit via the Internet and
+    otherwise use such NTC content for the purpose of marketing, advertising and promoting
+    the Products, provided that ALFA AESAR obtains NTC's prior written approval for
+    NTC content to be included in such literature. | ALFA AESAR hereby grants to NTC
+    a limited non-exclusive license to use the ALFA AESAR Trademarks in the form provided
+    by ALFA AESAR during the Term of this Agreement in accordance with the terms set
+    forth herein. | NTC hereby grants ALFA AESAR a limited non-exclusive license to
+    use, exhibit, excerpt, reproduce, publish, publicly perform and transmit via the
+    Internet and otherwise use the NTC Trademarks in substantially the form as NTC
+    may provide to ALFA AESAR from time to time during the Term of this Agreement
+    in accordance with the terms set forth herein. | Such license is granted solely
+    in connection with NTC's rights and obligations under this Agreement and, in particular,
+    for the purpose of licensing NTC to use the ALFA AESAR Trademark on the NTC web
+    site as expressly contemplated herein for referral of customers of Research Quantities
+    to ALFA AESAR and is a link/navigational button to the ALFA AESAR Site. | Such
+    license is granted solely in connection with ALFA AESAR's rights and obligations
+    under this Agreement and, in particular, for the purpose of licensing ALFA AESAR
+    to use the NTC Trademarks in ALFA AESAR's marketing, sales and distribution materials
+    relative to the Products, including without limitation on the ALFA AESAR's Web
+    site as a link/navigational button to the NTC Web site as posted by NTC.
+  severity: major
+  category: contract_clause

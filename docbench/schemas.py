@@ -87,6 +87,7 @@ class Case(BaseModel):
     documents: dict[str, CaseDocument] = Field(default_factory=dict)
     expected_findings: list[Finding] = Field(default_factory=list)  # manual gold; else oracle
     expected_disposition: Optional[Disposition] = None
+    gold_scope: Literal["findings", "disposition"] = "findings"
     expected_rules: Optional[list[Rule]] = None   # rule_extraction gold
     generated_by: Optional[list[str]] = None      # errorgen operator names
     notes: Optional[str] = None

@@ -1,0 +1,40 @@
+id: ace_0028
+benchmark: conformance
+ruleset: ace-0028
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 28
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_1] Provided that COMWARE purchases a minimum of $45,420.00 worth of
+      Products, in any combination, during the Initial Distribution Period, this Agreement
+      will automatically renew for an additional 6 months (the Renewal Period).
+
+
+      SCENARIO UNDER REVIEW:
+
+      COMWARE, a distributor, entered into an agreement with a supplier that stipulated
+      automatic contract renewal for an additional 6 months if COMWARE purchased at
+      least $45,420 worth of products during the Initial Distribution Period. As the
+      deadline approached, COMWARE placed a bulk purchase order of $50,000 worth of
+      products. However, the order included a contingent clause: $10,000 of the purchase
+      was allocated to backordered products, which would only be shipped and invoiced
+      after the Initial Distribution Period ended. COMWARE justified this arrangement
+      by stating that the supplier had offered discounts on these specific products,
+      making them economically advantageous for future resale. The remaining $40,000
+      worth of products were delivered and invoiced before the deadline. COMWARE relied
+      on Section 3.2 of the agreement, which stated that purchase totals could include
+      ''any combination of Products,'' arguing that the backordered items still qualified
+      as part of the purchase commitment since they were contractually binding orders
+      placed before the deadline. The supplier’s system confirmed the total order
+      value exceeded $45,420, but only $40,000 was recognized as invoiced revenue
+      within the Initial Distribution Period. After the period ended, the supplier
+      contested the renewal, asserting that the backordered items could not be counted
+      since they weren’t invoiced and delivered within the stated timeframe, leaving
+      the actual qualifying purchase total below the threshold.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

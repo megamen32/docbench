@@ -1,0 +1,18 @@
+id: ace-0014
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_4
+  description: A Participant will not be liable to the Joint Venture, or to any other
+    Participant, for any mistake or error in judgment or for any act or omission done
+    in good faith and believed to be within the scope of authority conferred or implied
+    by this Agreement or the Joint Venture.
+  severity: major
+  category: contract_clause
+- id: evidence_5
+  description: The Joint Venture may acquire insurance on behalf of any Participant,
+    employee, agent or other person engaged in the business interest of the Joint
+    Venture against any liability asserted against them or incurred by them while
+    acting in good faith on behalf of the Joint Venture.
+  severity: major
+  category: contract_clause

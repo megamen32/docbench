@@ -1,0 +1,63 @@
+id: ace_0025
+benchmark: conformance
+ruleset: ace-0025
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 25
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_6] If Tripath terminates pursuant to Subsection 18.1 or 18.2, or if
+      Distributor terminates pursuant to Subsection 18.3, Tripath will purchase and
+      Distributor will resell to Tripath Distributor''s inventory of Products (excluding
+      -6- Distributor Agreement discontinued and demonstration Products) which Tripath
+      determines to be undamaged and in good condition (including, at Tripath''s option
+      on-site inspection). The price for such inventory will be the price actually
+      paid by the Distributor, less any prior credit or allowances. | If Distributor
+      terminates pursuant to Subsection 18.1 or 18.2, or if Tripath terminates pursuant
+      to Subsection 18.3, Tripath may, at its option, purchase and Distributor will
+      resell to Tripath all or part of Distributor''s inventory at the price set forth
+      in Subsection 18.4, less a ten percent restocking charge. | Upon termination
+      of this Agreement, Distributor will immediately cease all further use of Tripath''s
+      trademarks, trade names or service marks except as may be required in the sale
+      of Products in inventory.
+
+
+      [evidence_7] The foregoing provisions of this section 19 state the entire liability
+      and obligations of Tripath and the exclusive remedy of Distributor and its customers,
+      with respect to any actual or alleged intellectual property infringement by
+      the Products. | Neither Tripath nor Distributor will be liable for any incidental
+      or consequential | damages (including, without limitation, damages for loss
+      of business profits, business interruption, loss of business information, or
+      other pecuniary loss) arising out of this Agreement, even if advised of the
+      possibility of such damages.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Tripath and Distributor are nearing the end of their agreement, and Distributor
+      chooses to terminate the agreement under Subsection 18.3. As per the governing
+      clauses, Distributor is obligated to resell its inventory to Tripath, provided
+      the inventory is undamaged and in good condition. Tripath performs an on-site
+      inspection and determines that 85% of the inventory qualifies for purchase under
+      these conditions. However, Tripath also notes that a subset of inventory includes
+      discontinued Products, which are expressly excluded from the obligation. Tripath
+      communicates this determination to Distributor via an unconventional method—a
+      comment in a collaborative document shared on a cloud platform, outlining which
+      inventory items are excluded under the ''discontinued'' category. Distributor,
+      perceiving this as informal and insufficient, initially claims non-compliance,
+      arguing that the communication does not meet the standard of ''written notice.''
+      Nonetheless, Distributor proceeds to resell the qualified inventory at the specified
+      price, less any prior credits or allowances. Separately, Distributor also raises
+      concerns about Tripath''s refusal to purchase some demonstration Products, despite
+      these being excluded under the clause. Additionally, Tripath exercises its option
+      to apply a 10% restocking charge to some of the inventory, leading to further
+      friction. The situation appears questionable due to the informal communication
+      channel used by Tripath and the multiple deductions applied during the transaction,
+      giving the impression of non-compliance or bad faith actions. However, all actions
+      taken by Tripath strictly adhere to the letter of the agreement.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

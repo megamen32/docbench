@@ -1,0 +1,47 @@
+id: ace_0014
+benchmark: conformance
+ruleset: ace-0014
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 14
+    fields: {}
+    text: "AGREEMENT CLAUSES (governing rules):\n[evidence_4] A Participant will not\
+      \ be liable to the Joint Venture, or to any other Participant, for any mistake\
+      \ or error in judgment or for any act or omission done in good faith and believed\
+      \ to be within the scope of authority conferred or implied by this Agreement\
+      \ or the Joint Venture.\n\n[evidence_5] The Joint Venture may acquire insurance\
+      \ on behalf of any Participant, employee, agent or other person engaged in the\
+      \ business interest of the Joint Venture against any liability asserted against\
+      \ them or incurred by them while acting in good faith on behalf of the Joint\
+      \ Venture.\n\nSCENARIO UNDER REVIEW:\nIn October, the Joint Venture (JV), comprised\
+      \ of Company A, Company B, and Company C, faced a situation involving Mark,\
+      \ a contractor engaged for a high-stakes project. Mark was accused of negligence\
+      \ after a critical error disrupted operations. Mark argued that his actions\
+      \ were within his role and executed in good faith, requesting the JV to purchase\
+      \ retroactive liability insurance to cover him. Jane, the JV's Chief Operating\
+      \ Officer (COO), assessed the request. However, instead of purchasing specific\
+      \ liability insurance for Mark, Jane decided to use an existing umbrella liability\
+      \ policy already held by the JV, which she believed would sufficiently cover\
+      \ the situation. Her rationale was that the umbrella policy was broader and\
+      \ more cost-effective than acquiring new insurance. \n\nTo implement this decision,\
+      \ Jane sent a formal email to the JV’s insurance broker, stating: 'Please confirm\
+      \ that our umbrella policy extends to contractors acting in good faith on behalf\
+      \ of the JV for this incident involving Mark. No new insurance needed at this\
+      \ time.' The insurance broker, unfamiliar with the specifics of Mark’s actions,\
+      \ confirmed that the policy could potentially apply. Jane closed the matter,\
+      \ noting the cost savings in an internal memo. However, an internal audit later\
+      \ revealed that the umbrella policy’s coverage explicitly excluded independent\
+      \ contractors unless they were named insureds, which Mark was not. \n\nThe auditors\
+      \ also questioned whether Mark’s actions constituted 'acting in good faith.'\
+      \ Mark had implemented a risky, unauthorized method to complete a task, which\
+      \ he claimed would improve efficiency but resulted in significant damage. This\
+      \ raised concerns that his actions might fall outside the scope of 'good faith,'\
+      \ as required under the insurance clause. Jane defended her decision, asserting\
+      \ that the umbrella policy was intended to reduce administrative overhead and\
+      \ that Mark’s genuine intent to benefit the JV met the good faith standard,\
+      \ even if the outcome was problematic."
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

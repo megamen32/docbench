@@ -1,0 +1,15 @@
+id: ace-0017
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_6
+  description: Nantz agrees to be available for up to four photography sessions (2
+    in Southern California during the week and 2 to be at Nantz's site locations or
+    tournaments), two speaking engagements, and three store appearances each Contract
+    Year, at times and places mutually convenient for Nantz and the Company but in
+    no event at times which adversely impact on the schedules of Nantz Communications
+    or Nantz. | The Company agrees that each photography session shall not exceed
+    one and one-half days and each speaking engagement and store appearance shall
+    not exceed one-half day.
+  severity: major
+  category: contract_clause

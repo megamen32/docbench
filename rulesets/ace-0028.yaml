@@ -1,0 +1,10 @@
+id: ace-0028
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_1
+  description: Provided that COMWARE purchases a minimum of $45,420.00 worth of Products,
+    in any combination, during the Initial Distribution Period, this Agreement will
+    automatically renew for an additional 6 months (the Renewal Period).
+  severity: major
+  category: contract_clause

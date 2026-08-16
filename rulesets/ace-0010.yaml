@@ -1,0 +1,22 @@
+id: ace-0010
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_10
+  description: Upon the expiration or termination of either the Lease Agreement or
+    the Franchise Agreement (attached), Lessor will cooperate with and assist Franchisor
+    in securing possession of the Premises and if Franchisor does not elect to take
+    an assignment of the Lessee's interest, Lessor will allow Franchisor to enter
+    the Premises, without being guilty of trespass and without incurring any liability
+    to Lessor, to remove all signs, awnings, and all other items identifying the Premises
+    as a Franchised Business and to make other modifications (such as repainting)
+    as are reasonably necessary to protect The Joint marks and system, and to distinguish
+    the Premises from a Franchised Business. | Upon the termination or expiration
+    of the Franchise, we will have the option, but not the obligation, exercisable
+    for thirty (30) days upon written notice to you, to purchase at fair market value
+    all of the assets of the Franchise, including all approved equipment, fixtures,
+    furniture and signs and all supplies, materials, and other items imprinted with
+    any Mark, and to take an assignment of the lease for the Premises and any other
+    lease or concession agreement necessary for the operation of the Franchise
+  severity: major
+  category: contract_clause

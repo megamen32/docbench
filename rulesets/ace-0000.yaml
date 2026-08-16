@@ -1,0 +1,28 @@
+id: ace-0000
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_2
+  description: This Agreement, including its attachment and order acknowledgments
+    under the Agreement, constitutes the entire agreement between Distributor and
+    NETGEAR with respect to the purchase, resale and distribution of the Products
+    and is governed by the laws of the State of California except that body of law
+    dealing with conflicts of law.
+  severity: major
+  category: contract_clause
+- id: evidence_6
+  description: The total value of the returned Products shall not exceed [*] of the
+    Net Shipments invoiced by NETGEAR for all Products, [*], during the [*] immediately
+    preceding each of the above dates.
+  severity: major
+  category: contract_clause
+- id: evidence_8
+  description: EXCEPT FOR DAMAGES ARISING FROM BREACH OF SECTIONS 6.C AND 12,13 OR
+    17, IN NO EVENT WELL DISTRIBUTOR's TOTAL LIABILITY FOR ANY DAMAGES IN ANY ACTION
+    BASED ON OR ARISING OUT OF OR IN CONNECTION WITH THE AGREEMENT EXCEED THE [*]
+    TO NETGEAR PURSUANT TO THE AGREEMENT. | EXCEPT FOR DAMAGES ARISING UNDER SECTIONS
+    14.A AND 16.A, IN NO EVENT WILL NETGEAR's OR BAY NETWORKS' TOTAL LIABILITY FOR
+    ANY DAMAGES IN ANY ACTION BASED ON OR ARISING OUT OF OR IN CONNECTION WITH THE
+    AGREEMENT EXCEED THE [*] TO NETGEAR PURSUANT TO THE AGREEMENT.
+  severity: major
+  category: contract_clause

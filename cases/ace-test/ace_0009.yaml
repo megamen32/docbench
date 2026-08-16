@@ -1,0 +1,39 @@
+id: ace_0009
+benchmark: conformance
+ruleset: ace-0009
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 9
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_2] This Agreement shall automatically be renewed for successive one
+      (1) year increments unless either party request in writing, at least ninety
+      (90) days prior to the anniversary date, that this Agreement not to be renewed.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Company A and Company B are parties to a service agreement that includes an
+      automatic renewal clause. The contract states that the agreement will renew
+      for successive one-year terms unless ''either party requests in writing, at
+      least ninety (90) days prior to the anniversary date, that this Agreement not
+      be renewed.'' On May 2nd, Company A decides not to renew the contract, with
+      the anniversary date falling on August 1st. To comply with the clause, Company
+      A drafts a formal letter requesting non-renewal and sends it via certified mail
+      to Company B''s official address of record on May 3rd. However, the certified
+      mail receipt is delayed, and the letter does not physically arrive at Company
+      B''s office until May 9th. Separately, on May 4th, an employee of Company A,
+      unaware of the formal letter, sends a casual email to their counterpart at Company
+      B stating, ''Hey, just FYI, not planning to renew this thing. Let me know if
+      you want to chat.'' This email is sent from the employee''s personal mobile
+      device, using their personal email account, and contains no formal letterhead
+      or contractual language. On August 1st, Company B claims the contract was automatically
+      renewed, arguing that Company A failed to comply properly with the written notice
+      requirement because the formal letter arrived late, and the email was not sufficiently
+      professional to constitute formal written notice.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

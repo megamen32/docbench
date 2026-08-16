@@ -1,0 +1,51 @@
+id: ace_0001
+benchmark: conformance
+ruleset: ace-0001
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 1
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_5] For the License Term and within the Licensed Territory, Producer
+      hereby grants to ConvergTV a right and license to Distribute the program, file
+      or video listed on the Deal Terms above (the "Program") consisting of | episodes
+      (series) or | License Term Perpetual, unlimited runs x Other: 2 years Commencing:
+      November 15, 2012 | Producer further grants to ConvergTV the right and license
+      to Distribute the Program on any ConvergTV channel, and/or other distribution
+      outlets, that exists today or that is created or developed in the future and
+      this right includes the right to Distribute on any channels of a ConvergTV affiliate
+      and/or other distribution outlets without limitation. | one-offs, for unlimited
+      runs for the License Term through ConvergTV channels and/or other distribution
+      outlets, in accordance with the License Rights.
+
+
+      SCENARIO UNDER REVIEW:
+
+      ConvergTV entered into a licensing agreement with Producer, granting ConvergTV
+      the right to distribute a specific Program within the Licensed Territory for
+      the License Term. The Program was a one-off production with a License Term of
+      two years, commencing November 15, 2012. ConvergTV distributed the Program on
+      its newly launched streaming platform, StreamSphere, which did not exist at
+      the time the agreement was signed but was explicitly covered under the clause
+      allowing distribution on ''distribution outlets that exist today or that is
+      created or developed in the future.'' However, ConvergTV did not prominently
+      announce the availability of the Program on StreamSphere to the Producer, nor
+      did it feature the Program on the homepage of StreamSphere, instead listing
+      it in a less-trafficked ''Archived Programs'' section. Additionally, an informal
+      email from ConvergTV’s content manager to the Producer mentioned the listing
+      but was phrased ambiguously, stating, ''The Program is live somewhere on StreamSphere.
+      Let us know if you have questions.'' Producer later criticized ConvergTV, claiming
+      they failed to provide ''meaningful'' distribution of the Program, as the placement
+      in the ''Archived Programs'' section made it unlikely to garner significant
+      viewership. Producer further argued that the informal email communication about
+      the distribution status was insufficient notice under the terms of the contract.
+      Despite these concerns, ConvergTV maintained that their actions were compliant
+      with the explicit terms of the agreement, as they had distributed the Program
+      within the Licensed Territory and during the License Term, on an outlet that
+      was covered by the contract’s future distribution clauses.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

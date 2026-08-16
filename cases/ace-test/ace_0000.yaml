@@ -1,0 +1,60 @@
+id: ace_0000
+benchmark: conformance
+ruleset: ace-0000
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 0
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_2] This Agreement, including its attachment and order acknowledgments
+      under the Agreement, constitutes the entire agreement between Distributor and
+      NETGEAR with respect to the purchase, resale and distribution of the Products
+      and is governed by the laws of the State of California except that body of law
+      dealing with conflicts of law.
+
+
+      [evidence_6] The total value of the returned Products shall not exceed [*] of
+      the Net Shipments invoiced by NETGEAR for all Products, [*], during the [*]
+      immediately preceding each of the above dates.
+
+
+      [evidence_8] EXCEPT FOR DAMAGES ARISING FROM BREACH OF SECTIONS 6.C AND 12,13
+      OR 17, IN NO EVENT WELL DISTRIBUTOR''s TOTAL LIABILITY FOR ANY DAMAGES IN ANY
+      ACTION BASED ON OR ARISING OUT OF OR IN CONNECTION WITH THE AGREEMENT EXCEED
+      THE [*] TO NETGEAR PURSUANT TO THE AGREEMENT. | EXCEPT FOR DAMAGES ARISING UNDER
+      SECTIONS 14.A AND 16.A, IN NO EVENT WILL NETGEAR''s OR BAY NETWORKS'' TOTAL
+      LIABILITY FOR ANY DAMAGES IN ANY ACTION BASED ON OR ARISING OUT OF OR IN CONNECTION
+      WITH THE AGREEMENT EXCEED THE [*] TO NETGEAR PURSUANT TO THE AGREEMENT.
+
+
+      SCENARIO UNDER REVIEW:
+
+      NETGEAR enters into a distribution agreement with Bay Networks, including a
+      provision prohibiting the total value of returned products from exceeding a
+      specific percentage of the net shipments invoiced during the immediately preceding
+      quarter (evidence_6). In Q4, NETGEAR experiences a surge in product returns
+      due to a defect in a newly launched router. To manage the situation, NETGEAR
+      instructs Bay Networks to temporarily halt all returns and processes replacement
+      orders to offset returns, as allowed under the warranty provision. However,
+      the defect is broader than initially anticipated, and NETGEAR decides to process
+      warranty replacements for an additional product line without formally documenting
+      this under warranty claims. This action creates a mismatch: while NETGEAR calculates
+      returns within the permissible threshold by counting the undocumented replacements
+      as warranty adjustments, Bay Networks’ official records still classify these
+      as returns. Concurrently, NETGEAR communicates the decision using an internal
+      collaboration tool, bypassing the stipulated email channel (evidence_2). Bay
+      Networks flags the issue, asserting that the undocumented replacements cannot
+      be reclassified without formal acknowledgment under the warranty provision.
+      Additionally, Bay Networks highlights evidence_8, which limits liability for
+      damages except under specific sections. This creates ambiguity as to whether
+      NETGEAR’s reclassification could trigger liability under those sections. Despite
+      NETGEAR’s insistence that the total returns remain within the allowable threshold,
+      Bay Networks argues that the reclassification creates a cascading dependency
+      failure, as the undocumented replacements undercut the transparency required
+      by the governing clauses.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

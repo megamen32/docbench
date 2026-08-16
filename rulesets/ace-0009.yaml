@@ -1,0 +1,10 @@
+id: ace-0009
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_2
+  description: This Agreement shall automatically be renewed for successive one (1)
+    year increments unless either party request in writing, at least ninety (90) days
+    prior to the anniversary date, that this Agreement not to be renewed.
+  severity: major
+  category: contract_clause

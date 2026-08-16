@@ -1,0 +1,50 @@
+id: ace_0022
+benchmark: conformance
+ruleset: ace-0022
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 22
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_4] ExxonMobil may terminate this Agreement upon fifteen (15) days
+      written notice, without penalty, payment or prejudice to claims and obligations
+      then accrued, if FCE undergoes a Change in Control. | Subject to requirements
+      of applicable law, FCE will provide notice to ExxonMobil prior to, or promptly
+      after, it becomes aware of any such Change in Control, and if prior notice is
+      prohibited by applicable Law, as soon as practicable or after such notice is
+      no longer prohibited, but in no event later than one (1) business day after
+      any public announcement with respect to any such asset transfer or Change in
+      Control. | Notwithstanding anything else in this Agreement, in the event of
+      termination under this Paragraph 12.04 ExxonMobil may terminate any licenses
+      granted to FCE under this Agreement that would otherwise survive termination,
+      taking into account the circumstances surrounding the Change in Control.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Company A, a technology firm, enters into an agreement with Company B, a renewable
+      energy provider, under the terms outlined in the Multi-Conditional Obligation
+      clause. Five months into the agreement, Company B is acquired by a larger conglomerate,
+      triggering a ''Change in Control'' as defined by the contract. Company B’s legal
+      team becomes aware of the acquisition through internal discussions two days
+      before the conglomerate publicly announces the deal. However, fearing potential
+      liability under securities laws for premature disclosure of sensitive information,
+      Company B decides to delay notifying Company A. Instead, Company B waits until
+      one (1) business day after the public announcement, and then sends a formal
+      notice via priority overnight courier to Company A’s corporate headquarters,
+      believing that physical delivery will be more reliable and legally defensible
+      than email. The notice arrives the following morning, but due to an administrative
+      backlog caused by a corporate retreat, it is not logged or reviewed until four
+      days later. In the interim, Company A issues a public statement terminating
+      the agreement, citing Company B’s failure to provide timely notice within the
+      required timeframe. Company B argues that the courier delivery method, though
+      slightly delayed, was chosen to ensure compliance and avoid risks associated
+      with electronic communication. Company A contends that the notice was not delivered
+      ''as soon as practicable'' after the public announcement, as required by the
+      clause, and that the delay materially breached the agreement.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

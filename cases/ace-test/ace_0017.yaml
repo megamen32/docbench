@@ -1,0 +1,45 @@
+id: ace_0017
+benchmark: conformance
+ruleset: ace-0017
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 17
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_6] Nantz agrees to be available for up to four photography sessions
+      (2 in Southern California during the week and 2 to be at Nantz''s site locations
+      or tournaments), two speaking engagements, and three store appearances each
+      Contract Year, at times and places mutually convenient for Nantz and the Company
+      but in no event at times which adversely impact on the schedules of Nantz Communications
+      or Nantz. | The Company agrees that each photography session shall not exceed
+      one and one-half days and each speaking engagement and store appearance shall
+      not exceed one-half day.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Nantz is contracted to fulfill obligations outlined in the Multi-Conditional
+      Obligation clause, including up to four photography sessions, two speaking engagements,
+      and three store appearances each Contract Year. In one Contract Year, Nantz
+      schedules two photography sessions at his Southern California residence during
+      weekdays, one speaking engagement at a conference midweek, and one store appearance
+      on a Saturday morning. However, for the second photography session at a ''site
+      location,'' Nantz proposes conducting it virtually via a high-resolution live-stream
+      setup, citing logistical challenges and the mutually convenient nature of this
+      arrangement. The Company, after some back-and-forth, conditionally agrees to
+      this, provided the output meets their quality standards. Nantz completes all
+      sessions and engagements as outlined in the agreement, but the Company receives
+      pushback from a store partner claiming the virtual photography session was ''unprofessional''
+      and ''not in the spirit of the contract.'' To further complicate matters, Nantz’s
+      communication about the virtual session was delivered via a casual remark during
+      a Zoom call, which was not initially documented in formal correspondence. Despite
+      this, the virtual session satisfies the contractual time limits (not exceeding
+      one-and-a-half days) and does not conflict with Nantz’s or Nantz Communications''
+      schedules. All events occur within the Contract Year, and Nantz fulfills the
+      agreed-upon number of obligations.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

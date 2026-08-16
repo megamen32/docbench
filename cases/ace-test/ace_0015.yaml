@@ -1,0 +1,56 @@
+id: ace_0015
+benchmark: conformance
+ruleset: ace-0015
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 15
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_5] For greater certainty, "New Technology" shall exclude any (x) modification
+      to Philips pre-existing Intellectual Property Rights (which, shall exclude any
+      Intellectual Property Rights forming part of the "Purchased Assets" under the
+      Purchase Agreement) and (y) developments developed not for the Products (collectively,
+      "Philips Retained Product IP''), provided that Philips and its Affiliates hereby
+      grant to Customer under any such Intellectual Property Rights, which are applicable
+      or used for the manufacturing of the Product, a non- exclusive, non-transferable
+      (except in accordance with clause 18.4 (Assignment)), irrevocable, world-wide,
+      fully paid-up license, without the right to grant sub-licenses, to make, have
+      made, sell or commercialize in any other way the Product. | Customer grants
+      to Philips, during the Term, a non-exclusive, royalty-free, non-transferrable
+      right to make, have made, use, sell, reproduce, adapt, distribute, or otherwise
+      use or practice Customer''s Intellectual Property Rights solely in connection
+      with manufacturing of the Products and packaging to Customer pursuant to this
+      Agreement.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Philips, under a manufacturing agreement with Customer, is obligated to grant
+      a non-exclusive, non-transferable, irrevocable, world-wide, fully paid-up license
+      for any Intellectual Property Rights (IPRs) used in the manufacturing of the
+      Product. In this instance, Philips developed a unique production process improvement
+      that utilizes a proprietary algorithm owned by one of its Affiliates. Recognizing
+      its obligation under the agreement, Philips issued a formal notice to the Customer,
+      stating that Customer was granted a license to the algorithm for use in manufacturing
+      the Product. However, rather than delivering the notice through the standard
+      channels outlined in the agreement (e.g., via certified written communication),
+      Philips communicated this via a shared project management platform used for
+      day-to-day tasks, tagging the Customer’s project lead in the relevant message
+      thread. The notice was marked as ''archived'' by the platform after 24 hours
+      and was not immediately visible without searching the thread history. Additionally,
+      Philips included a disclaimer in the message stating that the algorithm remained
+      part of ''Philips Retained Product IP'' and could not be sublicensed or used
+      for non-Product-related purposes. This disclaimer, while accurate under the
+      agreement, caused confusion within the Customer’s team, as it seemed to cast
+      doubt on whether the license was actually granted. Despite these concerns, Philips
+      made no further clarifications, relying on the Customer to interpret the shared
+      platform message and disclaimer as compliant notice of the license grant. Later,
+      the Customer raised concerns, alleging that Philips failed to properly grant
+      the license and questioning the validity of the method used to communicate the
+      grant.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

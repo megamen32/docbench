@@ -1,0 +1,37 @@
+id: ace-0027
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_4
+  description: If, after the date of this Agreement and continuing as long as a Party
+    is a partner, member, or shareholder of the Operating Company, the Joint Venture
+    develops or completes the development of, or discovers, or acquires proprietary
+    rights over, a process or product which at, or after, the time of its development,
+    discovery or acquisition has, or might have, some application outside of the Field
+    of Agreement, then the appropriate entity of the Joint Venture shall offer to
+    license the use of the process or product (or the production thereof) for such
+    application to each of the Parties on reasonable commercial terms (including,
+    without limitation, the possible payment of royalties at market rates) taking
+    into account the time and money spent by the Joint Venture and taking into account
+    other relevant commercial factors. | If either Party has received a Third Party
+    Offer that it intends to accept (the "Offer"), such Party (the "Selling Party")
+    shall notify the other Party (the "Offeree") of the Offer, which notice shall
+    include a copy of the Offer and any other information necessary to enable the
+    Offeree to evaluate reasonably the Offer and the potential purchaser. | If, after
+    the date of this Agreement and continuing as long as either Party is a partner,
+    member, or shareholder of the Operating Company, such Party or any of its Affiliates
+    receives or discovers any opportunity to use Astaxanthin as a Neutraceutical (a
+    "Neutraceutical Opportunity"), including without limitation developing or completing
+    the development of, or discovering, or acquiring proprietary rights over, a product
+    or process that involves the use of Astaxanthin as a Neutraceutical, such Party
+    shall (or shall cause its Affiliate to) present such opportunity to the Operating
+    Company, providing the Operating Company with such narrative description and budgetary
+    and other information as such Party (or its Affiliates) may have generated or
+    gathered to the extent necessary to evaluate such Neutraceutical Opportunity.
+    | The Offeree shall have thirty (30) days after receipt of the notice from the
+    Selling Party (the "Option Period") to elect either (i) to purchase the Selling
+    Party's interest in the Operating Company or (ii) to sell the Offeree's interest
+    in the Operating Company to the Selling Party, in either case on the same terms
+    and conditions as those contained in the Offer.
+  severity: major
+  category: contract_clause

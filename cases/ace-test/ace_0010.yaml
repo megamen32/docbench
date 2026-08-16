@@ -1,0 +1,60 @@
+id: ace_0010
+benchmark: conformance
+ruleset: ace-0010
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 10
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_10] Upon the expiration or termination of either the Lease Agreement
+      or the Franchise Agreement (attached), Lessor will cooperate with and assist
+      Franchisor in securing possession of the Premises and if Franchisor does not
+      elect to take an assignment of the Lessee''s interest, Lessor will allow Franchisor
+      to enter the Premises, without being guilty of trespass and without incurring
+      any liability to Lessor, to remove all signs, awnings, and all other items identifying
+      the Premises as a Franchised Business and to make other modifications (such
+      as repainting) as are reasonably necessary to protect The Joint marks and system,
+      and to distinguish the Premises from a Franchised Business. | Upon the termination
+      or expiration of the Franchise, we will have the option, but not the obligation,
+      exercisable for thirty (30) days upon written notice to you, to purchase at
+      fair market value all of the assets of the Franchise, including all approved
+      equipment, fixtures, furniture and signs and all supplies, materials, and other
+      items imprinted with any Mark, and to take an assignment of the lease for the
+      Premises and any other lease or concession agreement necessary for the operation
+      of the Franchise
+
+
+      SCENARIO UNDER REVIEW:
+
+      Lessor, bound by a Lease Agreement and Franchise Agreement, encounters a situation
+      where the Franchise Agreement expires on March 1, 2023, while the Lease Agreement
+      remains active until December 31, 2023. On February 25, 2023, Franchisor sends
+      an informal email to Lessor, expressing its intent to exercise its option to
+      purchase the Franchise''s assets and take an assignment of the lease. The email
+      is vague, mentioning only its general intent without specifying a purchase price
+      or detailed list of assets. Believing it to be a sufficient trigger for Franchisor''s
+      rights, Lessor takes preemptive action. On March 2, 2023, the day after the
+      Franchise Agreement expires, Lessor grants Franchisor immediate access to the
+      Premises to remove signs and make modifications to distinguish it from a Franchised
+      Business. Lessor also agrees to allow Franchisor to store some of the removed
+      assets temporarily in a secure area of the Premises, citing the need to avoid
+      disrupting the property’s operations. However, Franchisor does not send a formal
+      written notice clarifying its intent to purchase assets and take on the lease
+      until March 20, 2023, well within the 30-day window. Meanwhile, Lessee, unaware
+      of the arrangement, files a formal complaint on March 10, 2023, accusing Lessor
+      of breaching its obligations under the Lease Agreement by allowing Franchisor
+      to interfere with Lessee’s operations and remove assets without proper documentation
+      of the purchase option being exercised. Lessee also claims that Lessor''s authorization
+      of modifications constitutes bad faith, as it occurred before Franchisor provided
+      formal written notice. Lessor defends its actions by arguing that it acted strictly
+      under the clause requiring cooperation with Franchisor to secure possession
+      and protect the Franchisor’s marks, which it believed was distinct from the
+      asset purchase process. The situation escalates into a legal dispute over whether
+      Lessor’s early actions violated the Lease Agreement and the conditional precedence
+      of the Franchise Agreement.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

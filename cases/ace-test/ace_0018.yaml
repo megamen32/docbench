@@ -1,0 +1,47 @@
+id: ace_0018
+benchmark: conformance
+ruleset: ace-0018
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 18
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_4] solicit any Customers that have a business presence outside the
+      Territory, except that Distributor shall not conduct solicitation activities
+      in any outside territory where Hydraspin is bound to an exclusive distributor
+      agreement with a third party, provided that Hydraspin has notified Distributor
+      in writing of its arrangements with the other distributor and of the territory
+      which is subject to exclusivity in favor of the other distributor. | Distributor
+      shall be entitled to advertise, promote, market or
+
+
+      SCENARIO UNDER REVIEW:
+
+      In January 2023, Company A, the distributor for Hydraspin, launched an ambitious
+      marketing campaign targeting businesses in Region Y, outside its designated
+      territory. This campaign involved email outreach, web banner advertisements,
+      and a virtual webinar showcasing Hydraspin’s products. Region Y included several
+      subregions, one of which contained Company Z, a business located within an exclusive
+      territory covered under Hydraspin’s agreement with a third-party distributor,
+      Company C. Hydraspin had sent a notification email to Company A on December
+      15, 2022, informing them of the exclusive arrangement with Company C. However,
+      the email lacked specificity, vaguely referencing ''Region Y'' without delineating
+      the subregions subject to exclusivity. Additionally, the email did not include
+      a formal company letterhead, nor was it marked as a legally binding notice.
+      Believing the email lacked formal weight, Company A proceeded to host the virtual
+      webinar, inviting businesses across all subregions of Region Y, including Company
+      Z. The webinar materials did not specifically target Company Z but included
+      general marketing content that was accessible to all participants. Following
+      the webinar, Company Z expressed interest in Hydraspin’s products and initiated
+      contact with Company A for additional information. Upon learning of this, Company
+      C accused Company A of breaching the exclusivity clause by indirectly soliciting
+      businesses within its exclusive territory through the webinar. Company A defended
+      its actions, asserting that the lack of clear geographic boundaries in Hydraspin’s
+      email made it impossible to determine which subregions were off-limits and that
+      the webinar was a general marketing effort not aimed at specific businesses.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

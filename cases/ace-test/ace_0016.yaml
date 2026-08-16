@@ -1,0 +1,126 @@
+id: ace_0016
+benchmark: conformance
+ruleset: ace-0016
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 16
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_10] Client hereby grants to EFS a limited and perpetual right and
+      license to use such photographs and materials for research and forecasting purposes,
+      including, but not limited to, combining the same with reports and analytics
+      concerning the performance of the Websites, providing information to strategic
+      partners to better define consumer purchasing habits, and for trend forecasting
+      and planning purposes. | Business. | Client holds certain customer data relating
+      to the Playboy Commerce Business ("Existing Customer Data") and hereby grants
+      to EFS a non-exclusive, limited, non-sublicensable, non-transferable, revocable
+      license to store and use such Existing Customer Data solely for purposes of
+      the operation and promotion of the Playboy Commerce | All Derivative Works are
+      hereby licensed back to EFS subject to the limitations that are applicable hereunder
+      to the Playboy Content. | During the Term and subject to the terms, conditions,
+      and limitations set forth in this Agreement, Client grants EFS a limited, non-exclusive,
+      non-transferable, non-assignable (without any right to sublicense), world-wide
+      license to use the Client trademarks and/or service marks as set forth on Part
+      A of Exhibit 1 (the "Playboy Marks") solely in connection with the design, publication,
+      distribution, operation and promotion of the Playboy Commerce Business. | All
+      such photographs shall be deemed Playboy Content for purposes of this Agreement,
+      for which EFS shall have a license to use during the Term solely in connection
+      with the Playboy Commerce Business and as is necessary to promote the Websites.
+      | During the Term and subject to the terms, conditions, and limitations set
+      forth in this Agreement, Client grants EFS a limited, non-exclusive, non-transferable,
+      non-assignable (without any right to sublicense), world-wide license to use,
+      modify, create derivative works of, publish, reproduce, broadcast, exhibit and
+      display the Playboy Content solely in connection with the design, publication,
+      distribution, operation and promotion of the Playboy Commerce Business. | During
+      the Term and subject to the terms, conditions and limitations of this Agreement,
+      Client hereby grants EFS, a limited, non-transferable, non-assignable (without
+      any right to sublicense) world-wide license to use the Internet location or
+      resource designators (URLs, domain names, etc.) set forth in Part B of Exhibit
+      1 hereto, and/or to the extent approved in advance in writing by Client, as
+      the case may be, modifications thereof (the "Licensed Domain Names"), as the
+      domain name(s) and Internet locators/designators for the Websites during the
+      Term.
+
+
+      [evidence_11] Business. | Client holds certain customer data relating to the
+      Playboy Commerce Business ("Existing Customer Data") and hereby grants to EFS
+      a non-exclusive, limited, non-sublicensable, non-transferable, revocable license
+      to store and use such Existing Customer Data solely for purposes of the operation
+      and promotion of the Playboy Commerce | During the Term and subject to the terms,
+      conditions, and limitations set forth in this Agreement, Client grants EFS a
+      limited, non-exclusive, non-transferable, non-assignable (without any right
+      to sublicense), world-wide license to use the Client trademarks and/or service
+      marks as set forth on Part A of Exhibit 1 (the "Playboy Marks") solely in connection
+      with the design, publication, distribution, operation and promotion of the Playboy
+      Commerce Business. | During the Term and subject to the terms, conditions, and
+      limitations set forth in this Agreement, Client grants EFS a limited, non-exclusive,
+      non-transferable, non-assignable (without any right to sublicense), world-wide
+      license to use, modify, create derivative works of, publish, reproduce, broadcast,
+      exhibit and display the Playboy Content solely in connection with the design,
+      publication, distribution, operation and promotion of the Playboy Commerce Business.
+      | During the Term and subject to the terms, conditions and limitations of this
+      Agreement, Client hereby grants EFS, a limited, non-transferable, non-assignable
+      (without any right to sublicense) world-wide license to use the Internet location
+      or resource designators (URLs, domain names, etc.) set forth in Part B of Exhibit
+      1 hereto, and/or to the extent approved in advance in writing by Client, as
+      the case may be, modifications thereof (the "Licensed Domain Names"), as the
+      domain name(s) and Internet locators/designators for the Websites during the
+      Term.
+
+
+      [evidence_15] Such notice shall include written confirmation and details of
+      replacement insurance coverages and other material revisions to the policies,
+      which shall be effective immediately upon any cancellation or material change
+      in EFS'' policies in order that no gap in coverage results. | EFS agrees that
+      these policies shall not be canceled or materially changed without at least
+      thirty (30) days'' prior written notice to Client. | EFS shall maintain at all
+      times during the Term of this Agreement insurance as provided below and shall
+      name Client, its parent company, subsidiaries and affiliated entities and their
+      respective officers, directors, shareholders, agents and employees as additional
+      insureds to the extent of indemnity provided herein under its liability policies
+      as follows: (i) Commercial general liability insurance including premises/operations,
+      broad form property damage, independent contractors, and contractual liability
+      covering EFS'' obligations hereunder for bodily injury and property damage,
+      with a combined single limit of not less than $1,000,000 each occurrence and
+      $6,000,000 umbrella coverage; (ii) Workers'' compensation insurance in statutory
+      amounts covering EFS and its employees; and (iii) Errors and omissions insurance,
+      and employer''s liability insurance in an amount not less than $1,000,000 per
+      accident/disease. | of no less than A-. | All insurance required above shall
+      be carried with insurance companies licensed to do business in the state(s)
+      where operations are maintained with a rating | EFS shall deliver to Client,
+      upon execution of the Agreement, certificates of insurance as evidence of the
+      required coverages.
+
+
+      SCENARIO UNDER REVIEW:
+
+      EFS, under the terms of its agreement with Client, was obligated to maintain
+      various insurance policies and provide certificates of insurance as evidence
+      of coverage upon execution of the Agreement and at all times during the Term.
+      Midway through the Term, EFS faced a situation where its commercial general
+      liability insurance policy was set to expire due to the insurer discontinuing
+      operations in the relevant jurisdiction. EFS secured a new policy that met the
+      specified terms, including coverage limits and naming Client as an additional
+      insured ''to the extent of indemnity provided herein.'' However, instead of
+      providing a formal certificate of insurance upon policy execution, EFS supplied
+      a detailed coverage summary from the insurance broker, which included policy
+      limits, covered entities, and the effective dates. EFS reasoned that the coverage
+      summary was sufficient to demonstrate compliance, as it contained all relevant
+      details required for Client to verify the policy''s validity. Additionally,
+      EFS argued that obtaining a formal certificate of insurance would cause unnecessary
+      delays in business operations, as the insurer required additional administrative
+      processing time for certificate issuance. Simultaneously, EFS assured Client
+      that the certificate would follow within two weeks, after the insurer completed
+      its internal formalities. While the policy itself was active and there was no
+      gap in coverage, Client’s compliance officer raised concerns that the governing
+      clauses explicitly required ''certificates of insurance'' as evidence of coverage
+      and that any alternative documentation was insufficient. Despite EFS’s efforts
+      to expedite the certificate delivery, it was ultimately issued and provided
+      to Client 12 days after the new policy became effective, leaving a critical
+      gap in formal evidence during the interim period.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

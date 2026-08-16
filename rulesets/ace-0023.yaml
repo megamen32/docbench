@@ -1,0 +1,12 @@
+id: ace-0023
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_8
+  description: During the Term, subject to the terms and conditions of this Agreement,
+    Depomed hereby grants to King and its Affiliates and King and its Affiliates hereby
+    accept a co-exclusive right to Promote the Product under the Depomed Trademarks
+    in the Territory together with Depomed and its Affiliates only, on the terms and
+    subject to the conditions set forth herein.
+  severity: major
+  category: contract_clause

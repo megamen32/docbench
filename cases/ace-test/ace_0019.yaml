@@ -1,0 +1,47 @@
+id: ace_0019
+benchmark: conformance
+ruleset: ace-0019
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 19
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_7] Without limiting any of the obligations or liabilities of Contractor,
+      whether under this Agreement or by law, subject to any limitations hereunder,
+      Contractor shall maintain, and shall cause any subcontractors engaged by Contractor
+      to provide services under this Agreement to maintain, at Contractor''s own expense,
+      as long as this Agreement is in effect, insurance policies of the kind and limits
+      as set forth in APPENDIX D to this Agreement. The expense of such insurance
+      shall be borne by Contractor. The Contractor shall keep in force the policies
+      specified in sections 1 and 3 to the Insurance Certificate valid as long as
+      Contractor''s legal liability EXISTS IN CONNECTION WITH OPERATIONS ACCORDING
+      TO THE AGREEMENT.
+
+
+      SCENARIO UNDER REVIEW:
+
+      The Contractor, as stipulated under the agreement, is obligated to maintain
+      insurance policies as specified in APPENDIX D for the duration of the contract
+      and as long as its legal liability exists in connection with operations under
+      the agreement. However, the Contractor''s insurance renewal notification was
+      sent to the counterparty via an unconventional channel: a comment in a shared
+      project management document rather than a formal written notice. This comment,
+      embedded in a task update, stated, ''Insurance policies renewed as required
+      under APPENDIX D. Valid until [renewal date].'' This unconventional approach
+      raised concerns about professional conduct and formal validity. Additionally,
+      the insurance policies maintained by the Contractor explicitly covered operations
+      under the agreement but excluded coverage for subcontractors, who were insured
+      through separate policies procured directly by each subcontractor. This choice
+      of segregated insurance coverage, while technically compliant, appeared questionable
+      at first glance because it deviated from industry norms where subcontractors
+      are typically covered under a unified insurance policy procured by the primary
+      contractor. Despite these concerns, the Contractor ensured that all subcontractors
+      maintained insurance policies that complied with the limits and types set forth
+      in APPENDIX D. All documentation for both the Contractor''s and subcontractors''
+      policies was available and valid during the relevant period.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

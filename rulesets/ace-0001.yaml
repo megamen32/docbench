@@ -1,0 +1,18 @@
+id: ace-0001
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_5
+  description: 'For the License Term and within the Licensed Territory, Producer hereby
+    grants to ConvergTV a right and license to Distribute the program, file or video
+    listed on the Deal Terms above (the "Program") consisting of | episodes (series)
+    or | License Term Perpetual, unlimited runs x Other: 2 years Commencing: November
+    15, 2012 | Producer further grants to ConvergTV the right and license to Distribute
+    the Program on any ConvergTV channel, and/or other distribution outlets, that
+    exists today or that is created or developed in the future and this right includes
+    the right to Distribute on any channels of a ConvergTV affiliate and/or other
+    distribution outlets without limitation. | one-offs, for unlimited runs for the
+    License Term through ConvergTV channels and/or other distribution outlets, in
+    accordance with the License Rights.'
+  severity: major
+  category: contract_clause

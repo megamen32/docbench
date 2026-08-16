@@ -1,0 +1,65 @@
+id: ace_0006
+benchmark: conformance
+ruleset: ace-0006
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 6
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_12] 2. The term “Evaluation Material” does not include any information
+      which | (ii) was or becomes available to you on a non-confidential basis from
+      a person (other than the Company or its Representatives) who, to your knowledge,
+      is not otherwise bound by a confidentiality agreement with the Company or its
+      Representatives or prohibited from transmitting the information to you by law,
+      contractual obligation, fiduciary duty or otherwise or
+
+
+      [evidence_7] Notwithstanding the foregoing, | (i) you and your Representatives
+      will not be required to delete, erase or destroy any Evaluation Material contained
+      in an archived computer backup system stored as a result of automated back-up
+      procedures (it being agreed that you and your Representatives will not access
+      such archived computer files containing any such Evaluation Material after such
+      delivery or destruction is otherwise required) and | (ii) you and/or your Representatives
+      may retain one copy of the Evaluation Material (and may only access any such
+      Evaluation Material) to the extent and for so long as such retention and access
+      by you or such Representative, as applicable, is required by law or regulation;
+      provided, however, that in the case of each of clauses | (i) and | (ii) of this
+      sentence, notwithstanding any other provision of this Agreement, you and your
+      applicable Representatives will continue to be bound by the terms of this Agreement
+      as if it were in full force and effect with respect to any such Evaluation Material
+      for so long as you or your applicable Representatives retain any such Evaluation
+      Material.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Company A and Company B enter into a confidentiality agreement regarding the
+      exchange of sensitive business information, defined as ''Evaluation Material.''
+      Under the agreement, Company A is required to delete all Evaluation Material
+      upon termination of the agreement, except for two specific exceptions outlined
+      in the governing clauses. After the agreement ends, Company A sends an email
+      to Company B confirming that all Evaluation Material has been deleted, except
+      for a single copy retained in an encrypted archive due to automated backup procedures
+      (Condition 1) and another copy retained to comply with a regulatory requirement
+      to maintain records for seven years (Condition 2). However, during a routine
+      IT system upgrade, Company A''s IT team discovers a folder containing Evaluation
+      Material that was inadvertently excluded from the automated backup system. Believing
+      the material to fall under the ''non-confidential basis'' exception (Exception
+      evidence_12), the IT team moves the folder to a shared drive for review and
+      classification. The shared drive is later accessed by a junior employee who
+      uses the Evaluation Material in a presentation for an unrelated internal project.
+      The presentation is flagged during an internal audit, and Company B is informed.
+      Company B accuses Company A of breaching the agreement by failing to delete
+      the Evaluation Material and improperly accessing it. Company A defends its actions,
+      stating that the material was excluded from deletion because it was believed
+      to qualify under the ''non-confidential basis'' exception, as it was obtained
+      from a third-party vendor who was not bound by confidentiality obligations.
+      Company A provides documentation showing the vendor''s non-confidential status
+      and argues that the material was accessed solely for classification purposes
+      during the IT upgrade.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

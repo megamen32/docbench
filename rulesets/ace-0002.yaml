@@ -1,0 +1,113 @@
+id: ace-0002
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_10
+  description: Licensee shall, within [***] ([***]) days of the effective date of
+    termination of the Agreement at the latest (and at no cost to Bioeq if this Agreement
+    is terminated by Bioeq pursuant to Sections 15.2.1, 15.2.2, 15.2.3, 15.2.4, 15.2.8
+    or 15.2.9, or by Licensee pursuant to Section 15.2.5, or at Bioeq's cost and expense
+    if this Agreement is terminated by Licensee pursuant to Sections 15.2.1, 15.2.6,
+    15.2.7 or 15.2.8, as applicable) transfer and assign to Bioeq or its designee
+    all of Licensee's right, title and interest in and to any and all Biologics License
+    Applications and Biologics License Application Approvals controlled by Licensee
+    for the Licensed Products in the Field in the Territory as of the effective date
+    of such termination, including any and all documentation pertaining to such filings
+    and Biologics License Application Approvals (provided that the physical or electronic
+    transfer of files and documentation in connection with such transfer and assignment
+    of rights may occur after such [***] ([***]) day period without being deemed a
+    breach of this Section 15.3.2 by Licensee) | Licensee shall (at no cost to Bioeq
+    if this Agreement is terminated by Bioeq pursuant to Sections 15.2.1, 15.2.2,
+    15.2.3, 15.2.4, 15.2.8 or 15.2.9, or by Licensee pursuant to Section 15.2.5, or
+    at Bioeq's cost and expense if this Agreement is terminated by Licensee pursuant
+    to Sections 15.2.1, 15.2.6, 15.2.7 or 15.2.8, as applicable) use Commercially
+    Reasonable Efforts to cooperate with Bioeq or its designee, and provide [***]
+    reasonable assistance and support, to [***] Bioeq or its designee to take over
+    the Commercialization of the Licensed Products in the Field in the Territory [***]
+    following the effective date of such termination, including by (a) using Commercially
+    Reasonable Efforts to provide [***], (b) disclosing and assigning (to the extent
+    permitted under the relevant agreement) to Bioeq Licensee's existing agreements
+    relating solely to the Commercialization of the Licensed Product in the Territory,
+    including with [***], to the extent legally possible ([***]) and (c) transferring
+    Licensed Product- specific marketing materials, including [***]. | Licensee shall
+    be permitted, at Bioeq's choice (if this Agreement is terminated by Bioeq pursuant
+    to Sections 15.2.1, 15.2.2, 15.2.3, 15.2.4, 15.2.8 or 15.2.9, or by Licensee pursuant
+    to Section 15.2.5) or at Licensee's choice (if this Agreement is terminated by
+    Licensee pursuant to Sections 15.2.1, 15.2.6, 15.2.7 or 15.2.8), to cither (a)
+    continue selling its and its Affiliates' inventory of Licensed Products existing
+    on the termination effective date in accordance with this Agreement for a maximum
+    period of [***] ([***]) days (in which case all terms and conditions of this Agreement,
+    including Licensee's obligation to report and pay royalties, shall continue to
+    apply to such continued sale) or (b) sell such inventory to Bioeq at the supply
+    price paid by Licensee to Bioeq for such inventory in accordance with the Manufacturing
+    and Supply Agreement.
+  severity: major
+  category: contract_clause
+- id: evidence_3
+  description: Licensee shall notify Bioeq in writing within [***] ([***]) days after
+    entry by Licensee into a definitive agreement which would result in a Competitor
+    Change of Control. | Bioeq may terminate this Agreement immediately upon written
+    notice to Licensee, if Licensee conducts any clinical development of, markets,
+    sells or distributes any Competitive Product in the Territory, whether directly
+    or indirectly through the intermediary of a Third Party or its Affiliates (Restricted
+    Activities); provided, that in the event that Restricted Activities are being
+    or would be deemed to be conducted by Licensee solely in connection with a Competitor
+    Change of Control, Bioeq may not terminate this Agreement in accordance with this
+    Section 15.2.2 and instead may terminate this Agreement in accordance with Section
+    15.2.9. | Upon the consummation of such definitive agreement, if Licensee has
+    not then divested all such Competitive Products such that a Competitor Change
+    of Control has occurred, Bioeq may, upon sending written notice to Licensee within
+    sixty (60) days thereafter, terminate this Agreement.
+  severity: major
+  category: contract_clause
+- id: evidence_4
+  description: Except as otherwise expressly provided under this Agreement, neither
+    Party may assign or otherwise transfer this Agreement or any right or obligation
+    hereunder (whether voluntarily, by operation of law or otherwise), without the
+    prior express written consent of the other Party; except however, that either
+    Party shall be permitted to effect such an assignment or transfer without the
+    consent of the other Party to (a) any of its Affiliates or (b) in connection with
+    a sale of all or substantially all of its assets to which this Agreement relates,
+    whether by merger, acquisition, asset sale, stock purchase, or otherwise, but
+    in any event subject to Bioeq's ability to terminate this Agreement in accordance
+    with Section 15.2.9 (for the avoidance of doubt, such termination right pursuant
+    to Section 15.2.9 shall apply mutatis mutandis in case of assignment of the Agreement
+    to a Competitor in all cases listed under subsection (b) above) | Licensee shall
+    be entitled to freely subcontract or delegate any of its rights or obligations
+    under this Agreement to its Affiliates or to Third Parties, provided that (i)
+    all sales of Licensed Products in the Field in the Territory continue to be made
+    by Licensee or its Affiliates (or their wholesalers or distributors) and (ii)
+    Licensee shall remain liable for the performance of its obligations under this
+    Agreement. | Any purported assignment or transfer in violation of this Section
+    16.4 shall be null and void.
+  severity: major
+  category: contract_clause
+- id: evidence_7
+  description: Subject to the provisions of this Agreement, Bioeq hereby grants to
+    Licensee an exclusive (even as to Bioeq), milestone- and royalty-bearing, non-transferable
+    license (including the right to grant sublicenses only to the extent permitted
+    by Section 2.1.2) under the Licensed Technology (including the Licensed Patents)
+    to use, sell, have sold, import, have imported or otherwise Commercialize the
+    Licensed Products in the Field in the Territory. | Solely in the event that this
+    Agreement is terminated by Bioeq pursuant to Sections 15.2.1, 15.2.2, 15.2.3,
+    15.2.4, 15.2.8 or 15.2.9 or by Licensee pursuant to Section 15.2.5 , Licensee
+    shall grant, and hereby grants to Bioeq an exclusive, royalty-free, fully paid,
+    sublicenseable, license to use the Licensee-Controlled Trademarks which were actually
+    used by Licensee to Commercialize the Licensed Products in the Territory in connection
+    with Bioeq's Commercialization of the Licensed Products in the Territory. I |
+    For those countries where a specific license is required for a joint owner of
+    a Joint Invention or Joint Improvement to practice such Joint Invention or Joint
+    Improvement, in such country, each Party hereby grants to the other Party a perpetual,
+    irrevocable, non-exclusive, worldwide, royalty-free, fully paid-up license, transferable
+    and sublicensable, under such Party's right, title and interest in and to such
+    Joint Invention or Joint Improvement to freely exploit such Joint Invention or
+    Joint Improvement in such country, subject to the terms and conditions of this
+    Agreement and the licenses granted hereunder. | or expiration of this Agreement)
+    a non-exclusive, fully-paid, irrevocable license (including the right to grant
+    sublicenses) under all Intellectual Property Rights and Know-How Controlled by
+    Licensee and embodied within, or claiming or covering the Licensee Improvements,
+    to Develop, Manufacture, sell, import, or otherwise Commercialize Licensed Products
+    outside of the Territory. | Licensee hereby grants to Bioeq during the term of
+    this Agreement (and, subject to Section 15.3.4, after termination
+  severity: major
+  category: contract_clause

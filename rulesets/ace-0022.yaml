@@ -1,0 +1,19 @@
+id: ace-0022
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_4
+  description: ExxonMobil may terminate this Agreement upon fifteen (15) days written
+    notice, without penalty, payment or prejudice to claims and obligations then accrued,
+    if FCE undergoes a Change in Control. | Subject to requirements of applicable
+    law, FCE will provide notice to ExxonMobil prior to, or promptly after, it becomes
+    aware of any such Change in Control, and if prior notice is prohibited by applicable
+    Law, as soon as practicable or after such notice is no longer prohibited, but
+    in no event later than one (1) business day after any public announcement with
+    respect to any such asset transfer or Change in Control. | Notwithstanding anything
+    else in this Agreement, in the event of termination under this Paragraph 12.04
+    ExxonMobil may terminate any licenses granted to FCE under this Agreement that
+    would otherwise survive termination, taking into account the circumstances surrounding
+    the Change in Control.
+  severity: major
+  category: contract_clause

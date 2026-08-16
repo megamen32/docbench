@@ -1,0 +1,128 @@
+id: ace_0005
+benchmark: conformance
+ruleset: ace-0005
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 5
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_1] If this Agreement is renewed for the First Additional Term, then
+      the First Additional Term shall commence on July 23, 2016, and the Agreement
+      shall expire and terminate automatically without further notice on July 22,
+      2019. | If this Agreement is renewed for the Second Additional Term, then the
+      Second Additional Term shall commence on July 23, 2019 and the Agreement shall
+      expire and terminate automatically without further notice on July 22, 2022.
+      | In the event that MusclePharm shall achieve Net Sales (as defined below) of
+      $20 million (the "First Renewal Threshold") in the aggregate during the Third
+      Contract Year, then this Agreement shall automatically be renewed for an additional
+      term of three (3) years (the "First Additional Term") on the same terms and
+      conditions for the Initial Term except that: (i) no additional Stock Compensation
+      (as defined below) shall be issued in connection with the renewal Term, (ii)
+      the Cash Compensation for the First Additional Term shall be as set forth in
+      Section 7 and Exhibit "C" Section (2) attached hereto, (iii) Endorser shall
+      only be obligated to make two (2) Appearances in each Contract Year during the
+      First Additional Term pursuant to Section 4(a)(ii) below and (iv) the marketing
+      budget to promote the Licensed Products shall be $5.0 million during each Contract
+      Year of the First Additional Term (subject to Section 12(b) of this Agreement).
+      | In the event that MusclePharm shall achieve Net Sales of $50 million (the
+      "Second Renewal Threshold") in the aggregate during the sixth Contract Year,
+      then this Agreement shall automatically be renewed for an additional term of
+      three (3) years (the "Second Additional Term") on the same terms and conditions
+      for the initial Term except that: (i) no additional Stock Compensation (as defined
+      below) shall be issued in connection with the renewal Term, (ii) the Cash Compensation
+      for the renewal Term shall be as set forth in Section 7 and Exhibit "C" Section
+      (3) attached hereto, (iii) Endorser shall only be obligated to make two (2)
+      Appearances in each Contract Year during the Second Additional Term pursuant
+      to Section 4(a)(ii) below and (iv) the marketing budget to promote the Licensed
+      Products shall be $5.0 in each Contract Year of the Second Additional Term (subject
+      to Section 12(b) of this Agreement).
+
+
+      [evidence_3] Notwithstanding the foregoing, the following will not be a breach
+      of this Agreement: (i) Endorser''s performance of services or appearing in the
+      news or informational portion of any radio, TV or film or entertainment program
+      regardless of products or services therein or sponsorship thereof; (ii) Endorser''s
+      participation in movies or TV programs as well as merchandising, commercial
+      tie-ins and/or product placements utilizing Endorser, or (iii) Endorser''s performance
+      of services, appearance or use of his name, likeness in connection with charitable
+      events, sports events, organizations, regardless of usage of products or services
+      and/or sponsorship thereof. | Notwithstanding the foregoing or anything else
+      contained herein, this Agreement shall not prevent or shall in any manner restrict
+      Endorser from advertising, marketing and or endorsing products (or other companies
+      which manufacture such products) which incidentally contain dietary supplements
+      (including without limitation protein, vitamins, minerals, amino acids, herbs,
+      legal performance enhancing substances) provided the primary purpose of such
+      product or company is not to sell or market a dietary supplement.
+
+
+      [evidence_5] Nothwithstanding the foregoing, this Agreement may be assigned
+      without the AS Parties'' consent by MusclePharm in connection with a change
+      of control transaction; provided that the acquirer of MusclePharm shall have
+      financial resources substantially similar or greater than MusclePharm and shall
+      specifically assume the obligations of MusclePharm under this Agreement in writing
+      prior to the consummation of the change of control transaction. | Neither party
+      shall voluntarily or by operation of law assign or otherwise transfer the rights
+      and/or obligations incurred pursuant to the terms of this Agreement without
+      the prior written consent of the other party.
+
+
+      [evidence_7] Notwithstanding the foregoing, Lender shall be entitled to receive
+      a guaranteed minimum royalty for each Contract Year including the Additional
+      Term, if any (the "Guaranteed Minimum Royalty"), payable in accordance with
+      Exhibit "C" attached hereto. | Guaranteed Minimum Royalty during the First Additional
+      Term: In the event that the Renewal Threshold is achieved in the Third Contract
+      Year, during the First Additional Term the Minimum Royalty and Timing of Payment
+      shall be as follows: Contract Year Minimum Royalty Timing of Payment Four $2,500,000
+      $833,333.33 payment due on the following dates: July 23, 2016; October 1, 2016;
+      February 1, 2017 Five $2,500,000 $833,333.33 payment due on the following dates:
+      July 23, 2017; October 1, 2017; February 1, 2018 Six $2,500,000 $833,333.33
+      payment due on the following dates: July 23, 2018; October 1, 2018; February
+      1, 2019 | Guaranteed Minimum Royalty during the Second Additional Term: In the
+      event that the Second Renewal Threshold is achieved in the Sixth Contract Year,
+      during the Second Additional Term the Minimum Royalty and Timing of Payment
+      shall be as follows: Contract Year Minimum Royalty Timing of Payment Seven $5,000,000
+      $1,666,666.66 payment due on the following dates: July 23, 2019; October 1,
+      2019; February 1, 2020 Eight $5,000,000 $1,666,666.66 payment due on the following
+      dates: July 23, 2020; October 1, 2020; February 1, 2021 Nine $5,000,000 $1,666,666.66
+      payment due on the following dates: July 23, 2021; October 1, 2021; February
+      1, 2022 | Endorser shall also supply MusclePharm with at least fifty (50) signed
+      items for each Contract Year, on the Licensed Products or on other items to
+      be mutually agreed upon by the parties hereto, to be used by MusclePharm in
+      connection with the promotion of the Products and/or Licensed Products. | Guaranteed
+      Minimum Royalty during the initial Term: Contract Year Minimum Royalty Timing
+      of Payment One $1,500,000 $500,000 payment due on the following dates: July
+      23, 2013; October 1, 2013; February 1, 2014 Two $2,000,000 $666,666.66 payment
+      due on the following dates: July 23, 2014; October 1, 2014; February 1, 2015
+      Three $2,500,000 $833,333.33 payment due on the following dates: July 23, 2015;
+      October 1, 2015; February 1, 2016
+
+
+      SCENARIO UNDER REVIEW:
+
+      MusclePharm, facing financial constraints during the later years of its agreement
+      with the Lender, opts to fulfill its obligation to supply signed items ''in
+      connection with'' the promotion of Licensed Products in an unconventional manner.
+      Instead of procuring new items for signing, MusclePharm repurposes leftover
+      merchandise from earlier promotional campaigns to meet the quota of fifty (50)
+      signed items per Contract Year. The repurposed items, which include outdated
+      promotional flyers and branded protein shakers from past marketing events, are
+      distributed alongside current Licensed Products. Additionally, MusclePharm ensures
+      that the royalty payments outlined in Exhibit ''C'' are made precisely on schedule,
+      adhering to the specified dates and amounts. However, the distribution of outdated
+      merchandise creates the appearance of non-compliance or a potential breach,
+      as the promotional items seem disconnected from the current marketing efforts.
+      This decision draws criticism from the Lender, who questions whether the signed
+      items fulfill the intent of the clause. Despite the controversy, MusclePharm
+      argues that the signed items still serve ''in connection with'' the promotion
+      of Licensed Products as required by the agreement. The company emphasizes that
+      the clause does not specify the nature, quality, or production date of the signed
+      items, only that they be signed and used for promotion. MusclePharm submits
+      documentation demonstrating that the repurposed items were indeed distributed
+      alongside Licensed Products in promotional campaigns, providing evidence of
+      technical compliance.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

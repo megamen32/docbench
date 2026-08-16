@@ -1,0 +1,35 @@
+id: ace-0021
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_10
+  description: If the Receiving Party is a company, the Receiving Party may disclose
+    Confidential Information | (i) to the Receiving Party's directors, officers and
+    employees (collectively, "Representatives"), in each case only to the extent reasonably
+    necessary for the Receiving Party's internal use and only after informing each
+    Representative of the restrictions in this Agreement on the disclosure and use
+    of the Confidential Information and that he or she must comply with such restrictions,
+    and | The Receiving Party may disclose CEII | (i) only to its Representatives
+    who have properly executed individual non-disclosure or confidentiality agreements
+    in the course of their employment specifically pertaining to confidential information
+    and CEII they receive in the course of their employment and
+  severity: major
+  category: contract_clause
+- id: evidence_7
+  description: If the Receiving Party is a company, the Receiving Party may disclose
+    Confidential Information | (i) to the Receiving Party's directors, officers and
+    employees (collectively, "Representatives"), in each case only to the extent reasonably
+    necessary for the Receiving Party's internal use and only after informing each
+    Representative of the restrictions in this Agreement on the disclosure and use
+    of the Confidential Information and that he or she must comply with such restrictions,
+    and | (ii) to any other person or entity only with the Disclosing Parties' prior
+    written consent in each instance. | The Receiving Party shall keep all Confidential
+    Information strictly confidential and shall not, without the respective Disclosing
+    Party's prior written consent in each instance, disclose Confidential Information
+    or any reports, work product or other documents containing any Confidential Information
+    to any third party, firm, corporation or entity. | The Receiving Party shall not,
+    without the respective Disclosing Party's prior written consent in each instance,
+    disclose CEII or any reports, work product or other documents containing any CEII
+    to any third party, firm, corporation or entity.
+  severity: major
+  category: contract_clause

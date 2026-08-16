@@ -1,0 +1,55 @@
+id: ace_0024
+benchmark: conformance
+ruleset: ace-0024
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 24
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_3] 1. For purposes of this Agreement, “Information” is defined as
+      confidential or proprietary communications or data of a Party hereto, including
+      business information, financial information, marketing plans. | technical or
+      financial information, customer lists or proposals, sketches, models, samples,
+      computer programs and documentation, drawings, specifications, whether conveyed
+      in oral, written, graphic, or electromagnetic form or otherwise, and all notes,
+      analyses, compilations, forecasts, studies, interpretations or other documents
+      prepared by either Party to the extent that they contain any such information.
+
+
+      [evidence_7] 1. For purposes of this Agreement, “Information” is defined as
+      confidential or proprietary communications or data of a Party hereto, including
+      business information, financial information, marketing plans. | technical or
+      financial information, customer lists or proposals, sketches, models, samples,
+      computer programs and documentation, drawings, specifications, whether conveyed
+      in oral, written, graphic, or electromagnetic form or otherwise, and all notes,
+      analyses, compilations, forecasts, studies, interpretations or other documents
+      prepared by either Party to the extent that they contain any such information.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Company A and Company B enter into a Non-Disclosure Agreement (NDA) that defines
+      ''Information'' as confidential or proprietary data, including analyses or documents
+      prepared by either party ''to the extent'' they contain such information. During
+      their collaboration, Company A shares a detailed financial forecast marked as
+      ''Confidential'' with Company B. Company B subsequently prepares an internal
+      report summarizing industry trends, which incorporates several data points from
+      Company A''s forecast. The report is shared internally within Company B and
+      later used as the basis for a presentation at an industry conference. In the
+      presentation, Company B''s senior analyst includes a slide with aggregated data
+      visualizations that indirectly reflect Company A''s proprietary financial metrics.
+      The visualizations are presented as generalized industry benchmarks without
+      explicit attribution to Company A. Company A accuses Company B of breaching
+      the NDA, arguing that the internal report and the public presentation violated
+      the confidentiality obligations. Company B defends its actions, stating that
+      the visualizations were aggregated insights derived from multiple sources, including
+      publicly available data, and did not meet the threshold of ''to the extent''
+      that they contained Company A''s confidential information. Company B further
+      argues that the presentation was intended to showcase industry trends and did
+      not disclose any specific proprietary data from Company A.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

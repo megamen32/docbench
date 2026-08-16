@@ -1,0 +1,43 @@
+id: ace_0007
+benchmark: conformance
+ruleset: ace-0007
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 7
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_4] During the Term, for the activities described in this Agreement,
+      IMNTV hereby grants Distributor non-exclusive rights and licenses necessary
+      within the Territory to: (a) copy, store digitally, host and stream the Programming;
+      (b) publicly perform, publicly display, electronically transmit, distribute
+      and broadcast the Programming; (c) promote the Programming and use IMNTV Marks
+      for Distributor''s promotion of the Programming as activities described in Section
+      2.4 above; (d) archive the Programming on Distributor''s servers; (e) encode,
+      copy, and create continuous Programming excerpts of up to sixty (60) seconds
+      and transmit, publicly perform, distribute, and redistribute such excerpts to
+
+
+      SCENARIO UNDER REVIEW:
+
+      IMNTV enters into an agreement with Distributor, granting specific non-exclusive
+      rights to handle its Programming during the Term. In Q2 of the Term, Distributor
+      decides to promote the Programming by creating a 60-second promotional montage
+      and posting it on a popular social media platform. While this aligns with clause
+      (e), which permits creating and transmitting excerpts of up to sixty (60) seconds,
+      the promotional video also features a logo overlay of a third-party sponsor—an
+      e-commerce company. The sponsor is not mentioned in the Agreement, but Distributor
+      claims the sponsor''s involvement was necessary to cover advertising costs and
+      increase visibility. The social media post also contains informal language,
+      including emojis and hashtags, which some IMNTV executives find unprofessional
+      and potentially damaging to their brand. IMNTV raises concerns that the use
+      of a third-party logo and the informal tone violate the spirit of the Agreement,
+      specifically the implied standard of professionalism when using IMNTV Marks.
+      Distributor insists they acted within their rights, as the Agreement explicitly
+      permits promotion of the Programming and the use of IMNTV Marks for that purpose,
+      without restrictions on third-party involvement or tone.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

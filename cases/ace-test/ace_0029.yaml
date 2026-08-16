@@ -1,0 +1,57 @@
+id: ace_0029
+benchmark: conformance
+ruleset: ace-0029
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 29
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_7] Subject to any limitations which NTC communicates to ALFA AESAR
+      in writing, NTC hereby grants ALFA AESAR a license to use, exhibit, excerpt,
+      reformat, modify, reproduce, publish, publicly perform and transmit via the
+      Internet and otherwise use such NTC content for the purpose of marketing, advertising
+      and promoting the Products, provided that ALFA AESAR obtains NTC''s prior written
+      approval for NTC content to be included in such literature. | ALFA AESAR hereby
+      grants to NTC a limited non-exclusive license to use the ALFA AESAR Trademarks
+      in the form provided by ALFA AESAR during the Term of this Agreement in accordance
+      with the terms set forth herein. | NTC hereby grants ALFA AESAR a limited non-exclusive
+      license to use, exhibit, excerpt, reproduce, publish, publicly perform and transmit
+      via the Internet and otherwise use the NTC Trademarks in substantially the form
+      as NTC may provide to ALFA AESAR from time to time during the Term of this Agreement
+      in accordance with the terms set forth herein. | Such license is granted solely
+      in connection with NTC''s rights and obligations under this Agreement and, in
+      particular, for the purpose of licensing NTC to use the ALFA AESAR Trademark
+      on the NTC web site as expressly contemplated herein for referral of customers
+      of Research Quantities to ALFA AESAR and is a link/navigational button to the
+      ALFA AESAR Site. | Such license is granted solely in connection with ALFA AESAR''s
+      rights and obligations under this Agreement and, in particular, for the purpose
+      of licensing ALFA AESAR to use the NTC Trademarks in ALFA AESAR''s marketing,
+      sales and distribution materials relative to the Products, including without
+      limitation on the ALFA AESAR''s Web site as a link/navigational button to the
+      NTC Web site as posted by NTC.
+
+
+      SCENARIO UNDER REVIEW:
+
+      NTC and ALFA AESAR are operating under a licensing agreement with complex multi-conditional
+      clauses. NTC has granted ALFA AESAR a license to use its trademarks and content
+      for marketing purposes, provided ALFA AESAR obtains prior written approval for
+      any literature including NTC content. During the term of the agreement, ALFA
+      AESAR plans a promotional campaign featuring NTC''s trademarks and content.
+      To fulfill the ''prior written approval'' requirement, ALFA AESAR sends an informal
+      email to NTC’s marketing manager with the proposed materials attached. The email
+      includes the phrase: ''Let us know if this works for you.'' The marketing manager
+      responds with a thumbs-up emoji. Subsequently, ALFA AESAR publishes the materials
+      online, prominently featuring NTC’s trademarks and content. A third party raises
+      concerns, claiming ALFA AESAR violated the agreement because the approval method
+      (an emoji) was unprofessional and ambiguous, raising doubts about whether it
+      constituted the ''prior written approval'' mandated by the clause. Additionally,
+      the promotional materials feature reformatted NTC content, which the third party
+      claims was modified without explicit permission. NTC does not raise any objections
+      and continues collaborating with ALFA AESAR.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

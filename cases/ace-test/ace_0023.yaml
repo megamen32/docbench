@@ -1,0 +1,43 @@
+id: ace_0023
+benchmark: conformance
+ruleset: ace-0023
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 23
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_8] During the Term, subject to the terms and conditions of this Agreement,
+      Depomed hereby grants to King and its Affiliates and King and its Affiliates
+      hereby accept a co-exclusive right to Promote the Product under the Depomed
+      Trademarks in the Territory together with Depomed and its Affiliates only, on
+      the terms and subject to the conditions set forth herein.
+
+
+      SCENARIO UNDER REVIEW:
+
+      Depomed enters into a co-exclusive promotion agreement with King Pharmaceuticals
+      as outlined in the contract. The contract specifies that Depomed grants King
+      the right to promote a product under the Depomed trademarks within a defined
+      territory, provided that the promotion activities are conducted ''together with
+      Depomed and its Affiliates only,'' and that all actions are ''subject to the
+      terms and conditions of this Agreement.'' During the agreement''s term, King
+      initiates a marketing campaign for the product that includes promotional webinars.
+      These webinars involve King representatives presenting the product without direct
+      involvement of Depomed employees during the live sessions. However, documentation
+      later reveals that Depomed had pre-approved all webinar scripts and provided
+      training materials to King prior to the campaign to ensure compliance. The campaign
+      is further complicated when an email surfaces from a King employee stating,
+      ''We’re taking the lead on this—Depomed isn’t really involved.'' This email
+      is shared within the industry, raising concerns that King may have violated
+      the co-exclusivity requirement by acting independently. Despite this, Depomed
+      confirms that they reviewed all promotional materials in advance and monitored
+      the campaign to ensure alignment with the agreement. King argues that their
+      actions adhered to the contract, as ''together with Depomed'' does not necessitate
+      physical collaboration during every promotional event but rather ensures mutual
+      oversight and pre-approval of activities.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

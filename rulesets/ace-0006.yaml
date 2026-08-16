@@ -1,0 +1,31 @@
+id: ace-0006
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_12
+  description: 2. The term “Evaluation Material” does not include any information
+    which | (ii) was or becomes available to you on a non-confidential basis from
+    a person (other than the Company or its Representatives) who, to your knowledge,
+    is not otherwise bound by a confidentiality agreement with the Company or its
+    Representatives or prohibited from transmitting the information to you by law,
+    contractual obligation, fiduciary duty or otherwise or
+  severity: major
+  category: contract_clause
+- id: evidence_7
+  description: Notwithstanding the foregoing, | (i) you and your Representatives will
+    not be required to delete, erase or destroy any Evaluation Material contained
+    in an archived computer backup system stored as a result of automated back-up
+    procedures (it being agreed that you and your Representatives will not access
+    such archived computer files containing any such Evaluation Material after such
+    delivery or destruction is otherwise required) and | (ii) you and/or your Representatives
+    may retain one copy of the Evaluation Material (and may only access any such Evaluation
+    Material) to the extent and for so long as such retention and access by you or
+    such Representative, as applicable, is required by law or regulation; provided,
+    however, that in the case of each of clauses | (i) and | (ii) of this sentence,
+    notwithstanding any other provision of this Agreement, you and your applicable
+    Representatives will continue to be bound by the terms of this Agreement as if
+    it were in full force and effect with respect to any such Evaluation Material
+    for so long as you or your applicable Representatives retain any such Evaluation
+    Material.
+  severity: major
+  category: contract_clause

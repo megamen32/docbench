@@ -1,0 +1,29 @@
+id: ace-0008
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_3
+  description: 'In addition, and conditional on completion of a transaction on terms
+    set out below, you will be granted a second option under the Option Plan, such
+    option being one of: (a) an option to acquire 44,757 Shares (representing approximately
+    0.25% of the Company''s issued share capital as at the Effective Date) granted
+    as soon as practicable following the completion of a transaction approved by the
+    Board on terms which include an upfront payment of at least USD30,000,000 and
+    per product downstream milestone payments of at least USD300,000,000; or (b) an
+    option to acquire 22,378 Shares (representing approximately 0.125% of the Company''s
+    issued share capital as at the Effective Date) granted as soon as practicable
+    following the completion of a transaction approved by the Board on terms which
+    include an upfront payment of USD24,000,000 and per product downstream milestone
+    payments of USD240,000,000; or (c) an option to acquire such number of Shares
+    (falling between 0.125% and 0.25% of the Company''s issued share capital as at
+    the Effective Date as the Board shall determine in its absolute discretion) granted
+    as soon as practicable following completion of a transaction approved by the Board
+    on terms which include an upfront payment greater than USD24,000,000 but less
+    than USD 30,000,000, and per product downstream milestone payments greater than
+    USD240,000,000 but less than USD 300,000,000. | On or as soon as practicable following
+    the Effective Date, it is intended that you will be granted an option under the
+    Option Plan to acquire 107,417 ordinary shares in the capital of BTL ("Shares")
+    (representing approximately 0.6% of the Company''s issued share capital as at
+    the Effective Date).'
+  severity: major
+  category: contract_clause

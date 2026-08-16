@@ -62,6 +62,7 @@ class ConformanceBenchmark(Benchmark):
         flat = flatten_case(case)
         gold_fields = {k: flat.get(k) for k in self.canonical_fields}
         return {"findings": findings, "disposition": disp, "gold_fields": gold_fields,
+                "scope": case.gold_scope,
                 "severity": {r.id: r.severity for r in self.ruleset.rules}}
 
     def messages(self, case: Case, gold: Any) -> list[dict[str, str]]:
@@ -110,6 +111,20 @@ class ConformanceBenchmark(Benchmark):
 
     def score(self, pred: Any, gold: Any, case: Case) -> dict[str, Any]:
         sev = gold["severity"]
+        if gold.get("scope") == "disposition":
+            # external dataset with scenario-level labels only: binary agreement
+            # (compliant=accept vs any violation), FA/FR are the business metrics
+            ok = (pred["disposition"] == "accept") == (gold["disposition"] == "accept")
+            return {
+                "ok": ok,
+                "finding_precision": None, "finding_recall": None, "finding_f1": None,
+                "critical_recall": None,
+                "grounding_precision": None, "grounding_recall": None,
+                "extraction_f1": None,
+                "false_accept": M.false_accept(_P(pred), gold["disposition"]),
+                "false_reject": M.false_reject(_P(pred), gold["disposition"]),
+                "pred_disposition": pred["disposition"], "gold_disposition": gold["disposition"],
+            }
         f = M.findings_prf(gold["findings"], pred["findings"])
         g = M.grounded_prf(gold["findings"], pred["findings"])
         e = M.extraction_prf(gold["gold_fields"], pred["extracted"])

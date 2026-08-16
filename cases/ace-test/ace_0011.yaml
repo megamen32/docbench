@@ -1,0 +1,35 @@
+id: ace_0011
+benchmark: conformance
+ruleset: ace-0011
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 11
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_2] To be covered by the Seller for 110% invoice value against All
+      Risks and War Risk.
+
+
+      SCENARIO UNDER REVIEW:
+
+      The Seller is obligated to provide coverage  for 110% of the invoice value against
+      All Risks and War Risk under the terms of the contract. The Seller arranges
+      this coverage but uses two separate insurance policies: one for All Risks covering
+      110% of the invoice value and another for War Risk covering only 100% of the
+      invoice value. The Seller communicates this arrangement via an unconventional
+      method—a comment appended to the invoice document in a shared cloud storage
+      platform, rather than through formal written notice. The comment is later deleted,
+      but the insurance policies remain valid and accessible for verification. Additionally,
+      the Seller provides no proactive explanation for the split policies, leading
+      the Buyer to initially assume the Seller has failed to meet the full contractual
+      coverage requirement. Upon closer inspection, the total coverage across the
+      two policies fulfills the required 110% invoice value, and the separation of
+      risks into different policies is not prohibited by the contract language. However,
+      the unconventional communication method and lack of clarity around the split
+      policies create the appearance of non-compliance at first glance.'
+expected_findings: []
+expected_disposition: accept
+gold_scope: disposition
+notes: 'ACE source label: Compliant'

@@ -1,0 +1,61 @@
+id: ace_0008
+benchmark: conformance
+ruleset: ace-0008
+documents:
+  agreement:
+    kind: agreement
+    title: ACE scenario 8
+    fields: {}
+    text: 'AGREEMENT CLAUSES (governing rules):
+
+      [evidence_3] In addition, and conditional on completion of a transaction on
+      terms set out below, you will be granted a second option under the Option Plan,
+      such option being one of: (a) an option to acquire 44,757 Shares (representing
+      approximately 0.25% of the Company''s issued share capital as at the Effective
+      Date) granted as soon as practicable following the completion of a transaction
+      approved by the Board on terms which include an upfront payment of at least
+      USD30,000,000 and per product downstream milestone payments of at least USD300,000,000;
+      or (b) an option to acquire 22,378 Shares (representing approximately 0.125%
+      of the Company''s issued share capital as at the Effective Date) granted as
+      soon as practicable following the completion of a transaction approved by the
+      Board on terms which include an upfront payment of USD24,000,000 and per product
+      downstream milestone payments of USD240,000,000; or (c) an option to acquire
+      such number of Shares (falling between 0.125% and 0.25% of the Company''s issued
+      share capital as at the Effective Date as the Board shall determine in its absolute
+      discretion) granted as soon as practicable following completion of a transaction
+      approved by the Board on terms which include an upfront payment greater than
+      USD24,000,000 but less than USD 30,000,000, and per product downstream milestone
+      payments greater than USD240,000,000 but less than USD 300,000,000. | On or
+      as soon as practicable following the Effective Date, it is intended that you
+      will be granted an option under the Option Plan to acquire 107,417 ordinary
+      shares in the capital of BTL ("Shares") (representing approximately 0.6% of
+      the Company''s issued share capital as at the Effective Date).
+
+
+      SCENARIO UNDER REVIEW:
+
+      Company B entered into negotiations with Company A to finalize a transaction
+      that would trigger an option grant under the Option Plan, as detailed in the
+      Multi-Conditional Obligation clause. The Board approved a deal structure with
+      terms including an upfront payment of USD25,000,000 and downstream milestone
+      payments of USD290,000,000. This transaction fell into the range specified under
+      condition (c): upfront payment greater than USD24,000,000 but less than USD30,000,000,
+      and downstream milestone payments greater than USD240,000,000 but less than
+      USD300,000,000. However, instead of exercising its ''absolute discretion'' to
+      determine the number of Shares (between 0.125% and 0.25% of the issued share
+      capital), the Board resolved to grant Company A an option for 22,378 Shares
+      (0.125% of issued share capital), citing a preference to align with the lower
+      end of the range to maintain shareholder equity. The Board justified this decision
+      by referencing condition (b), which specifies the same number of Shares for
+      a transaction with lower financial thresholds—USD24,000,000 upfront and USD240,000,000
+      in milestone payments. The formal documentation issued to Company A explicitly
+      stated the option for 22,378 Shares, which was below the permissible range under
+      condition (c). When challenged, Company B argued that the grant aligned with
+      their intent to remain conservative and that the overlap between conditions
+      (b) and (c) allowed for flexibility in their interpretation. Company A, however,
+      contended that the clause required the Board to stay within the range dictated
+      by condition (c) when the financial terms clearly fell under that condition.'
+expected_findings: []
+expected_disposition: needs_correction
+gold_scope: disposition
+notes: 'ACE source label: Non-Compliant'

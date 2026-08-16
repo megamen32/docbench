@@ -1,0 +1,9 @@
+id: ace-0011
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_2
+  description: To be covered by the Seller for 110% invoice value against All Risks
+    and War Risk.
+  severity: major
+  category: contract_clause

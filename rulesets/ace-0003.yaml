@@ -1,0 +1,22 @@
+id: ace-0003
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_6
+  description: For those countries where a specific license is required for a joint
+    owner of a Joint Invention or Joint Improvement to practice such Joint Invention
+    or Joint Improvement, in such country, each Party hereby grants to the other Party
+    a perpetual, irrevocable, non-exclusive, worldwide, royalty-free, fully paid-up
+    license, transferable and sublicensable, under such Party's right, title and interest
+    in and to such Joint Invention or Joint Improvement to freely exploit such Joint
+    Invention or Joint Improvement in such country, subject to the terms and conditions
+    of this Agreement and the licenses granted hereunder. | As between the Parties,
+    the Parties shall jointly own all Inventions (including Improvements) developed,
+    conceived or reduced to practice jointly by or on behalf of both Bioeq and Licensee
+    (such Inventions, Joint Inventions, and such Improvements, Joint Improvements),
+    and all Intellectual Property Rights and Know-How therein. | Each Party hereby
+    assigns to the other Party a joint equal and undivided interest in and to all
+    Joint Inventions (including Joint Improvements) to effect such joint ownership
+    of such Joint Inventions (including Joint Improvements).
+  severity: major
+  category: contract_clause

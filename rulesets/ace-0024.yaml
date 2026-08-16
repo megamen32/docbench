@@ -1,0 +1,26 @@
+id: ace-0024
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_3
+  description: 1. For purposes of this Agreement, “Information” is defined as confidential
+    or proprietary communications or data of a Party hereto, including business information,
+    financial information, marketing plans. | technical or financial information,
+    customer lists or proposals, sketches, models, samples, computer programs and
+    documentation, drawings, specifications, whether conveyed in oral, written, graphic,
+    or electromagnetic form or otherwise, and all notes, analyses, compilations, forecasts,
+    studies, interpretations or other documents prepared by either Party to the extent
+    that they contain any such information.
+  severity: major
+  category: contract_clause
+- id: evidence_7
+  description: 1. For purposes of this Agreement, “Information” is defined as confidential
+    or proprietary communications or data of a Party hereto, including business information,
+    financial information, marketing plans. | technical or financial information,
+    customer lists or proposals, sketches, models, samples, computer programs and
+    documentation, drawings, specifications, whether conveyed in oral, written, graphic,
+    or electromagnetic form or otherwise, and all notes, analyses, compilations, forecasts,
+    studies, interpretations or other documents prepared by either Party to the extent
+    that they contain any such information.
+  severity: major
+  category: contract_clause
