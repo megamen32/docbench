@@ -1,0 +1,10 @@
+.git
+.venv
+var
+external
+datasets/data
+tests
+*.md
+!README.md
+Dockerfile
+.dockerignore

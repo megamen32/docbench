@@ -32,8 +32,9 @@ class OpenAICompatRunner:
     # -- public -----------------------------------------------------------
 
     def complete(self, messages: list[dict[str, str]], *, temperature: float = 0.0,
-                 max_tokens: int = 8192) -> Completion:
-        cache_key = self._cache_key(messages, temperature, max_tokens)
+                 max_tokens: int = 8192, extra_body: dict[str, Any] | None = None) -> Completion:
+        extra_body = extra_body or {}
+        cache_key = self._cache_key(messages, temperature, max_tokens, extra_body)
         cached = self._cache_get(cache_key)
         if cached is not None:
             return cached
@@ -45,7 +46,7 @@ class OpenAICompatRunner:
         last_err: Exception | None = None
         for attempt in range(self.max_retries):
             try:
-                return self._call(messages, temperature, max_tokens, cache_key)
+                return self._call(messages, temperature, max_tokens, cache_key, extra_body)
             except _Retryable as e:
                 last_err = e
                 time.sleep(min(2 ** attempt * 2.0, 45.0))
@@ -53,13 +54,15 @@ class OpenAICompatRunner:
 
     # -- internals ----------------------------------------------------------
 
-    def _call(self, messages, temperature, max_tokens, cache_key) -> Completion:
+    def _call(self, messages, temperature, max_tokens, cache_key, extra_body=None) -> Completion:
         payload = {
             "model": self.alias,
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
+        if extra_body:
+            payload.update(extra_body)
         t0 = time.monotonic()
         resp = requests.post(
             f"{self.base_url}/chat/completions",
@@ -88,7 +91,7 @@ class OpenAICompatRunner:
             latency_s=round(latency, 3),
             cost_usd=self._cost(usage),
             cost_is_estimate=str(self.spec.price_source or "").startswith(("assumed", "placeholder")),
-            model=self.alias,
+            model=data.get("model") or self.alias,  # served variant id, if echoed
         )
         self._cache_put(cache_key, comp)
         return comp
@@ -100,11 +103,13 @@ class OpenAICompatRunner:
         tout = usage.get("completion_tokens") or 0
         return tin / 1e6 * self.spec.price_in + tout / 1e6 * self.spec.price_out
 
-    def _cache_key(self, messages, temperature, max_tokens) -> str:
-        blob = json.dumps({"m": self.model_key, "msgs": messages,
-                           "t": temperature, "mt": max_tokens},
-                          sort_keys=True, ensure_ascii=False)
-        return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+    def _cache_key(self, messages, temperature, max_tokens, extra_body=None) -> str:
+        # Empty extra must not change the key: keeps the pre-effort cache valid.
+        blob = {"m": self.model_key, "msgs": messages, "t": temperature, "mt": max_tokens}
+        if extra_body:
+            blob["x"] = extra_body
+        return hashlib.sha256(json.dumps(blob, sort_keys=True, ensure_ascii=False)
+                              .encode("utf-8")).hexdigest()
 
     def _cache_path(self, key: str) -> Optional[Path]:
         return self.cache_dir / f"{key}.json" if self.cache_dir else None

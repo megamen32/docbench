@@ -1,107 +1,80 @@
 # docbench — Document Conformance Benchmark
 
-Может ли система заменить первую линию формальной проверки документов при
-фиксированном наборе институциональных правил? Это не очередной DocVQA:
-вход — пакет документов + канонический версионированный ruleset, выход —
-findings с обязательным evidence/provenance и финальный disposition.
+> Measure whether an LLM can replace the first line of formal document
+> verification: input is a document packet plus a versioned, canonical ruleset;
+> output is findings with mandatory evidence and a final disposition — scored
+> against a deterministic oracle.
 
-```
-canonical rules (versioned) ──┐
-                              ├──▶  MODEL  ──▶ extracted facts
-PDF / XLSX / forms / images ──┘                verification findings (rule → status → evidence)
-                                              final disposition (accept / needs_correction / reject)
-```
+The pain: institutions (grant foundations, tax/reporting intake, compliance
+desks) burn headcount on rule-by-rule document checks before any domain expert
+even looks. Generic DocVQA numbers say nothing about that job. docbench turns
+it into software-testable claims: case-level exact pass, finding precision /
+recall, **false-accept and false-reject rates**, grounding quality, and cost
+per case — metrics that translate directly into headcount and economics.
 
-## What's inside
+## What it does
 
-| Component | What it does |
-|---|---|
-| **bench #1 `conformance`** | packet + ruleset → findings/evidence/disposition, scored against a deterministic oracle |
-| **bench #2 `rule_extraction`** | institution policy document → machine-readable ruleset (field/op/value triples + severity) |
-| **sidecar `datasets`** | manifest-driven fetch of external benchmark datasets (`datasets/registry.yaml`) |
-| **sidecar `errorgen`** | deterministic controlled corruption of valid packets; gold always recomputed by the oracle |
-| **oracle** | deterministic rule engine (flatten packet → evaluate every rule → gold findings + disposition) |
+- **Bench #1 `conformance`** — packet + canonical ruleset → findings / evidence /
+  disposition; a deterministic rule engine (the oracle) regenerates gold from
+  the mutated packet, so injected defects and expectations can never drift.
+- **Bench #2 `rule_extraction`** — an institution policy document → a
+  machine-checkable ruleset (field/op/value triples + severity).
+- **Sidecar `errorgen`** — deterministic controlled corruption of valid packets
+  (missing documents, contradicting sums, over-limit budgets, late dates,
+  dropped signatures…). Gold is always recomputed by the oracle.
+- **Sidecar `datasets`** — manifest-driven fetch of external benchmarks
+  (ExtractBench, VAREX, ACE, CompliBench, TaxCalcBench, CiteVQA, OfficeQA),
+  plus a working ACE→conformance converter.
+- **Containerised verification** — everything except the LLM provider is pinned
+  in a Docker image; offline mode scores deterministically with `--network none`.
+- **Run metadata** — every run records provider, model alias, reasoning-effort
+  label, the exact extra body params sent, and the served-model id echoed back
+  (providers do not expose quantization; docbench records that honestly).
 
-## Repo layout
-
-```
-docbench/            python package (schemas, oracle, metrics, runner, benchmarks, errorgen, CLI)
-rulesets/            canonical versioned rulesets (seed-grant-2026.1)
-cases/               benchmark cases: seed-grant (conformance), seed-policy (rule_extraction)
-datasets/            registry.yaml + downloaded data (data/ is gitignored)
-external/            cloned source benchmarks (gitignored, reproducible via scripts/fetch_external.sh)
-tests/               offline unit tests (deterministic, no network)
-var/                 runs, response cache (gitignored)
-```
-
-## Quickstart
+## Install
 
 ```bash
+git clone https://github.com/megamen32/docbench && cd docbench
 uv venv .venv && uv pip install -p .venv/bin/python -e . pytest
-
-# model catalog (key from ~/.config/docbench/env or env vars)
-.venv/bin/docbench models
-
-# generate corrupted cases from the valid packet (gold = oracle, no drift)
-.venv/bin/docbench errorgen --plan cases/seed-grant/errorgen.yaml \
-    --cases-dir cases/seed-grant --out cases/seed-grant/corrupted
-
-# bench #1 on the cheap bootstrap model
-.venv/bin/docbench run --bench conformance --model minimax-m2.7 \
-    --cases cases/seed-grant --ruleset-dir rulesets
-
-# bench #2
-.venv/bin/docbench run --bench rule_extraction --model minimax-m2.7 \
-    --cases cases/seed-policy
-
-# offline rerun from response cache (free, deterministic)
-.venv/bin/docbench run --bench conformance --model minimax-m2.7 --offline --cases cases/seed-grant
-
-# datasets sidecar
-.venv/bin/docbench datasets list
-.venv/bin/docbench datasets fetch --all
-
-# merge run results into one leaderboard
-.venv/bin/docbench report var/runs/*/results.json --out var/leaderboard.md
+.venv/bin/python -m pytest -q          # 28 offline tests, no API keys needed
 ```
 
-## Metrics (strict, headcount-translatable)
+## Start in minutes
 
-- **case-level exact pass rate** — полное совпадение findings+disposition с оракулом
-- **finding precision / recall / F1** — по violation-находкам (match по rule_id)
-- **critical violation recall** — доля пойманных критических нарушений
-- **false accept rate** — дефектный пакет принят автоматически (главный риск)
-- **false reject rate** — корректный пакет не принят
-- **extraction F1** — value F1 по canonical fields (null ≠ missing, выдуманные поля штрафуются)
-- **grounding precision/recall** — TP засчитывается только с evidence в правильном документе
-- **cost per case / latency p50** — экономика одной заявки
+1. Generate corrupted cases and verify them against the oracle (no LLM, no keys):
+   ```bash
+   .venv/bin/docbench errorgen --plan cases/seed-grant/errorgen.yaml \
+       --cases-dir cases/seed-grant --out cases/seed-grant
+   ```
+2. Add a provider key (OpenAI-compatible; MiniMax and Z.ai are pre-wired) in
+   `~/.config/docbench/env` (chmod 600), see [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
+3. Run the benchmark and get the full metrics report:
+   ```bash
+   .venv/bin/docbench run --bench conformance --model minimax-m2.7 --cases cases/seed-grant
+   ```
+4. Reproduce any run offline for free from the response cache:
+   ```bash
+   .venv/bin/docbench run --bench conformance --model minimax-m2.7 --offline --cases cases/seed-grant
+   ```
 
-## Models & secrets
+## Headline results (2026-08-16)
 
-Провайдеры описаны в `docbench/models.yaml` (OpenAI-compatible endpoints).
-Ключи читаются из окружения, затем из `~/.config/docbench/env` (chmod 600).
-Ключи никогда не коммитятся и не передаются через argv.
-Цены в каталоге помечены `price_source` — до сверки с реальными счетами
-стоимость считается оценочной.
+Seed grants packet (10 cases) and real enterprise contracts (ACE, 30 scenarios):
 
-## External sources (fork candidates)
+| model | seed finding P/R | rule-extraction F1 | real-contracts false accept | cost/case |
+|---|---|---|---|---|
+| **GLM-4.7-Flash** | 1.000 / 1.000 | **0.689** | **12%** | free tier |
+| MiniMax-M2.7 | 0.925 / 1.000 | 0.515 | 20% | ~$0.003 |
+| MiniMax-M3 | 1.000 / 0.950 | 0.606 | 27% | ~$0.010 |
 
-`scripts/fetch_external.sh` клонирует (depth 1):
+Full tables, the YAGNI ladder and the honest negative findings (seed results
+do not transfer 1:1 to real contracts; a 5-scenario hard core fails every
+model): **[RESULTS.md](RESULTS.md)** · leaderboard: [results/leaderboard.md](results/leaderboard.md).
 
-- run-llama/ExtractBench — document+schema→JSON с grounding (главный кандидат форка)
-- FujitsuResearch/…-Assessing-Compliance-in-Enterprise-Dataset (ACE) — scenario+clauses→compliant/non-compliant
-- UCSB-NLP-Chang/CompliBench — guidelines+violations, шаблон генерации недочётов
-- udibarzi/varex-bench — 1777 форм, schema-per-document (анти-memorization)
-- opendatalab/CiteVQA — QA с page/bbox provenance
-- applicaai/kleister-charity — реальные годовые отчёты фондов (git-annex)
-- column-tax/tax-calc-bench — closed-scope 100% correctness precedent
-- databricks/officeqa (+pro-v2) — grounded reasoning по финансовым документам
+## Learn more
 
-## Tests
-
-```bash
-.venv/bin/python -m pytest -q
-```
-
-Все тесты оффлайн и детерминированы; e2e-прогон модели кэшируется в `var/cache`,
-повторные запуски бесплатны.
+- [Results and decisions](RESULTS.md) — comparative leaderboard, real-data run, model decisions
+- [Configuration](docs/CONFIGURATION.md) — providers, keys, effort levels, pricing honesty
+- [Containers](docs/CONTAINERS.md) — pinned offline/online verification modes
+- [Datasets and licenses](docs/DATASETS.md) — registry, ACE CC BY 4.0 notice, gated repos
+- [Full sanitized session transcript](TRANSCRIPT.md) — every model call, tool input/output, and decision of the build session

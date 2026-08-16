@@ -26,6 +26,9 @@ def main(argv: list[str] | None = None) -> int:
                        help="serve from response cache only; error on cache miss")
     p_run.add_argument("--out", default=None, help="output dir (default var/runs/<ts>-…)")
     p_run.add_argument("--max-tokens", type=int, default=8192)
+    p_run.add_argument("--effort", default=None,
+                       help="reasoning effort label from docbench/models.yaml "
+                            "(e.g. thinking / no_thinking); default from catalog")
 
     p_gen = sub.add_parser("errorgen", help="apply a corruption plan to a valid packet")
     p_gen.add_argument("--plan", required=True, help="errorgen plan yaml")
@@ -63,7 +66,7 @@ def main(argv: list[str] | None = None) -> int:
             ruleset_dir=Path(args.ruleset_dir), ruleset_id=args.ruleset,
             limit=args.limit, offline=args.offline,
             out_dir=Path(args.out) if args.out else None,
-            max_tokens=args.max_tokens,
+            max_tokens=args.max_tokens, effort=args.effort,
         )
         print(json.dumps(res["summary"], ensure_ascii=False, indent=2))
         print("results:", res["out_dir"])
@@ -102,7 +105,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "models":
         for m in list_models():
             price = f"${m.price_in}/${m.price_out} per 1M" if m.price_in is not None else "no price"
-            print(f"{m.key:<26} {m.alias:<28} {m.provider:<10} {price}"
+            efforts = "/".join(m.effort_levels) if m.effort_levels else "-"
+            print(f"{m.key:<26} {m.alias:<28} {m.provider:<10} {price:<24} "
+                  f"effort[{efforts}] default={m.effort_default or '-'}"
                   + ("" if m.api_key else "  [NO KEY]"))
         return 0
 

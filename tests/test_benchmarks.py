@@ -87,7 +87,11 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
     cache = tmp_path / "cache"
     runner = R.OpenAICompatRunner.__new__(R.OpenAICompatRunner)
     spec = type("S", (), {"key": "fake", "alias": "fake", "price_in": 1.0, "price_out": 2.0,
-                          "price_source": "assumed-test"})()
+                          "price_source": "assumed-test", "provider": "fake",
+                          "provider_label": "Fake", "quantization": None,
+                          "request_extra": {}, "effort_levels": {},
+                          "effort_default": "provider-default",
+                          "effort_extra": lambda self, effort=None: {}})()
     runner.__dict__.update(spec=spec, model_key="fake", alias="fake", base_url="http://x",
                            _api_key="k", timeout=1, max_retries=1, offline=True, cache_dir=cache)
     cache.mkdir(parents=True, exist_ok=True)
@@ -102,7 +106,7 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
 
     # point the orchestrator at our runner factory state
     monkeypatch.setattr(R, "CACHE_DIR", cache)
-    monkeypatch.setattr(R, "resolve_model", lambda k: spec)
+    monkeypatch.setattr(R, "resolve_model", lambda k, allow_missing_key=False: spec)
     monkeypatch.setattr(R, "OpenAICompatRunner", lambda s, cache_dir=None, offline=False:
                         runner)
 

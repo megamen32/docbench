@@ -34,10 +34,13 @@ def run_benchmark(
     offline: bool = False,
     out_dir: Path | None = None,
     max_tokens: int = 8192,
+    effort: str | None = None,
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
-    spec = resolve_model(model_key)
+    spec = resolve_model(model_key, allow_missing_key=offline)
+    extra_body = spec.effort_extra(effort)
+    effort_label = effort or spec.effort_default or "provider-default"
     runner = OpenAICompatRunner(spec, cache_dir=CACHE_DIR, offline=offline)
 
     pairs = load_cases(Path(cases_path))
@@ -66,7 +69,7 @@ def run_benchmark(
         payload, parse_err = None, None
         for attempt in range(2):
             try:
-                comp = runner.complete(msgs, max_tokens=max_tokens)
+                comp = runner.complete(msgs, max_tokens=max_tokens, extra_body=extra_body)
             except Exception as e:  # network failure must not kill the run
                 per_case.append({"case_id": case.id, "ok": False, "error": str(e)[:300],
                                  "cost_usd": None, "latency_s": None})
@@ -103,7 +106,7 @@ def run_benchmark(
             "cost_is_estimate": cost_est,
             "latency_s": comp.latency_s or wall,
             "cache_hit": comp.cache_hit,
-            "usage": comp.usage,
+            "usage": {**comp.usage, "served_model": comp.model},
         }
         per_case.append(row)
 
@@ -113,6 +116,15 @@ def run_benchmark(
         "benchmark": bench_key,
         "model": spec.key,
         "model_alias": spec.alias,
+        "provider": spec.provider,
+        "provider_label": spec.provider_label,
+        "effort": effort_label,
+        "request_extra": extra_body,
+        "quantization": spec.quantization,
+        "quantization_note": ("providers do not expose served quantization via API; "
+                              "pin provider+model+date and see served_models"),
+        "served_models": sorted({c.get("usage", {}).get("served_model") for c in per_case
+                                 if c.get("usage", {}).get("served_model")}),
         "price_source": spec.price_source,
         "cases_path": str(cases_path),
         "n_cases": len(per_case),

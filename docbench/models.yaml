@@ -2,6 +2,14 @@
 # Keys are resolved from the real process environment first, then from
 # ~/.config/docbench/env (chmod 600). Prices are USD per 1M tokens and only
 # used for reporting; adjust them here when real invoices are known.
+#
+# Benchmark metadata contract:
+#   effort_levels  map label -> request_extra merged into the request body
+#   effort_default label used when the CLI passes no --effort
+#   request_extra  always-merged provider-specific body params
+#   quantization   providers do NOT expose served quantization via API; we pin
+#                  provider+model+date and record the served model id echoed
+#                  back in each response instead (results.served_models).
 providers:
   zai:
     label: Z.ai (session coding plan, OpenAI facade)
@@ -14,6 +22,21 @@ providers:
         price_in_per_m: 0.0
         price_out_per_m: 0.0
         price_source: free flash tier (assumed), verify against invoice
+        effort_levels:
+          provider-default: {}
+          thinking: {thinking: {type: enabled}}
+          no_thinking: {thinking: {type: disabled}}
+        effort_default: provider-default
+      glm-4.5-air:
+        alias: glm-4.5-air
+        price_in_per_m: 0.0
+        price_out_per_m: 0.0
+        price_source: free/air tier (assumed), verify against invoice
+        effort_levels:
+          provider-default: {}
+          thinking: {thinking: {type: enabled}}
+          no_thinking: {thinking: {type: disabled}}
+        effort_default: provider-default
   minimax:
     label: MiniMax (OpenAI-compatible)
     base_url_env: DOCBENCH_MINIMAX_BASE_URL
@@ -25,18 +48,30 @@ providers:
         price_in_per_m: 0.30
         price_out_per_m: 1.20
         price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
       minimax-m2.7-highspeed:
         alias: MiniMax-M2.7-highspeed
         price_in_per_m: 0.30
         price_out_per_m: 1.20
         price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
       minimax-m2.5:
         alias: MiniMax-M2.5
         price_in_per_m: 0.30
         price_out_per_m: 1.20
         price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
       minimax-m3:
         alias: MiniMax-M3
         price_in_per_m: 1.00
         price_out_per_m: 4.00
         price_source: placeholder, set the real price before publishing cost claims
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default

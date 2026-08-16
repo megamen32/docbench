@@ -1,0 +1,15 @@
+NOTICE — third-party data bundled as benchmark cases
+
+1. cases/ace-test/ and rulesets/ace-*.yaml are derived from
+   FujitsuResearch/Fujitsu-Assessing-Compliance-in-Enterprise-Dataset
+   (ACE), licensed CC BY 4.0. Attribution: Fujitsu Research. Converter:
+   docbench/converters/ace.py; regenerate locally with
+   `docbench convert --source ace` after cloning the original dataset.
+
+2. External benchmark sources (ExtractBench, VAREX, CompliBench,
+   TaxCalcBench, CiteVQA, OfficeQA, kleister-charity) are NOT redistributed
+   here. Fetch them with `scripts/fetch_external.sh` and
+   `docbench datasets fetch`; each keeps its own upstream license.
+
+3. Prices in docbench/models.yaml flagged price_source "assumed"/"placeholder"
+   are estimates, not invoices.
