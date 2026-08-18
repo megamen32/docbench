@@ -57,6 +57,11 @@ def main(argv: list[str] | None = None) -> int:
     p_report.add_argument("runs", nargs="+", help="results.json files or run dirs")
     p_report.add_argument("--out", default=None)
 
+    p_leaderboard = sub.add_parser(
+        "leaderboard", help="build a clickable local leaderboard from saved runs")
+    p_leaderboard.add_argument("--runs-dir", default=str(REPO_ROOT / "var" / "runs"))
+    p_leaderboard.add_argument("--out", default=str(REPO_ROOT / "var" / "leaderboard" / "index.html"))
+
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
@@ -104,7 +109,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "models":
         for m in list_models():
-            price = f"${m.price_in}/${m.price_out} per 1M" if m.price_in is not None else "no price"
+            currency = getattr(m, "price_currency", "USD")
+            price = (f"{currency} {m.price_in}/{m.price_out} per 1M"
+                     if m.price_in is not None else "no price")
             efforts = "/".join(m.effort_levels) if m.effort_levels else "-"
             print(f"{m.key:<26} {m.alias:<28} {m.provider:<10} {price:<24} "
                   f"effort[{efforts}] default={m.effort_default or '-'}"
@@ -133,6 +140,12 @@ def main(argv: list[str] | None = None) -> int:
             print("wrote", args.out)
         else:
             print(md)
+        return 0
+
+    if args.cmd == "leaderboard":
+        from .leaderboard import write_leaderboard
+        result = write_leaderboard(Path(args.runs_dir), Path(args.out))
+        print(f"leaderboard: {result['runs']} runs -> {result['out']}")
         return 0
 
     return 1

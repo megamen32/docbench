@@ -1,7 +1,7 @@
 # Model catalog: providers are OpenAI-compatible chat/completions endpoints.
-# Keys are resolved from the real process environment first, then from
-# ~/.config/docbench/env (chmod 600). Prices are USD per 1M tokens and only
-# used for reporting; adjust them here when real invoices are known.
+# Keys resolve from ./.env, then ~/.config/docbench/env (chmod 600), with real
+# process environment overriding both. Prices below are per 1M tokens; do not
+# fetch prices during a run.
 #
 # Benchmark metadata contract:
 #   effort_levels  map label -> request_extra merged into the request body
@@ -19,9 +19,12 @@ providers:
     models:
       glm-4.7-flash:
         alias: GLM-4.7-Flash
-        price_in_per_m: 0.0
-        price_out_per_m: 0.0
-        price_source: free flash tier (assumed), verify against invoice
+        price_currency: RUB
+        price_in_per_m: 6.4738206
+        price_out_per_m: 43.158804
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: false
         effort_levels:
           provider-default: {}
           thinking: {thinking: {type: enabled}}
@@ -29,14 +32,75 @@ providers:
         effort_default: provider-default
       glm-4.5-air:
         alias: glm-4.5-air
-        price_in_per_m: 0.0
-        price_out_per_m: 0.0
-        price_source: free/air tier (assumed), verify against invoice
+        price_currency: RUB
+        price_in_per_m: 14.0266113
+        price_out_per_m: 91.7124585
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: false
         effort_levels:
           provider-default: {}
           thinking: {thinking: {type: enabled}}
           no_thinking: {thinking: {type: disabled}}
         effort_default: provider-default
+  omniroute:
+    label: OmniRoute (OpenAI-compatible)
+    base_url_env: DOCBENCH_OMNIROUTE_BASE_URL
+    base_url_default: https://omniroute.bezrabotnyi.com/v1
+    api_key_env: DOCBENCH_OMNIROUTE_API_KEY
+    models:
+      omniroute-cx-gpt-5.6-luna-low:
+        alias: cx/gpt-5.6-luna-low
+        price_currency: RUB
+        price_in_per_m: 10.789701
+        price_out_per_m: 64.738206
+        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
+      omniroute-cx-gpt-5.6-luna-medium:
+        alias: cx/gpt-5.6-luna-medium
+        price_currency: RUB
+        price_in_per_m: 10.789701
+        price_out_per_m: 64.738206
+        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
+      omniroute-cx-gpt-5.6-luna-high:
+        alias: cx/gpt-5.6-luna-high
+        price_currency: RUB
+        price_in_per_m: 10.789701
+        price_out_per_m: 64.738206
+        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
+      omniroute-routerai-gpt-5.4-mini:
+        alias: routerai/openai/gpt-5.4-mini
+        price_currency: RUB
+        price_in_per_m: 80.9227575
+        price_out_per_m: 485.536545
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
   minimax:
     label: MiniMax (OpenAI-compatible)
     base_url_env: DOCBENCH_MINIMAX_BASE_URL
@@ -45,33 +109,101 @@ providers:
     models:
       minimax-m2.7:
         alias: MiniMax-M2.7
-        price_in_per_m: 0.30
-        price_out_per_m: 1.20
-        price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        price_currency: RUB
+        price_in_per_m: 25.8952824
+        price_out_per_m: 103.5811296
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: false
         effort_levels:
           provider-default: {}
         effort_default: provider-default
       minimax-m2.7-highspeed:
         alias: MiniMax-M2.7-highspeed
-        price_in_per_m: 0.30
-        price_out_per_m: 1.20
-        price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        price_currency: RUB
+        price_in_per_m: 25.8952824
+        price_out_per_m: 103.5811296
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: false
         effort_levels:
           provider-default: {}
         effort_default: provider-default
       minimax-m2.5:
         alias: MiniMax-M2.5
-        price_in_per_m: 0.30
-        price_out_per_m: 1.20
-        price_source: assumed from MiniMax M2 public pricing, override when invoiced
+        price_currency: RUB
+        price_in_per_m: 23.7373422
+        price_out_per_m: 97.107309
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: false
         effort_levels:
           provider-default: {}
         effort_default: provider-default
       minimax-m3:
         alias: MiniMax-M3
-        price_in_per_m: 1.00
-        price_out_per_m: 4.00
-        price_source: placeholder, set the real price before publishing cost claims
+        price_currency: RUB
+        price_in_per_m: 24.8163123
+        price_out_per_m: 103.5811296
+        price_source: pinned routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
+        reasoning: true
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
+  yandex:
+    label: Yandex AI Studio (OpenAI-compatible)
+    base_url_env: DOCBENCH_YANDEX_BASE_URL
+    base_url_default: https://ai.api.cloud.yandex.net/v1
+    api_key_env: DOCBENCH_YANDEX_API_KEY
+    models:
+      yandexgpt-pro-5.1:
+        alias_template: gpt://{folder_id}/yandexgpt-5.1
+        alias_env: DOCBENCH_YANDEX_FOLDER_ID
+        price_currency: USD
+        price_in_per_m: 6.557376
+        price_out_per_m: 6.557376
+        price_cache_read_per_m: 6.557376
+        price_source: Yandex AI Studio synchronous pricing, verified 2026-08-18
+        pricing_snapshot: https://aistudio.yandex.ru/docs/ru/ai-studio/pricing.html
+        reasoning: false
+        reasoning_note: no exposed reasoning control in the OpenAI-compatible route
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
+      yandex-alice-ai-llm:
+        alias_template: gpt://{folder_id}/aliceai-llm
+        alias_env: DOCBENCH_YANDEX_FOLDER_ID
+        price_currency: USD
+        price_in_per_m: 4.09836
+        price_out_per_m: 9.836064
+        price_cache_read_per_m: 4.09836
+        price_source: Yandex AI Studio synchronous pricing, verified 2026-08-18
+        pricing_snapshot: https://aistudio.yandex.ru/docs/ru/ai-studio/pricing.html
+        reasoning: false
+        reasoning_note: no exposed reasoning control in the OpenAI-compatible route
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
+  gigachat:
+    label: GigaChat API (OAuth)
+    base_url_env: DOCBENCH_GIGACHAT_BASE_URL
+    base_url_default: https://api.giga.chat/v1
+    # The user currently keeps the authorization key in SBER. It is used only
+    # to obtain an in-memory, 30-minute OAuth access token.
+    api_key_env: SBER
+    auth_method: gigachat_oauth
+    oauth_url: https://ngw.devices.sberbank.ru:9443/api/v2/oauth
+    oauth_scope: GIGACHAT_API_PERS
+    ca_bundle_env: DOCBENCH_GIGACHAT_CA_BUNDLE
+    models:
+      gigachat-3-ultra:
+        alias: GigaChat-3-Ultra
+        price_currency: RUB
+        price_source: GigaChat Ultra freemium; per-token invoice rate not exposed
+        pricing_snapshot: https://developers.sber.ru/docs/ru/gigachat/models/gigachat-3-ultra
+        reasoning: false
+        reasoning_note: no provider reasoning field requested
         effort_levels:
           provider-default: {}
         effort_default: provider-default

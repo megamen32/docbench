@@ -14,6 +14,10 @@ __pycache__/
 .secrets/
 var-download*.log
 
+# Local Graphify index/cache; useful on this machine but generated and not a
+# benchmark artifact to publish.
+graphify-out/
+
 # Provider keys — local only, must never reach the repo.
 # .env in CWD is read first by docbench; ~/.config/docbench/env is the machine-wide
 # fallback; the real process environment overrides both. Use .env.example as a

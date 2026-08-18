@@ -11,6 +11,7 @@ from typing import Any
 from .benchmarks import BENCHMARKS
 from .benchmarks.base import load_cases, ruleset_index
 from .config import REPO_ROOT, resolve_model
+from .models.gigachat import GigaChatRunner
 from .models.openai_compat import OpenAICompatRunner
 from .schemas import Prediction
 
@@ -41,13 +42,16 @@ def run_benchmark(
     spec = resolve_model(model_key, allow_missing_key=offline)
     extra_body = spec.effort_extra(effort)
     effort_label = effort or spec.effort_default or "provider-default"
-    runner = OpenAICompatRunner(spec, cache_dir=CACHE_DIR, offline=offline)
+    runner_cls = (GigaChatRunner if getattr(spec, "auth_method", "bearer") == "gigachat_oauth"
+                  else OpenAICompatRunner)
+    runner = runner_cls(spec, cache_dir=CACHE_DIR, offline=offline)
 
     pairs = load_cases(Path(cases_path))
     if limit:
         pairs = pairs[:limit]
 
     per_case: list[dict[str, Any]] = []
+    transcript_cases: list[dict[str, Any]] = []
     bench = None
     for path, case in pairs:
         if bench_key == "conformance":
@@ -67,15 +71,32 @@ def run_benchmark(
         cost_est = False
         comp = None
         payload, parse_err = None, None
+        attempts: list[dict[str, Any]] = []
         for attempt in range(2):
             try:
                 comp = runner.complete(msgs, max_tokens=max_tokens, extra_body=extra_body)
             except Exception as e:  # network failure must not kill the run
+                attempts.append({
+                    "attempt": attempt + 1,
+                    "messages": msgs,
+                    "error": str(e)[:300],
+                })
                 per_case.append({"case_id": case.id, "ok": False, "error": str(e)[:300],
-                                 "cost_usd": None, "latency_s": None})
+                                 "cost_rub": None, "cost_usd": None, "latency_s": None})
                 comp = None
                 break
-            cost += comp.cost_usd or 0.0
+            attempts.append({
+                "attempt": attempt + 1,
+                "messages": msgs,
+                # Completion.text is the final answer after chain-of-thought stripping.
+                "response_text": comp.text,
+                "usage": comp.usage,
+                "served_model": comp.model,
+                "latency_s": comp.latency_s,
+                "cache_hit": comp.cache_hit,
+            })
+            cost += (getattr(comp, "cost_rub", None) if getattr(spec, "price_currency", "USD") == "RUB"
+                     else getattr(comp, "cost_usd", None)) or 0.0
             cost_est = cost_est or comp.cost_is_estimate
             payload, parse_err = bench.parse(comp.text, case)
             if payload is not None:
@@ -87,6 +108,7 @@ def run_benchmark(
                                            "Output ONLY the JSON object now, starting with '{' "
                                            "with no preamble and no reasoning."}]
         if comp is None:
+            transcript_cases.append({"case_id": case.id, "attempts": attempts})
             continue
         wall = round(time.monotonic() - t0, 3)
         if payload is None:
@@ -102,13 +124,15 @@ def run_benchmark(
             "source": str(path),
             "generated_by": case.generated_by,
             **scores,
-            "cost_usd": round(cost, 6) if cost else None,
+            "cost_rub": round(cost, 6) if cost and getattr(spec, "price_currency", "USD") == "RUB" else None,
+            "cost_usd": getattr(comp, "cost_usd", None),
             "cost_is_estimate": cost_est,
             "latency_s": comp.latency_s or wall,
             "cache_hit": comp.cache_hit,
             "usage": {**comp.usage, "served_model": comp.model},
         }
         per_case.append(row)
+        transcript_cases.append({"case_id": case.id, "attempts": attempts})
 
     summary = _aggregate(per_case)
     result = {
@@ -126,6 +150,11 @@ def run_benchmark(
         "served_models": sorted({c.get("usage", {}).get("served_model") for c in per_case
                                  if c.get("usage", {}).get("served_model")}),
         "price_source": spec.price_source,
+        "price_currency": getattr(spec, "price_currency", "USD"),
+        "pricing_snapshot": getattr(spec, "pricing_snapshot", None),
+        "reasoning": getattr(spec, "reasoning", None),
+        "reasoning_note": getattr(spec, "reasoning_note", None),
+        "artifacts": {"transcript": "transcript.json"},
         "cases_path": str(cases_path),
         "n_cases": len(per_case),
         "summary": summary,
@@ -135,6 +164,21 @@ def run_benchmark(
     out.mkdir(parents=True, exist_ok=True)
     result["out_dir"] = str(out)
     (out / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    transcript = {
+        "schema_version": 1,
+        "run": {
+            "benchmark": bench_key,
+            "model": spec.key,
+            "model_alias": spec.alias,
+            "provider": spec.provider,
+            "result": "results.json",
+        },
+        # Prompts and final answers are auditable. Private chain-of-thought and
+        # unfiltered raw provider payloads are deliberately not retained.
+        "cases": transcript_cases,
+    }
+    (out / "transcript.json").write_text(
+        json.dumps(transcript, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "report.md").write_text(render_markdown_report([result]), encoding="utf-8")
     return result
 
@@ -148,7 +192,11 @@ def _aggregate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         vals = [c[k] for c in scored if c.get(k) is not None]
         return round(sum(vals) / len(vals), 4) if vals else None
 
-    costs = [c["cost_usd"] for c in cases if c.get("cost_usd") is not None]
+    costs = [c["cost_rub"] for c in cases if c.get("cost_rub") is not None]
+    token_fields = ["input_tokens", "output_tokens", "total_tokens", "cache_read_input_tokens",
+                    "cache_write_input_tokens", "cache_input_tokens", "reasoning_tokens"]
+    token_totals = {field: sum((c.get("usage", {}).get(field) or 0) for c in cases)
+                    for field in token_fields}
     lats = [c["latency_s"] for c in cases if c.get("latency_s") is not None]
     return {
         "n_cases": n,
@@ -164,10 +212,11 @@ def _aggregate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "extraction_f1": mean("extraction_f1"),
         "false_accept_rate": round(sum(1 for c in scored if c.get("false_accept")) / len(scored), 4) if scored else None,
         "false_reject_rate": round(sum(1 for c in scored if c.get("false_reject")) / len(scored), 4) if scored else None,
-        "cost_per_case_usd": round(sum(costs) / len(costs), 6) if costs else None,
+        "cost_per_case_rub": round(sum(costs) / len(costs), 6) if costs else None,
         "cost_is_estimate": any(c.get("cost_is_estimate") for c in cases),
         "latency_p50_s": _median(lats),
-        "total_cost_usd": round(sum(costs), 6) if costs else None,
+        "total_cost_rub": round(sum(costs), 6) if costs else None,
+        "tokens": token_totals,
     }
 
 
@@ -186,7 +235,7 @@ def render_markdown_report(results: list[dict[str, Any]]) -> str:
     lines = ["# docbench report", ""]
     cols = ["model", "benchmark", "n_cases", "case_pass_rate", "finding_precision",
             "finding_recall", "critical_recall", "false_accept_rate", "false_reject_rate",
-            "extraction_f1", "grounding_recall", "cost_per_case_usd", "latency_p50_s"]
+            "extraction_f1", "grounding_recall", "cost_per_case_rub", "latency_p50_s"]
     lines.append("| " + " | ".join(cols) + " |")
     lines.append("|" + "---|" * len(cols))
     for r in results:
@@ -201,11 +250,26 @@ def render_markdown_report(results: list[dict[str, Any]]) -> str:
     est = any(r.get("summary", {}).get("cost_is_estimate") for r in results)
     if est:
         lines.append("")
-        lines.append("_Note: cost computed from catalog prices flagged as estimates; "
-                     "override in docbench/models.yaml with invoiced prices._")
+        lines.append("_Note: the pinned supplement has no separate cache rate; "
+                     "cache tokens are counted separately and charged once at the pinned input rate._")
     lines.append("")
     for r in results:
         lines.append(f"## {r.get('model')} · {r.get('benchmark')} · {r.get('ts', '')}")
+        lines.append("")
+        lines.append("### Reasoning")
+        lines.append("")
+        lines.append(f"- reason={r.get('reasoning_note') or ('matters' if r.get('reasoning') else 'not declared')}")
+        lines.append("")
+        tokens = r.get("summary", {}).get("tokens", {})
+        lines.append("### Tokens and cost")
+        lines.append("")
+        lines.append("| input | output | total | cache read | cache write | reasoning | cost RUB |")
+        lines.append("|---:|---:|---:|---:|---:|---:|---:|")
+        lines.append("| {input_tokens} | {output_tokens} | {total_tokens} | {cache_read_input_tokens} | {cache_write_input_tokens} | {reasoning_tokens} | {cost} |".format(
+            input_tokens=tokens.get("input_tokens", 0), output_tokens=tokens.get("output_tokens", 0),
+            total_tokens=tokens.get("total_tokens", 0), cache_read_input_tokens=tokens.get("cache_read_input_tokens", 0),
+            cache_write_input_tokens=tokens.get("cache_write_input_tokens", 0), reasoning_tokens=tokens.get("reasoning_tokens", 0),
+            cost=r.get("summary", {}).get("total_cost_rub") or "—"))
         lines.append("")
         for c in r.get("cases", []):
             flag = "✅" if c.get("ok") else "❌"

@@ -9,7 +9,8 @@ class Completion:
     text: str
     usage: dict[str, Any] = field(default_factory=dict)
     latency_s: float = 0.0
-    cost_usd: Optional[float] = None
+    cost_rub: Optional[float] = None
+    cost_usd: Optional[float] = None  # legacy compatibility for old fixtures
     cost_is_estimate: bool = False
     cache_hit: bool = False
     model: str = ""

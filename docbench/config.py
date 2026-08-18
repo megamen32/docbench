@@ -69,7 +69,20 @@ class ModelSpec:
         self.base_url = base.rstrip("/")
         self.api_key_env = provider_cfg["api_key_env"]
         self.api_key = env.get(self.api_key_env)
-        self.alias = model_cfg.get("alias", key)
+        self.auth_method = provider_cfg.get("auth_method", "bearer")
+        self.oauth_url = provider_cfg.get("oauth_url")
+        self.oauth_scope = provider_cfg.get("oauth_scope")
+        self.ca_bundle_env = provider_cfg.get("ca_bundle_env")
+        self.ca_bundle = env.get(self.ca_bundle_env) if self.ca_bundle_env else None
+        self.alias_env = model_cfg.get("alias_env")
+        alias_template = model_cfg.get("alias_template")
+        if alias_template:
+            alias_value = env.get(self.alias_env, "") if self.alias_env else ""
+            self.alias = alias_template.format(folder_id=alias_value)
+            self.alias_configured = bool(alias_value)
+        else:
+            self.alias = model_cfg.get("alias", key)
+            self.alias_configured = True
         self.price_in = model_cfg.get("price_in_per_m")
         self.price_out = model_cfg.get("price_out_per_m")
         self.price_currency = model_cfg.get("price_currency", "USD")
@@ -111,6 +124,11 @@ def list_models() -> list[ModelSpec]:
 def resolve_model(key: str, *, allow_missing_key: bool = False) -> ModelSpec:
     for m in list_models():
         if m.key == key or m.alias == key:
+            if not m.alias_configured:
+                raise RuntimeError(
+                    f"model {key}: required configuration missing. Set {m.alias_env} "
+                    "to the Yandex AI Studio folder ID."
+                )
             if not m.api_key and not allow_missing_key:
                 raise RuntimeError(
                     f"model {key}: API key missing. Set {m.api_key_env} as "

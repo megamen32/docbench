@@ -1,0 +1,18 @@
+{
+  "source_url": "https://github.com/megamen32/models-supplement/raw/refs/heads/main/supplement.json",
+  "source_generated_at": "2026-08-13T07:15:41.535Z",
+  "source_commit": "01f9c5c",
+  "currency": "RUB",
+  "usd_rub": 82.9977,
+  "pricing_basis": "routerai",
+  "cache_pricing": "No separate cache rate is present; cache tokens are counted separately and charged once at the pinned input rate.",
+  "models": {
+    "openai/gpt-5.6-luna": {"routerai_id": "openai/gpt-5.6-luna-pro", "source_model": "openai/gpt-5.6-luna-pro", "input_rub_per_token": 0.000010789701, "output_rub_per_token": 0.000064738206, "reasoning": true},
+    "openai/gpt-5.4-mini": {"routerai_id": "openai/gpt-5.4-mini", "input_rub_per_token": 0.0000809227575, "output_rub_per_token": 0.000485536545, "reasoning": true},
+    "z-ai/glm-4.7-flash": {"routerai_id": "z-ai/glm-4.7-flash", "input_rub_per_token": 0.0000064738206, "output_rub_per_token": 0.000043158804, "reasoning": false},
+    "z-ai/glm-4.5-air": {"routerai_id": "z-ai/glm-4.5-air", "input_rub_per_token": 0.0000140266113, "output_rub_per_token": 0.0000917124585, "reasoning": false},
+    "minimax/minimax-m2.7": {"routerai_id": "minimax/minimax-m2.7", "input_rub_per_token": 0.0000258952824, "output_rub_per_token": 0.0001035811296, "reasoning": false},
+    "minimax/minimax-m2.5": {"routerai_id": "minimax/minimax-m2.5", "input_rub_per_token": 0.0000237373422, "output_rub_per_token": 0.000097107309, "reasoning": false},
+    "minimax/minimax-m3": {"routerai_id": "minimax/minimax-m3", "input_rub_per_token": 0.0000248163123, "output_rub_per_token": 0.0001035811296, "reasoning": true}
+  }
+}

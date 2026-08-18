@@ -1,0 +1,175 @@
+schema_version: 2
+kind: russian_document_benchmark_catalog
+status: accepted
+primary_language: ru
+external_urls_included: false
+source_assets_included: false
+
+# Task contracts and labels are retained permanently. Fixtures are created in
+# house or admitted only after their licence is explicitly verified.
+fixture_admission:
+  require_language: ru
+  require_document_and_evidence_for_primary_track: true
+  require_verified_usage_rights: true
+
+primary_document_tasks:
+  - id: visual_table_qa
+    catalog_label: LabTabVQA
+    priority: P0
+    language: ru
+    input: [document_page_image, question]
+    output: short_free_text
+    skills: [table_analysis, ocr, arithmetic]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: table_row_and_cell
+
+  - id: visual_math_document_qa
+    catalog_label: ruMathVQA
+    priority: P0
+    language: ru
+    input: [document_page_image, question, answer_format]
+    output: short_free_text
+    skills: [ocr, arithmetic, visual_reasoning]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: page_region
+
+  - id: natural_science_document_qa
+    catalog_label: ruNaturalScienceVQA
+    priority: P1
+    language: ru
+    input: [document_page_image, question]
+    output: short_free_text
+    skills: [ocr, domain_reasoning, visual_reasoning]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: page_region
+
+  - id: text_image_evidence_qa
+    catalog_label: ruTiE-Image
+    priority: P1
+    language: ru
+    input: [document_page_image, question]
+    output: short_free_text
+    skills: [ocr, object_attribute_reasoning, logic]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: page_region
+
+  - id: school_science_document_qa
+    catalog_label: SchoolScienceVQA
+    priority: P1
+    language: ru
+    input: [document_page_image, question]
+    output: short_free_text
+    skills: [ocr, school_science, logic]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: page_region
+
+  - id: university_science_document_qa
+    catalog_label: UniScienceVQA
+    priority: P1
+    language: ru
+    input: [document_page_image, question]
+    output: short_free_text
+    skills: [ocr, university_science, logic]
+    metrics: [exact_match, answer_judge, evidence_grounding]
+    evidence: page_region
+
+auxiliary_visual_tasks:
+  - id: real_world_visual_qa
+    catalog_label: RealVQA
+    language: ru
+    skills: [real_world_visual_context, logic, world_knowledge]
+    metrics: [exact_match, answer_judge]
+    admission: map_fixture_to_document_before_aggregate_score
+
+  - id: synthetic_spatial_reasoning
+    catalog_label: ruCLEVR
+    language: ru
+    skills: [counting, object_attributes, spatial_reasoning, logic]
+    metrics: [exact_match, answer_judge]
+    admission: map_fixture_to_document_before_aggregate_score
+
+  - id: common_visual_qa
+    catalog_label: ruCommonVQA
+    language: ru
+    skills: [objects, actions, spatial_reasoning, logic]
+    metrics: [exact_match, answer_judge]
+    admission: map_fixture_to_document_before_aggregate_score
+
+  - id: safe_visual_qa
+    catalog_label: ruHHH-Image
+    language: ru
+    skills: [ocr, ethics, safety, logic]
+    metrics: [exact_match, answer_judge]
+    admission: map_fixture_to_document_before_aggregate_score
+
+  - id: visual_world_consistency
+    catalog_label: WEIRD
+    language: ru
+    skills: [world_consistency, objects, actions, world_knowledge]
+    metrics: [exact_match, answer_judge]
+    admission: map_fixture_to_document_before_aggregate_score
+
+domain_knowledge_tasks:
+  - id: agriculture_multiple_choice
+    catalog_label: ruTXTAgroBench
+    language: ru
+    domain: agriculture
+    input: [question, options]
+    output: option_letters
+    metrics: [f1_exact_match]
+    reporting: separate_domain_score
+
+  - id: aquaculture_multiple_choice
+    catalog_label: ruTXTAquaBench
+    language: ru
+    domain: aquaculture
+    input: [question, options]
+    output: option_letters
+    metrics: [f1_exact_match]
+    reporting: separate_domain_score
+
+  - id: fundamental_medicine_multiple_choice
+    catalog_label: ruTXTMedQFundamental
+    language: ru
+    domain: medicine
+    input: [question, options]
+    output: option_letters
+    metrics: [f1_exact_match]
+    reporting: separate_domain_score
+
+supplemental_reasoning_tasks:
+  - id: russian_multistep_math_reasoning
+    catalog_label: Luzitania
+    language: ru
+    skills: [multistep_reasoning]
+    input: [problem]
+    output: verifiable_final_answer
+    metrics: [exact_match]
+
+  - id: russian_olympiad_math_reasoning
+    catalog_label: ruAIME
+    language: ru
+    skills: [olympiad_math, deep_reasoning]
+    input: [problem]
+    output: verifiable_final_answer
+    metrics: [exact_match]
+
+  - id: russian_olympiad_math_final_answer
+    catalog_label: T-Math
+    language: ru
+    skills: [olympiad_math, multistep_reasoning]
+    input: [problem]
+    output: verifiable_final_answer
+    metrics: [exact_match]
+
+  - id: russian_long_context_aggregation
+    catalog_label: MMReD
+    language: ru
+    skills: [long_context_reasoning, dense_aggregation, counting, temporal_tracking]
+    input: [long_context, question]
+    output: short_free_text
+    metrics: [exact_match]
+
+reporting:
+  primary_score: primary_document_tasks
+  supplementary_scores: [auxiliary_visual_tasks, domain_knowledge_tasks, supplemental_reasoning_tasks]

@@ -11,7 +11,9 @@ from typing import Any, Optional
 import requests
 
 from ..config import ModelSpec
+from ..jsonutil import strip_think
 from .base import Completion
+from .usage import normalize_usage
 
 
 class OpenAICompatRunner:
@@ -54,6 +56,13 @@ class OpenAICompatRunner:
 
     # -- internals ----------------------------------------------------------
 
+    def _request_headers(self) -> dict[str, str]:
+        return {"Authorization": f"Bearer {self._api_key}",
+                "Content-Type": "application/json"}
+
+    def _request_options(self) -> dict[str, Any]:
+        return {}
+
     def _call(self, messages, temperature, max_tokens, cache_key, extra_body=None) -> Completion:
         payload = {
             "model": self.alias,
@@ -66,10 +75,10 @@ class OpenAICompatRunner:
         t0 = time.monotonic()
         resp = requests.post(
             f"{self.base_url}/chat/completions",
-            headers={"Authorization": f"Bearer {self._api_key}",
-                     "Content-Type": "application/json"},
+            headers=self._request_headers(),
             json=payload,
             timeout=self.timeout,
+            **self._request_options(),
         )
         latency = time.monotonic() - t0
         if resp.status_code in (429, 500, 502, 503, 504):
@@ -81,16 +90,21 @@ class OpenAICompatRunner:
         for ch in data.get("choices", []):
             msg = ch.get("message", {})
             if msg.get("content"):
-                text = msg["content"]
+                # Keep provider chain-of-thought out of every persisted result.
+                # An unfinished think block becomes an empty reply, which the
+                # benchmark retry path treats as non-final rather than a score.
+                text = strip_think(msg["content"])
                 break
-        usage = data.get("usage", {}) or {}
+        usage = normalize_usage(data.get("usage", {}) or {})
         comp = Completion(
             text=text,
-            usage={"prompt_tokens": usage.get("prompt_tokens"),
-                   "completion_tokens": usage.get("completion_tokens")},
+            usage=usage,
             latency_s=round(latency, 3),
-            cost_usd=self._cost(usage),
-            cost_is_estimate=str(self.spec.price_source or "").startswith(("assumed", "placeholder")),
+            cost_rub=self._cost(usage) if self.spec.price_currency == "RUB" else None,
+            cost_usd=self._cost(usage) if self.spec.price_currency == "USD" else None,
+            cost_is_estimate=(self.spec.price_currency == "RUB" and
+                              self.spec.price_cache_read is None and
+                              self.spec.price_cache_write is None),
             model=data.get("model") or self.alias,  # served variant id, if echoed
         )
         self._cache_put(cache_key, comp)
@@ -99,9 +113,15 @@ class OpenAICompatRunner:
     def _cost(self, usage: dict[str, Any]) -> Optional[float]:
         if self.spec.price_in is None or self.spec.price_out is None:
             return None
-        tin = usage.get("prompt_tokens") or 0
-        tout = usage.get("completion_tokens") or 0
-        return tin / 1e6 * self.spec.price_in + tout / 1e6 * self.spec.price_out
+        usage = normalize_usage(usage)
+        price_cache_read = getattr(self.spec, "price_cache_read", None)
+        price_cache_write = getattr(self.spec, "price_cache_write", None)
+        cache_read_price = self.spec.price_in if price_cache_read is None else price_cache_read
+        cache_write_price = self.spec.price_in if price_cache_write is None else price_cache_write
+        return ((usage["uncached_input_tokens"] * self.spec.price_in)
+                + (usage["cache_read_input_tokens"] * cache_read_price)
+                + (usage["cache_write_input_tokens"] * cache_write_price)
+                + (usage["output_tokens"] * self.spec.price_out)) / 1e6
 
     def _cache_key(self, messages, temperature, max_tokens, extra_body=None) -> str:
         # Empty extra must not change the key: keeps the pre-effort cache valid.
@@ -120,7 +140,13 @@ class OpenAICompatRunner:
             return None
         try:
             d = json.loads(p.read_text(encoding="utf-8"))
-            return Completion(cache_hit=True, **d)
+            comp = Completion(cache_hit=True, **d)
+            comp.usage = normalize_usage(comp.usage)
+            if comp.cost_rub is None and getattr(self.spec, "price_currency", "USD") == "RUB":
+                comp.cost_rub = self._cost(comp.usage)
+            if comp.cost_usd is None and getattr(self.spec, "price_currency", "USD") == "USD":
+                comp.cost_usd = self._cost(comp.usage)
+            return comp
         except (json.JSONDecodeError, TypeError):
             return None
 
@@ -130,7 +156,9 @@ class OpenAICompatRunner:
             return
         p.write_text(json.dumps({
             "text": comp.text, "usage": comp.usage, "latency_s": comp.latency_s,
-            "cost_usd": comp.cost_usd, "cost_is_estimate": comp.cost_is_estimate,
+            "cost_rub": getattr(comp, "cost_rub", None),
+            "cost_usd": getattr(comp, "cost_usd", None),
+            "cost_is_estimate": comp.cost_is_estimate,
             "model": comp.model,
         }, ensure_ascii=False), encoding="utf-8")
 

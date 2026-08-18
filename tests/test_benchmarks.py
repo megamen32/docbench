@@ -118,3 +118,6 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
                           ruleset_dir=REPO / "rulesets", out_dir=tmp_path / "out")
     assert res["summary"]["case_pass_rate"] == 1.0
     assert res["summary"]["finding_f1"] == 1.0
+    transcript = json.loads((tmp_path / "out" / "transcript.json").read_text(encoding="utf-8"))
+    assert res["artifacts"]["transcript"] == "transcript.json"
+    assert transcript["cases"][0]["attempts"][0]["response_text"] == reply
