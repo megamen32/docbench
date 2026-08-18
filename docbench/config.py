@@ -39,10 +39,17 @@ def load_env_file(path: Path) -> dict[str, str]:
 
 
 def resolved_env() -> dict[str, str]:
-    """File env first, real process environment wins on top."""
-    env = load_env_file(USER_ENV_FILE)
-    env.update(dict(os.environ))
-    return env
+    """Resolution order (first wins):
+      1. workspace ./.env (creator convenience, gitignored)
+      2. ~/.config/docbench/env (machine-wide, chmod 600)
+      3. real process environment (overrides everything)
+    """
+    cwd_env = load_env_file(Path.cwd() / ".env")
+    home_env = load_env_file(USER_ENV_FILE)
+    process_env = dict(os.environ)
+    merged = {**cwd_env, **home_env}
+    merged.update(process_env)
+    return merged
 
 
 def load_catalog() -> dict:
@@ -65,6 +72,12 @@ class ModelSpec:
         self.alias = model_cfg.get("alias", key)
         self.price_in = model_cfg.get("price_in_per_m")
         self.price_out = model_cfg.get("price_out_per_m")
+        self.price_currency = model_cfg.get("price_currency", "USD")
+        self.price_cache_read = model_cfg.get("price_cache_read_per_m")
+        self.price_cache_write = model_cfg.get("price_cache_write_per_m")
+        self.pricing_snapshot = model_cfg.get("pricing_snapshot")
+        self.reasoning = model_cfg.get("reasoning")
+        self.reasoning_note = model_cfg.get("reasoning_note")
         self.price_source = model_cfg.get("price_source")
         self.request_extra = model_cfg.get("request_extra") or {}
         self.effort_levels = model_cfg.get("effort_levels") or {}
@@ -100,8 +113,9 @@ def resolve_model(key: str, *, allow_missing_key: bool = False) -> ModelSpec:
         if m.key == key or m.alias == key:
             if not m.api_key and not allow_missing_key:
                 raise RuntimeError(
-                    f"model {key}: API key missing. Set {m.api_key_env} in the "
-                    f"environment or in {USER_ENV_FILE} (chmod 600)."
+                    f"model {key}: API key missing. Set {m.api_key_env} as "
+                    f"environment variable, in ./.env (gitignored), or in "
+                    f"{USER_ENV_FILE} (chmod 600)."
                 )
             return m
     known = ", ".join(m.key for m in list_models())

@@ -9,9 +9,10 @@ chat, into argv, or into commit-bound files.
 
 ### MiniMax (MiniMax API, OpenAI-compatible)
 
-- **Where**: `~/.config/docbench/env`, line `DOCBENCH_MINIMAX_API_KEY=…`
-  (chmod 600, only readable by the owner). `DOCBENCH_MINIMAX_BASE_URL`
-  optional override.
+- **Where** (in order docbench reads):
+  1. `./.env` (workspace, gitignored, per-project convenience) — preferred.
+  2. `~/.config/docbench/env` (machine-wide, chmod 600) — fallback.
+  3. Real process env (`export DOCBENCH_…=…`) — overrides both.
 - **How the key was set**: user pasted the value in chat. Per
   `secrets-in-chat-protocol`, the only safe write path was a python heredoc
   with the literal as a string constant (no shell expansion, no `read -rsp`,
@@ -21,32 +22,37 @@ chat, into argv, or into commit-bound files.
   overwrite the same file when convenient.
 - **Verification of presence without printing**:
   `[[ -n "${DOCBENCH_MINIMAX_API_KEY:-}" ]] && echo set || echo missing`
-- **Never**: echo the value, write it to any file inside the repo, pass it as
-  argv, paste it back in chat, or include it in any log/telemetry.
+- **Template**: copy `.env.example` to `.env`, fill values, `chmod 600`. The
+  `.env` line is in `.gitignore` so no key can leak through git.
+- **Never**: echo the value, write it to any file inside the repo (except the
+  gitignored `.env` in workspace root), pass it as argv, paste it back in chat,
+  or include it in any log/telemetry.
 
 ### Z.ai (session coding plan, OpenAI-compatible via `api.z.ai/api/paas/v4`)
 
-- **Where**: **nowhere on disk in this repo or in `~/.config/docbench/env`.**
-  The token lives only in `~/.zcode/v2/config.json`, provider
-  `builtin:zai-coding-plan`, field `options.apiKey` (key was already there
-  before this project started — it is the user's own coding plan that funds
-  the assistant session itself).
-- **How it is consumed**:
-  - Local runs: `export DOCBENCH_ZAI_API_KEY=$(python3 -c "
+- **Where** (in order docbench reads):
+  1. `./.env` (workspace, gitignored) — convenience for local benchmark runs.
+  2. `~/.config/docbench/env` — machine-wide fallback.
+  3. Real process env — overrides both.
+  If neither file has the key, the launcher pattern below can be used.
+- **How it is consumed** (no .env file path):
+  - `export DOCBENCH_ZAI_API_KEY=$(python3 -c "
     import json,pathlib
     print(json.loads((pathlib.Path.home()/'~/.zcode/v2/config.json').read_text())
     ['provider']['builtin:zai-coding-plan']['options']['apiKey'])")` —
-    resolves only in the launching process; no copy is persisted.
-  - Container runs: `--env-file ~/.config/docbench/env` (does NOT include the
-    z.ai token by default) plus `-e DOCBENCH_ZAI_API_KEY` if the caller
-    exports it themselves; never baked into the image or its layers.
-- **Why no on-disk copy**: the z.ai coding-plan token is already compromised by
-  the user's session surface; rotating it requires going through Z.ai's
-  account console. Writing it into a project-local file would put another
-  secret-leak surface in front of it for no benefit.
-- **Never**: copy the value from `config.json` into any file in the repo,
-  into argv, into commit history, into chat, into logs. The launcher pattern
-  above reads it from the user's own config; that is the only sanctioned read.
+    resolves only in the launching process; no copy is persisted if `.env`
+    is absent.
+  - Container runs: `--env-file ~/.config/docbench/env` and/or `-e
+    DOCBENCH_ZAI_API_KEY` if the caller exports it themselves; never baked
+    into the image or its layers.
+- **Why an on-disk copy in `.env` is acceptable here**: `.env` is gitignored,
+  chmod 600, lives only on this machine. The token was already exposed by
+  being in `~/.zcode/v2/config.json`; putting it in a per-machine `.env`
+  beside the code is no worse than the existing source, and it removes the
+  need to reach into Z-code config on every run. Rotation still goes through
+  Z.ai's account console.
+- **Never**: commit `.env`, paste the value in chat, pass it as argv, or
+  include it in any log/telemetry.
 
 ### General key-handling rules (apply to any future provider)
 

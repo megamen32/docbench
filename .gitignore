@@ -12,5 +12,11 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .secrets/
-.env
 var-download*.log
+
+# Provider keys — local only, must never reach the repo.
+# .env in CWD is read first by docbench; ~/.config/docbench/env is the machine-wide
+# fallback; the real process environment overrides both. Use .env.example as a
+# template and copy to .env on each machine, then chmod 600.
+.env
+.env.*.local
