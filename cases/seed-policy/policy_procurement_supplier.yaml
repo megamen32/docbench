@@ -1,0 +1,18 @@
+id: policy_procurement_supplier
+benchmark: rule_extraction
+notes: "Русский seed-кейс: допуск поставщика к закупке."
+canonical_fields:
+  - supplier.annual_turnover_rub
+  - documents.sro_certificate.present
+  - supplier.sanctions_status
+  - bid.submission_date
+policy_document: |
+  ЗАКУПКА РЕМОНТНЫХ РАБОТ. Годовая выручка поставщика должна составлять не
+  менее 10 000 000 рублей. Для допуска требуется действующее свидетельство СРО.
+  Участник допускается только со статусом санкционной проверки «clear». Заявки
+  принимаются не позднее 20 ноября 2026 года.
+expected_rules:
+  - {id: P001, description: Выручка поставщика не менее 10000000 рублей, severity: major, category: financial, condition: {field: supplier.annual_turnover_rub, op: ge, value: 10000000}}
+  - {id: P002, description: Обязательно действующее свидетельство СРО, severity: critical, category: required_documents, condition: {field: documents.sro_certificate.present, op: exists}}
+  - {id: P003, description: Санкционная проверка имеет статус clear, severity: critical, category: compliance, condition: {field: supplier.sanctions_status, op: eq, value: clear}}
+  - {id: P004, description: Заявка подана до 2026-11-20 включительно, severity: major, category: deadlines, condition: {field: bid.submission_date, op: le, value: "2026-11-20"}}

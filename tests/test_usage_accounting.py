@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from docbench.models.openai_compat import OpenAICompatRunner
 from docbench.models.usage import normalize_usage
 from docbench.run import render_markdown_report
+import docbench.run as R
 
 
 def test_normalize_openai_cached_tokens_without_double_counting():
@@ -61,3 +62,29 @@ def test_markdown_separates_reasoning_and_token_counts():
     assert "- reason=matters" in report
     assert "| input | output | total | cache read | cache write | reasoning | cost RUB |" in report
     assert "| 100 | 20 | 120 | 40 | 0 | 8 | 0.12 |" in report
+
+
+def test_fetch_cbr_usd_rub_parses_official_daily_xml(monkeypatch):
+    xml = b'''<?xml version="1.0" encoding="windows-1251"?>
+    <ValCurs Date="18.08.2026" name="Foreign Currency Market">
+      <Valute ID="R01235"><CharCode>USD</CharCode><Nominal>1</Nominal><Value>81,2500</Value></Valute>
+    </ValCurs>'''
+
+    class Response:
+        def read(self):
+            return xml
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+    monkeypatch.setattr(R, "urlopen", lambda *args, **kwargs: Response())
+    snapshot = R.fetch_cbr_usd_rub()
+    assert snapshot == {
+        "usd_rub": 81.25,
+        "date": "2026-08-18",
+        "source": "CBR",
+        "source_url": R.CBR_DAILY_URL,
+    }

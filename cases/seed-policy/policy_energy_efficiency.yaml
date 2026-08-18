@@ -1,0 +1,18 @@
+id: policy_energy_efficiency
+benchmark: rule_extraction
+notes: Русский seed-кейс для энергоэффективной модернизации.
+canonical_fields:
+  - project.energy_consumption_reduction_pct
+  - budget.co_financing_pct
+  - documents.technical_passport.present
+  - project.completion_date
+policy_document: |
+  СУБСИДИЯ НА ЭНЕРГОЭФФЕКТИВНОСТЬ. Проект обязан снизить потребление энергии не
+  менее чем на 20%. Доля софинансирования заявителя составляет не менее 30%.
+  К заявке прикладывается технический паспорт объекта. Работы должны быть
+  завершены не позднее 31 декабря 2027 года.
+expected_rules:
+  - {id: EN001, description: Снижение потребления энергии не менее 20 процентов, severity: major, category: outcome, condition: {field: project.energy_consumption_reduction_pct, op: ge, value: 20}}
+  - {id: EN002, description: Софинансирование не менее 30 процентов, severity: major, category: budget, condition: {field: budget.co_financing_pct, op: ge, value: 30}}
+  - {id: EN003, description: Обязателен технический паспорт объекта, severity: critical, category: required_documents, condition: {field: documents.technical_passport.present, op: exists}}
+  - {id: EN004, description: Работы завершены до 2027-12-31 включительно, severity: major, category: deadlines, condition: {field: project.completion_date, op: le, value: "2027-12-31"}}

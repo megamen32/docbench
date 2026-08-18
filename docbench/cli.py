@@ -29,6 +29,26 @@ def main(argv: list[str] | None = None) -> int:
     p_run.add_argument("--effort", default=None,
                        help="reasoning effort label from docbench/models.yaml "
                             "(e.g. thinking / no_thinking); default from catalog")
+    p_run.add_argument("--usd-rub", type=float, default=None,
+                       help="pinned USD/RUB rate; requires --fx-date")
+    p_run.add_argument("--fx-date", default=None,
+                       help="date for --usd-rub (YYYY-MM-DD)")
+
+    p_campaign = sub.add_parser(
+        "campaign", help="run selected models consistently across the standard document suites")
+    p_campaign.add_argument("--models", nargs="+", required=True)
+    p_campaign.add_argument("--suite", dest="suites", action="append",
+                            choices=["grant", "policy", "ace"],
+                            help="repeat to select suites; default: grant, policy, ace")
+    p_campaign.add_argument("--offline", action="store_true",
+                            help="serve from response cache only; requires --usd-rub and --fx-date")
+    p_campaign.add_argument("--out", default=None, help="campaign output root")
+    p_campaign.add_argument("--limit", type=int, default=None)
+    p_campaign.add_argument("--max-tokens", type=int, default=8192)
+    p_campaign.add_argument("--usd-rub", type=float, default=None,
+                            help="pinned USD/RUB rate; otherwise fetch CBR once at campaign start")
+    p_campaign.add_argument("--fx-date", default=None,
+                            help="date for --usd-rub (YYYY-MM-DD)")
 
     p_gen = sub.add_parser("errorgen", help="apply a corruption plan to a valid packet")
     p_gen.add_argument("--plan", required=True, help="errorgen plan yaml")
@@ -65,16 +85,37 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
-        from .run import run_benchmark
+        from .run import resolve_fx_snapshot, run_benchmark
+        fx_snapshot = (resolve_fx_snapshot(args.usd_rub, args.fx_date)
+                       if args.usd_rub is not None or args.fx_date else None)
         res = run_benchmark(
             args.bench, args.model, Path(args.cases),
             ruleset_dir=Path(args.ruleset_dir), ruleset_id=args.ruleset,
             limit=args.limit, offline=args.offline,
             out_dir=Path(args.out) if args.out else None,
-            max_tokens=args.max_tokens, effort=args.effort,
+            max_tokens=args.max_tokens, effort=args.effort, fx_snapshot=fx_snapshot,
         )
         print(json.dumps(res["summary"], ensure_ascii=False, indent=2))
         print("results:", res["out_dir"])
+        return 0
+
+    if args.cmd == "campaign":
+        from .run import run_campaign
+        results = run_campaign(
+            args.models, args.suites, offline=args.offline,
+            out_dir=Path(args.out) if args.out else None,
+            limit=args.limit, max_tokens=args.max_tokens,
+            usd_rub=args.usd_rub, fx_date=args.fx_date,
+        )
+        for result in results:
+            print(json.dumps({
+                "model": result["model"],
+                "benchmark": result["benchmark"],
+                "dataset_version": result["dataset_version"],
+                "cost_rub": result["summary"]["total_cost_rub"],
+                "wall_time_s": result["wall_time_s"],
+                "results": result["out_dir"],
+            }, ensure_ascii=False))
         return 0
 
     if args.cmd == "errorgen":

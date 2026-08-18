@@ -1,0 +1,21 @@
+id: policy_municipal_subsidy
+benchmark: rule_extraction
+notes: "Русский seed-кейс: муниципальная субсидия, документы, лимит, срок и отсутствие долга."
+canonical_fields:
+  - applicant.registration_months
+  - application.requested_rub
+  - documents.financial_statement.present
+  - application.submission_date
+  - applicant.tax_arrears
+policy_document: |
+  МУНИЦИПАЛЬНАЯ СУБСИДИЯ 2026
+  Получатель должен быть зарегистрирован не менее 12 месяцев. Запрашиваемая
+  субсидия не превышает 5 000 000 рублей. К заявке обязательно прилагается
+  финансовая отчётность за последний год. Приём заканчивается 15 сентября 2026
+  года включительно. Организации с задолженностью по налогам не допускаются.
+expected_rules:
+  - {id: M001, description: Регистрация не менее 12 месяцев, severity: critical, category: eligibility, condition: {field: applicant.registration_months, op: ge, value: 12}}
+  - {id: M002, description: Субсидия не превышает 5000000 рублей, severity: major, category: budget, condition: {field: application.requested_rub, op: le, value: 5000000}}
+  - {id: M003, description: Обязательна финансовая отчётность, severity: critical, category: required_documents, condition: {field: documents.financial_statement.present, op: exists}}
+  - {id: M004, description: Срок подачи до 2026-09-15 включительно, severity: major, category: deadlines, condition: {field: application.submission_date, op: le, value: "2026-09-15"}}
+  - {id: M005, description: Отсутствует задолженность по налогам, severity: critical, category: eligibility, condition: {field: applicant.tax_arrears, op: eq, value: false}}

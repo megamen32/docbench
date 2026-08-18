@@ -1,0 +1,17 @@
+id: policy_housing_repair
+benchmark: rule_extraction
+notes: Русский seed-кейс для программы капремонта.
+canonical_fields:
+  - building.construction_year
+  - owners.approval_pct
+  - documents.defect_report.present
+  - application.submission_date
+policy_document: |
+  ПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение
+  собственников поддержали не менее 66% голосов. К заявке прилагается акт
+  обследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.
+expected_rules:
+  - {id: H001, description: Дом построен не позднее 2005 года, severity: major, category: eligibility, condition: {field: building.construction_year, op: le, value: 2005}}
+  - {id: H002, description: Решение поддержали не менее 66 процентов собственников, severity: critical, category: approval, condition: {field: owners.approval_pct, op: ge, value: 66}}
+  - {id: H003, description: Обязателен акт обследования дефектов, severity: major, category: required_documents, condition: {field: documents.defect_report.present, op: exists}}
+  - {id: H004, description: Заявка подана до 2027-04-01 включительно, severity: major, category: deadlines, condition: {field: application.submission_date, op: le, value: "2027-04-01"}}

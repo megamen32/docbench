@@ -1,6 +1,7 @@
 """Offline end-to-end: canned oracle-perfect reply flows through parse+score
 and through the full run orchestrator via a pre-seeded response cache."""
 import json
+from datetime import datetime
 from pathlib import Path
 
 from docbench.benchmarks.base import load_case
@@ -100,7 +101,7 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
     # seed the cache the way the runner itself would
     key = runner._cache_key(msgs, 0.0, 8192)
     runner._cache_put(key, type("C", (), {"text": reply, "usage": {"prompt_tokens": 10, "completion_tokens": 10},
-                                          "latency_s": 0.1, "cost_usd": 0.0,
+                                          "latency_s": 0.1, "cost_usd": 0.5,
                                           "cost_is_estimate": True, "model": "fake",
                                           "cache_hit": False})())
 
@@ -115,9 +116,39 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
     case_file.write_text(yaml.safe_dump(valid_case.model_dump(exclude_none=True),
                                         allow_unicode=True, sort_keys=False), encoding="utf-8")
     res = R.run_benchmark("conformance", "fake", case_file,
-                          ruleset_dir=REPO / "rulesets", out_dir=tmp_path / "out")
+                          ruleset_dir=REPO / "rulesets", out_dir=tmp_path / "out",
+                          dataset_version="offline-canary-v1",
+                          fx_snapshot={"usd_rub": 80.0, "date": "2026-08-18", "source": "explicit"})
     assert res["summary"]["case_pass_rate"] == 1.0
     assert res["summary"]["finding_f1"] == 1.0
+    assert res["dataset_version"] == "offline-canary-v1"
+    assert res["fx_snapshot"]["usd_rub"] == 80.0
+    assert res["cases"][0]["cost_rub"] == 40.0
+    assert res["summary"]["total_cost_rub"] == 40.0
+    assert res["wall_time_s"] >= 0
+    assert datetime.fromisoformat(res["started_at"])
+    assert datetime.fromisoformat(res["finished_at"])
     transcript = json.loads((tmp_path / "out" / "transcript.json").read_text(encoding="utf-8"))
     assert res["artifacts"]["transcript"] == "transcript.json"
     assert transcript["cases"][0]["attempts"][0]["response_text"] == reply
+
+
+def test_campaign_uses_one_cbr_snapshot_and_profile_versions(monkeypatch, tmp_path):
+    import docbench.run as R
+
+    cbr = {"usd_rub": 81.25, "date": "2026-08-18", "source": "CBR"}
+    calls = []
+    monkeypatch.setattr(R, "fetch_cbr_usd_rub", lambda: cbr)
+
+    def fake_run(bench, model, cases, **kwargs):
+        calls.append((bench, model, cases, kwargs))
+        return {"model": model, "benchmark": bench, "out_dir": str(kwargs["out_dir"])}
+
+    monkeypatch.setattr(R, "run_benchmark", fake_run)
+    results = R.run_campaign(["fake-model"], ["policy"], out_dir=tmp_path / "campaign")
+
+    assert len(results) == 1
+    bench, model, cases, kwargs = calls[0]
+    assert (bench, model, cases.name) == ("rule_extraction", "fake-model", "seed-policy")
+    assert kwargs["dataset_version"] == "ru-policy-seed-v1.0"
+    assert kwargs["fx_snapshot"] is cbr

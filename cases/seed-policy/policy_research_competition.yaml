@@ -1,0 +1,19 @@
+id: policy_research_competition
+benchmark: rule_extraction
+notes: "Русский seed-кейс: исследовательский конкурс и согласованность данных."
+canonical_fields:
+  - researcher.degree
+  - researcher.peer_reviewed_publications
+  - documents.open_data_consent.present
+  - application.declared_budget_rub
+  - budget.total_rub
+policy_document: |
+  КОНКУРС ПРИКЛАДНЫХ ИССЛЕДОВАНИЙ. Руководитель имеет степень «кандидат наук»
+  или «доктор наук» и не менее трёх публикаций в рецензируемых журналах.
+  Обязательно согласие на размещение обезличенных данных исследования. Бюджет,
+  заявленный в форме, должен совпадать с итогом сметы.
+expected_rules:
+  - {id: R001, description: Учёная степень входит в допустимый перечень, severity: critical, category: eligibility, condition: {field: researcher.degree, op: in, value: ["кандидат наук", "доктор наук"]}}
+  - {id: R002, description: Не менее трёх рецензируемых публикаций, severity: major, category: eligibility, condition: {field: researcher.peer_reviewed_publications, op: ge, value: 3}}
+  - {id: R003, description: Обязательно согласие на открытые обезличенные данные, severity: major, category: required_documents, condition: {field: documents.open_data_consent.present, op: exists}}
+  - {id: R004, description: Бюджет формы совпадает с итогом сметы, severity: major, category: consistency, condition: {op: consistent, fields: [application.declared_budget_rub, budget.total_rub]}}

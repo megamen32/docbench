@@ -1,6 +1,6 @@
 id: policy_foundation_v2
 benchmark: rule_extraction
-notes: Second policy with an exception clause and a temporal condition; Core-track reading is canonical.
+notes: "Русский seed-кейс: исключение по треку и срок подачи; каноничен только основной трек."
 canonical_fields:
   - org_v2.months_registered
   - org_v2.total_requested
@@ -10,55 +10,55 @@ canonical_fields:
   - annual_report.headcount
   - annual_report.ifrs
 policy_document: |
-  NORTHSTAR FUND — CORE GRANTS, INTAKE POLICY v2.4
+  ФОНД «НОРДСТАР» — ПРИЁМ ЗАЯВОК НА ОСНОВНОЙ ГРАНТОВЫЙ ТРЕК, версия 2.4
 
-  Eligibility. Core-track applicants must have existed as registered
-  organisations for at least 24 months. Exception: organisations younger than
-  24 months may apply only to the Accelerator track; this policy governs the
-  Core track only.
+  Допуск. Заявитель основного трека должен быть зарегистрирован не менее
+  24 месяцев. Исключение: организация младше 24 месяцев может подать заявку
+  только на трек «Акселератор»; этот документ регулирует исключительно
+  основной трек.
 
-  Request ceiling. The total amount requested under a Core grant may not exceed
-  EUR 250,000.
+  Лимит запроса. Сумма, запрашиваемая по гранту основного трека, не может
+  превышать 250 000 евро.
 
-  Audit. Applications must include an independent audit report for the last
-  completed financial year. Packets without an audit report are rejected.
+  Аудит. К заявке необходимо приложить независимое аудиторское заключение за
+  последний завершённый финансовый год. Пакеты без заключения отклоняются.
 
-  Deadline. The intake window for the 2027 cycle closes on 31 March 2027
-  inclusive.
+  Срок. Приём заявок на цикл 2027 года завершается 31 марта 2027 года
+  включительно.
 
-  Headcount consistency. The number of staff declared in the application must
-  be the same as the headcount stated in the annual report.
+  Согласованность численности. Число сотрудников в заявке должно совпадать с
+  численностью в годовом отчёте.
 
-  Reporting standard. Annual reports must be prepared under IFRS. Non-IFRS
-  reports are treated as a formal defect only.
+  Стандарт отчётности. Годовой отчёт должен быть подготовлен по МСФО.
+  Отчёт не по МСФО считается только формальным недостатком.
 expected_rules:
   - id: N001
-    description: Core-track applicants must be registered for at least 24 months
+    description: Заявитель основного трека зарегистрирован не менее 24 месяцев
     severity: critical
     category: eligibility
     condition: {field: org_v2.months_registered, op: ge, value: 24}
   - id: N002
-    description: Total requested under a Core grant must not exceed 250000 EUR
+    description: Запрошенная сумма по основному треку не превышает 250000 евро
     severity: major
     category: budget
     condition: {field: org_v2.total_requested, op: le, value: 250000}
   - id: N003
-    description: Required document - independent audit report for the last financial year
+    description: Обязательно независимое аудиторское заключение за последний финансовый год
     severity: critical
     category: required_documents
     condition: {field: documents.audit_report.present, op: exists}
   - id: N004
-    description: Intake window closes 2027-03-31 inclusive
+    description: Приём заявок завершается 2027-03-31 включительно
     severity: major
     category: deadlines
     condition: {field: org_v2.submission_date, op: le, value: "2027-03-31"}
   - id: N005
-    description: Declared staff headcount must match the annual report headcount
+    description: Заявленная численность сотрудников совпадает с годовым отчётом
     severity: major
     category: consistency
     condition: {op: consistent, fields: [org_v2.declared_headcount, annual_report.headcount]}
   - id: N006
-    description: Annual report must be prepared under IFRS
+    description: Годовой отчёт подготовлен по МСФО
     severity: minor
     category: reporting
     condition: {field: annual_report.ifrs, op: eq, value: true}

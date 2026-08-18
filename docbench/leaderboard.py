@@ -12,9 +12,10 @@ from typing import Any
 
 STANDARD_SUITES = {
     "cases/seed-grant": ("Grant conformance", 10),
-    "cases/seed-policy": ("Policy rule extraction", 2),
+    "cases/seed-policy": ("Policy rule extraction", 12),
     "cases/ace-test": ("ACE conformance", 30),
 }
+STANDARD_CASE_COUNT = sum(expected for _, expected in STANDARD_SUITES.values())
 
 
 def _relative_cases_path(value: str) -> str:
@@ -69,7 +70,8 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
         key: summary.get(key)
         for key in ("n_cases", "n_scored", "n_errors", "case_pass_rate", "finding_precision",
                     "finding_recall", "finding_f1", "extraction_f1", "grounding_recall",
-                    "latency_p50_s", "total_cost_rub", "tokens")
+                    "latency_p50_s", "wall_time_s", "total_cost_rub", "cost_per_case_rub",
+                    "tokens")
     }
     transcript_link = (
         f'<a href="{html.escape(_href(card_path, transcript))}">transcript.json</a>'
@@ -91,8 +93,39 @@ def _score(value: Any) -> str:
     return "—" if value is None else f"{float(value):.4f}"
 
 
+def _rub(value: Any) -> str:
+    return "—" if value is None else f"{float(value):.2f} ₽"
+
+
+def _count(value: Any) -> str:
+    return "—" if value is None else f"{int(value):,}"
+
+
+def _seconds(value: Any) -> str:
+    return "—" if value is None else f"{float(value):.1f} s"
+
+
+def _tokens(row: dict[str, Any], key: str) -> Any:
+    tokens = row["summary"].get("tokens")
+    return tokens.get(key) if isinstance(tokens, dict) else None
+
+
+def _wall_time(row: dict[str, Any]) -> Any:
+    return row["summary"].get("wall_time_s", row.get("wall_time_s"))
+
+
+def _all_or_missing(values: list[Any]) -> Any:
+    """Aggregate only complete measurements; partial totals would look authoritative."""
+    return None if not values or any(value is None for value in values) else sum(values)
+
+
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
-    parts = ["<table><thead><tr><th>Model</th><th>Cases</th><th>Pass rate</th><th>Errors</th><th>F1</th><th>Transcript</th></tr></thead><tbody>"]
+    parts = [
+        "<table><thead><tr><th>Model</th><th>Cases</th><th>Pass rate</th><th>Errors</th><th>F1</th>"
+        "<th>Cost, RUB</th><th>RUB / case</th><th>Input tokens</th><th>Output tokens</th>"
+        "<th>Cache tokens</th><th>Reasoning tokens</th><th>API latency p50</th><th>Wall time</th>"
+        "<th>Transcript</th></tr></thead><tbody>"
+    ]
     for row in sorted(rows, key=lambda x: (x["summary"].get("case_pass_rate") or -1), reverse=True):
         result_path = Path(row["_path"])
         card = result_path.with_name("run.html")
@@ -100,11 +133,16 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
         transcript = result_path.with_name("transcript.json")
         summary = row["summary"]
         parts.append(
-            "<tr class=clickable data-href=\"%s\"><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+            "<tr class=clickable data-href=\"%s\"><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"
+            "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
                 html.escape(_href(output, card)), html.escape(str(row.get("model", ""))),
                 summary.get("n_cases", "—"), _score(summary.get("case_pass_rate")),
                 summary.get("n_errors", "—"),
                 _score(summary.get("finding_f1") or summary.get("extraction_f1")),
+                _rub(summary.get("total_cost_rub")), _rub(summary.get("cost_per_case_rub")),
+                _count(_tokens(row, "input_tokens")), _count(_tokens(row, "output_tokens")),
+                _count(_tokens(row, "cache_input_tokens")), _count(_tokens(row, "reasoning_tokens")),
+                _seconds(summary.get("latency_p50_s")), _seconds(_wall_time(row)),
                 "yes" if transcript.is_file() else "legacy / no",
             )
         )
@@ -115,16 +153,40 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     by_model: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
-    parts = ["<table><thead><tr><th>Model</th><th>Coverage</th><th>Weighted pass rate</th><th>Comparable</th></tr></thead><tbody>"]
+    parts = [
+        "<table><thead><tr><th>Model</th><th>Coverage</th><th>Weighted pass rate</th><th>Comparable</th>"
+        "<th>Cost, RUB</th><th>RUB / case</th><th>Input tokens</th><th>Output tokens</th>"
+        "<th>Cache tokens</th><th>Reasoning tokens</th><th>API latency p50</th><th>Wall time</th>"
+        "</tr></thead><tbody>"
+    ]
     aggregates = []
     for model, model_rows in by_model.items():
         covered = sum(int(r["summary"].get("n_cases") or 0) for r in model_rows)
         passed = sum((r["summary"].get("case_pass_rate") or 0) * (r["summary"].get("n_cases") or 0) for r in model_rows)
-        complete = covered == 42 and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
-        aggregates.append((model, covered, passed / covered if covered else None, complete))
-    for model, covered, rate, complete in sorted(aggregates, key=lambda x: (x[3], x[2] or -1), reverse=True):
-        parts.append("<tr><td>%s</td><td>%s / 42</td><td>%s</td><td>%s</td></tr>" % (
-            html.escape(model), covered, _score(rate), "yes" if complete else "partial — do not rank",
+        complete = covered == 52 and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
+        total_cost = _all_or_missing([r["summary"].get("total_cost_rub") for r in model_rows])
+        token_totals = {
+            key: _all_or_missing([_tokens(r, key) for r in model_rows])
+            for key in ("input_tokens", "output_tokens", "cache_input_tokens", "reasoning_tokens")
+        }
+        latency_values = [r["summary"].get("latency_p50_s") for r in model_rows]
+        latency_p50 = (
+            sorted(latency_values)[len(latency_values) // 2]
+            if latency_values and all(value is not None for value in latency_values) else None
+        )
+        wall_time = _all_or_missing([_wall_time(r) for r in model_rows])
+        aggregates.append((model, covered, passed / covered if covered else None, complete, total_cost,
+                           token_totals, latency_p50, wall_time))
+    for model, covered, rate, complete, total_cost, token_totals, latency_p50, wall_time in sorted(
+        aggregates, key=lambda x: (x[3], x[2] or -1), reverse=True
+    ):
+        parts.append("<tr><td>%s</td><td>%s / %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"
+                     "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+            html.escape(model), covered, STANDARD_CASE_COUNT, _score(rate), "yes" if complete else "partial — do not rank",
+            _rub(total_cost), _rub(total_cost / covered if total_cost is not None and covered else None),
+            _count(token_totals["input_tokens"]), _count(token_totals["output_tokens"]),
+            _count(token_totals["cache_input_tokens"]), _count(token_totals["reasoning_tokens"]),
+            _seconds(latency_p50), _seconds(wall_time),
         ))
     return "".join(parts) + "</tbody></table>"
 
@@ -144,7 +206,7 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
 <html lang="en"><meta charset="utf-8"><title>DocBench leaderboard</title>
 <style>body{{font:15px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}}table{{border-collapse:collapse;width:100%;margin-bottom:2rem}}th,td{{border:1px solid #d0d7de;padding:.45rem;text-align:left}}th{{background:#f6f8fa}}tr.clickable{{cursor:pointer}}tr.clickable:hover{{background:#ddf4ff}}.note{{color:#57606a}}</style>
 <h1>DocBench leaderboard</h1>
-<p class="note">Generated {html.escape(datetime.now().isoformat(timespec='seconds'))}. Standard rank requires all 42 cases. Click a row for its metadata, scores, and transcript. Legacy runs are visibly marked because they predate transcript retention.</p>
+<p class="note">Generated {html.escape(datetime.now().isoformat(timespec='seconds'))}. Standard rank requires all {STANDARD_CASE_COUNT} cases. Click a row for its metadata, scores, and transcript. Legacy runs are visibly marked because they predate transcript retention.</p>
 {''.join(sections)}
 <script>document.querySelectorAll('tr[data-href]').forEach(r=>r.onclick=()=>location.href=r.dataset.href)</script>
 </html>""", encoding="utf-8")
