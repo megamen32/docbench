@@ -81,3 +81,14 @@ chat, into argv, or into commit-bound files.
 - per-case `usage.served_model`, latency, cost
 
 Reproduce offline for free: `docbench run --bench <b> --model <m> --offline --cases <c>`.
+
+## Provider key map (full, no values)
+
+| provider | env var | default base URL | source of key |
+|---|---|---|---|
+| MiniMax | `DOCBENCH_MINIMAX_API_KEY` | `https://api.minimax.io/v1` | chat-pasted; consider rotated |
+| Z.ai (coding plan) | `DOCBENCH_ZAI_API_KEY` | `https://api.z.ai/api/paas/v4` | `~/.zcode/v2/config.json` provider `builtin:zai-coding-plan` |
+| OmniRoute | `DOCBENCH_OMNIROUTE_API_KEY` | `https://omniroute.bezrabotnyi.com/v1` | `.env` (chat-pasted) |
+
+Resolution order: `./.env` → `~/.config/docbench/env` → real process env.
+Catalog models and full metadata contract: `docbench/models.yaml`.
