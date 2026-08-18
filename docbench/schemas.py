@@ -76,11 +76,15 @@ class CaseDocument(BaseModel):
     fields: dict[str, Any] = Field(default_factory=dict)
     table: Optional[TableDoc] = None
     text: Optional[str] = None    # free-form prose (policy, narrative)
+    text_file: Optional[str] = None  # loaded relative to the case YAML
 
 
 class Case(BaseModel):
     id: str
-    benchmark: Literal["conformance", "rule_extraction"] = "conformance"
+    benchmark: Literal["conformance", "rule_extraction", "iri_review"] = "conformance"
+    # Private cases retain their complete prompt/response transcript, but the
+    # run writer encrypts that artifact before it reaches disk.
+    private: bool = False
     ruleset: Optional[str] = None            # ruleset id for conformance
     policy_document: Optional[str] = None    # inline text for rule_extraction
     canonical_fields: Optional[list[str]] = None  # rule_extraction field registry

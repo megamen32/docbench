@@ -15,8 +15,31 @@ def load_ruleset(path: Path) -> Ruleset:
 
 
 def load_case(path: Path) -> Case:
-    with open(path, encoding="utf-8") as f:
-        return Case.model_validate(yaml.safe_load(f))
+    case = Case.model_validate(_load_yaml(path))
+    _load_document_text_files(case, path)
+    return case
+
+
+def _load_document_text_files(case: Case, path: Path) -> None:
+    for doc in case.documents.values():
+        if not doc.text_file:
+            continue
+        text_path = (path.parent / doc.text_file).resolve()
+        if not text_path.is_file():
+            raise FileNotFoundError(f"case {case.id}: document text file not found: {text_path}")
+        raw = text_path.read_bytes()
+        if raw.startswith(b"\x00GITCRYPT\x00"):
+            raise RuntimeError(
+                f"case {case.id}: {text_path.name} is git-crypt locked; unlock the checkout first"
+            )
+        doc.text = raw.decode("utf-8")
+
+
+def _load_yaml(path: Path) -> Any:
+    raw = path.read_bytes()
+    if raw.startswith(b"\x00GITCRYPT\x00"):
+        raise RuntimeError(f"case file {path.name} is git-crypt locked; unlock the checkout first")
+    return yaml.safe_load(raw.decode("utf-8"))
 
 
 def load_cases(path: Path) -> list[tuple[Path, Case]]:
@@ -27,11 +50,12 @@ def load_cases(path: Path) -> list[tuple[Path, Case]]:
         files = sorted(path.glob("*.yaml")) + sorted(path.glob("*.yml"))
     out: list[tuple[Path, Case]] = []
     for p in files:
-        with open(p, encoding="utf-8") as f:
-            raw = yaml.safe_load(f)
+        raw = _load_yaml(p)
         if not isinstance(raw, dict) or "benchmark" not in raw:
             continue  # plan/registry metadata that happens to live beside cases
-        out.append((p, Case.model_validate(raw)))
+        case = Case.model_validate(raw)
+        _load_document_text_files(case, p)
+        out.append((p, case))
     return out
 
 

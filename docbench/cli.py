@@ -16,11 +16,13 @@ def main(argv: list[str] | None = None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p_run = sub.add_parser("run", help="run a benchmark on a model")
-    p_run.add_argument("--bench", required=True, choices=["conformance", "rule_extraction"])
+    p_run.add_argument("--bench", required=True, choices=["conformance", "rule_extraction", "iri_review"])
     p_run.add_argument("--model", required=True)
     p_run.add_argument("--cases", required=True, help="case yaml file or directory")
     p_run.add_argument("--ruleset-dir", default=str(REPO_ROOT / "rulesets"))
     p_run.add_argument("--ruleset", default=None, help="override ruleset id for conformance")
+    p_run.add_argument("--gold", default=None,
+                       help="private gold YAML for iri_review; keep it outside the repository")
     p_run.add_argument("--limit", type=int, default=None)
     p_run.add_argument("--offline", action="store_true",
                        help="serve from response cache only; error on cache miss")
@@ -94,6 +96,7 @@ def main(argv: list[str] | None = None) -> int:
             limit=args.limit, offline=args.offline,
             out_dir=Path(args.out) if args.out else None,
             max_tokens=args.max_tokens, effort=args.effort, fx_snapshot=fx_snapshot,
+            gold_path=Path(args.gold) if args.gold else None,
         )
         print(json.dumps(res["summary"], ensure_ascii=False, indent=2))
         print("results:", res["out_dir"])

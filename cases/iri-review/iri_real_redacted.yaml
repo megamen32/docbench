@@ -1,0 +1,15 @@
+id: iri_real_redacted_v1
+benchmark: iri_review
+notes: >-
+  Обезличенный снимок реальной заявки: сохранены структура, поля, вложения и
+  противоречия, но удалены имена, суммы, даты, названия проекта, URL, хэши и
+  имена файлов. Gold подключается отдельным локальным файлом.
+documents:
+  request_snapshot:
+    kind: packet
+    title: Обезличенный снимок заявки ИРИ
+    text_file: packet_redacted.md
+  attachment_text_extracts:
+    kind: attachment_extract
+    title: Обезличенные текстовые извлечения вложений
+    text_file: attachment_extracts_redacted.md

@@ -24,3 +24,7 @@ graphify-out/
 # template and copy to .env on each machine, then chmod 600.
 .env
 .env.*.local
+
+# IRI real-case material is local-only: raw packet, private gold and provider
+# receipts must never enter a public checkout.
+cases/iri-review/*.private.yaml

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import statistics
+import subprocess
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -104,6 +105,7 @@ def run_benchmark(
     effort: str | None = None,
     dataset_version: str | None = None,
     fx_snapshot: dict[str, Any] | None = None,
+    gold_path: Path | None = None,
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
@@ -120,6 +122,7 @@ def run_benchmark(
     pairs = load_cases(Path(cases_path))
     if limit:
         pairs = pairs[:limit]
+    has_private = any(case.private for _, case in pairs)
 
     per_case: list[dict[str, Any]] = []
     transcript_cases: list[dict[str, Any]] = []
@@ -133,6 +136,8 @@ def run_benchmark(
             if rid not in idx:
                 raise KeyError(f"case {case.id}: ruleset {rid!r} not found in rulesets/")
             bench = BENCHMARKS[bench_key](idx[rid])
+        elif bench_key == "iri_review":
+            bench = BENCHMARKS[bench_key](gold_path=gold_path)
         else:
             bench = BENCHMARKS[bench_key]()
         gold = bench.gold_for(case)
@@ -233,8 +238,10 @@ def run_benchmark(
         "fx_snapshot": fx_snapshot,
         "reasoning": getattr(spec, "reasoning", None),
         "reasoning_note": getattr(spec, "reasoning_note", None),
-        "artifacts": {"transcript": "transcript.json"},
+        "artifacts": {"transcript": "transcript.json.gitcrypt" if has_private else "transcript.json"},
         "cases_path": str(cases_path),
+        "gold_scope": "external_private" if bench_key == "iri_review" else None,
+        "private": has_private,
         "dataset_version": dataset_version or f"{Path(cases_path).name}-v1",
         "n_cases": len(per_case),
         "summary": summary,
@@ -257,10 +264,48 @@ def run_benchmark(
         # unfiltered raw provider payloads are deliberately not retained.
         "cases": transcript_cases,
     }
-    (out / "transcript.json").write_text(
-        json.dumps(transcript, ensure_ascii=False, indent=2), encoding="utf-8")
+    _write_transcript(out, transcript, private=has_private)
     (out / "report.md").write_text(render_markdown_report([result]), encoding="utf-8")
     return result
+
+
+def _write_transcript(out_dir: Path, transcript: dict[str, Any], *, private: bool) -> Path:
+    """Write a run transcript, encrypting it when any case is marked private.
+
+    ``git-crypt clean`` is used directly so no plaintext temporary file is
+    created.  A private run fails closed if git-crypt is unavailable, locked,
+    or returns data without its ciphertext marker.
+    """
+    raw = json.dumps(transcript, ensure_ascii=False, indent=2).encode("utf-8")
+    if not private:
+        path = out_dir / "transcript.json"
+        path.write_bytes(raw)
+        return path
+
+    plain_path = out_dir / "transcript.json"
+    if plain_path.exists():
+        raise RuntimeError(
+            "refusing private transcript because plaintext transcript.json already exists"
+        )
+    try:
+        proc = subprocess.run(
+            ["git-crypt", "clean"],
+            input=raw,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=REPO_ROOT,
+            check=True,
+        )
+    except FileNotFoundError as exc:
+        raise RuntimeError("private transcript requires git-crypt to be installed") from exc
+    except subprocess.CalledProcessError as exc:
+        detail = exc.stderr.decode("utf-8", errors="replace").strip()[-300:]
+        raise RuntimeError(f"could not encrypt private transcript with git-crypt: {detail}") from exc
+    if not proc.stdout.startswith(b"\x00GITCRYPT\x00"):
+        raise RuntimeError("git-crypt did not return a ciphertext transcript")
+    path = out_dir / "transcript.json.gitcrypt"
+    path.write_bytes(proc.stdout)
+    return path
 
 
 def _cost_to_rub(cost_usd: float, cost_rub_direct: float, fx_snapshot: dict[str, Any] | None) -> float | None:

@@ -1,0 +1,6 @@
+# Real IRI benchmark material stays encrypted in Git.  The working tree is
+# readable only after unlocking with the local git-crypt key.
+cases/iri-review/packet_redacted.md filter=git-crypt diff=git-crypt
+cases/iri-review/attachment_extracts_redacted.md filter=git-crypt diff=git-crypt
+cases/iri-review/private/** filter=git-crypt diff=git-crypt
+cases/iri-review/*.private.yaml filter=git-crypt diff=git-crypt
