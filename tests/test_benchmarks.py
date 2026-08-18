@@ -198,3 +198,10 @@ def test_retry_failed_run_replaces_only_bad_case_and_keeps_attempt_history(monke
     assert merged["retry_history"][0]["case_ids"] == ["bad"]
     transcript = json.loads((run_dir / "transcript.json").read_text(encoding="utf-8"))
     assert transcript["cases"][1]["attempts"][-1] == {"response_text": "new-bad", "retry": 1}
+
+
+def test_explicit_safety_refusal_is_marked_without_changing_score_semantics():
+    import docbench.run as R
+
+    assert R._response_failure_kind("Я не могу обсуждать эту тему. Давайте поговорим о чём-нибудь ещё.") == "refusal"
+    assert R._response_failure_kind("invalid response") is None

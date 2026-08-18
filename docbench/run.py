@@ -24,6 +24,14 @@ VAR_DIR = REPO_ROOT / "var"
 CACHE_DIR = VAR_DIR / "cache"
 RUNS_DIR = VAR_DIR / "runs"
 
+
+def _response_failure_kind(text: str | None) -> str | None:
+    """Classify an explicit provider refusal without changing benchmark scoring."""
+    normalized = " ".join((text or "").lower().split())
+    if "я не могу обсуждать эту тему" in normalized:
+        return "refusal"
+    return None
+
 # The small, supported campaign profile.  It keeps the currently useful
 # document suites together without introducing a second manifest format.
 CAMPAIGN_SUITES: dict[str, dict[str, Any]] = {
@@ -200,6 +208,9 @@ def run_benchmark(
         wall = round(time.monotonic() - t0, 3)
         if payload is None:
             scores = {"ok": False, "parse_error": parse_err}
+            failure_kind = _response_failure_kind(comp.text)
+            if failure_kind:
+                scores["response_kind"] = failure_kind
             pred_dump: dict[str, Any] = {"raw_head": (comp.text or "")[:400]}
         else:
             scores = bench.score(payload, gold, case)
@@ -542,6 +553,7 @@ def render_markdown_report(results: list[dict[str, Any]]) -> str:
             lines.append(f"- {flag} `{c['case_id']}`{gen}"
                          f" — disp {c.get('pred_disposition')} vs {c.get('gold_disposition')}"
                          + (f", err: {c['error']}" if c.get("error") else "")
-                         + (f", parse: {c['parse_error']}" if c.get("parse_error") else ""))
+                         + (f", parse: {c['parse_error']}" if c.get("parse_error") else "")
+                         + (f", response: {c['response_kind']}" if c.get("response_kind") else ""))
         lines.append("")
     return "\n".join(lines)

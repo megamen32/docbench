@@ -134,6 +134,7 @@
       "generated_by": null,
       "ok": false,
       "parse_error": "no JSON object in reply",
+      "response_kind": "refusal",
       "cost_rub": null,
       "cost_usd": null,
       "cost_is_estimate": false,

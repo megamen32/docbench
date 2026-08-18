@@ -74,6 +74,13 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
                     "latency_p50_s", "wall_time_s", "total_cost_rub", "cost_per_case_rub",
                     "tokens")
     }
+    refusals = [str(case.get("case_id")) for case in row.get("cases", [])
+                if case.get("response_kind") == "refusal"]
+    response_contract = (
+        "<p>Model refusal (instead of the required JSON): "
+        + ", ".join(html.escape(case_id) for case_id in refusals) + "</p>"
+        if refusals else ""
+    )
     transcript_link = (
         f'<a href="{html.escape(_href(card_path, transcript))}">transcript.json</a>'
         if transcript.is_file() else
@@ -87,6 +94,7 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
 <p>Artifacts: {transcript_link} · <a href="{html.escape(_href(card_path, result_path))}">results.json</a> · <a href="{html.escape(_href(card_path, report))}">report.md</a></p>
 <h2>Run metadata</h2><pre>{html.escape(json.dumps(meta, ensure_ascii=False, indent=2))}</pre>
 <h2>Scores</h2><pre>{html.escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre>
+{response_contract}
 """, encoding="utf-8")
 
 
