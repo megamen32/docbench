@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | yandex-alice-ai-llm | conformance | 30 | 0.8000 | — | — | — | 0.0345 | 0.1379 | — | — | 1.2234 | 5.6130 |
 
-## yandex-alice-ai-llm · conformance · 2026-08-18T14:31:52.072319+00:00
+## yandex-alice-ai-llm · conformance · 2026-08-18T15:32:06.911276+00:00
 
 ### Reasoning
 

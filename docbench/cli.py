@@ -88,6 +88,12 @@ def main(argv: list[str] | None = None) -> int:
     p_pages.add_argument("--campaign-dir", required=True)
     p_pages.add_argument("--out", default=str(REPO_ROOT / "docs"))
 
+    p_retry = sub.add_parser("retry-failures", help="rerun only API/JSON-error cases in one saved run")
+    p_retry.add_argument("--run-dir", required=True, help="directory containing results.json and transcript.json")
+    p_retry.add_argument("--offline", action="store_true")
+    p_retry.add_argument("--max-tokens", type=int, default=8192)
+    p_retry.add_argument("--gold", default=None, help="private gold YAML for an iri_review run")
+
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
@@ -129,6 +135,20 @@ def main(argv: list[str] | None = None) -> int:
         from .leaderboard import publish_pages
         result = publish_pages(Path(args.campaign_dir), Path(args.out))
         print(json.dumps(result, ensure_ascii=False))
+        return 0
+
+    if args.cmd == "retry-failures":
+        from .run import retry_failed_run
+        result = retry_failed_run(
+            Path(args.run_dir), offline=args.offline, max_tokens=args.max_tokens,
+            gold_path=Path(args.gold) if args.gold else None,
+        )
+        print(json.dumps({
+            "run": result["out_dir"],
+            "retried": result.get("retry_history", [])[-1].get("case_ids", []) if result.get("retry_history") else [],
+            "errors_remaining": result["summary"]["n_errors"],
+            "wall_time_s": result["wall_time_s"],
+        }, ensure_ascii=False))
         return 0
 
     if args.cmd == "errorgen":

@@ -152,3 +152,49 @@ def test_campaign_uses_one_cbr_snapshot_and_profile_versions(monkeypatch, tmp_pa
     assert (bench, model, cases.name) == ("rule_extraction", "fake-model", "seed-policy")
     assert kwargs["dataset_version"] == "ru-policy-seed-v1.0"
     assert kwargs["fx_snapshot"] is cbr
+
+
+def test_retry_failed_run_replaces_only_bad_case_and_keeps_attempt_history(monkeypatch, tmp_path):
+    import docbench.run as R
+
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    good = {"case_id": "good", "ok": True, "finding_precision": 1.0, "cost_rub": 1.0,
+            "latency_s": 0.1, "usage": {"served_model": "fake", "input_tokens": 1}}
+    bad = {"case_id": "bad", "ok": False, "error": "HTTP 500", "cost_rub": None,
+           "latency_s": None}
+    original = {
+        "benchmark": "conformance", "model": "fake", "cases_path": str(tmp_path / "cases"),
+        "dataset_version": "test-v1", "fx_snapshot": None, "effort": "provider-default",
+        "private": False, "artifacts": {"transcript": "transcript.json"}, "out_dir": str(run_dir),
+        "started_at": "2026-08-18T00:00:00+00:00", "finished_at": "2026-08-18T00:00:01+00:00",
+        "ts": "2026-08-18T00:00:01+00:00", "wall_time_s": 1.0, "n_cases": 2,
+        "summary": R._aggregate([good, bad]), "cases": [good, bad],
+    }
+    (run_dir / "results.json").write_text(json.dumps(original), encoding="utf-8")
+    (run_dir / "transcript.json").write_text(json.dumps({"cases": [
+        {"case_id": "good", "attempts": [{"response_text": "old-good"}]},
+        {"case_id": "bad", "attempts": [{"error": "HTTP 500"}]},
+    ]}), encoding="utf-8")
+
+    def fake_run(*args, **kwargs):
+        assert kwargs["case_ids"] == {"bad"}
+        out = kwargs["out_dir"]
+        retried = {"case_id": "bad", "ok": True, "finding_precision": 1.0, "cost_rub": 2.0,
+                   "latency_s": 0.2, "usage": {"served_model": "fake", "input_tokens": 2}}
+        (out / "transcript.json").write_text(json.dumps({"cases": [
+            {"case_id": "bad", "attempts": [{"response_text": "new-bad"}]},
+        ]}), encoding="utf-8")
+        return {"cases": [retried], "finished_at": "2026-08-18T00:00:03+00:00", "wall_time_s": 2.0,
+                "cache_mode": "bypass",
+                "summary": R._aggregate([retried])}
+
+    monkeypatch.setattr(R, "run_benchmark", fake_run)
+    merged = R.retry_failed_run(run_dir)
+    assert merged["cases"][0] == good
+    assert merged["summary"]["n_errors"] == 0
+    assert merged["summary"]["total_cost_rub"] == 3.0
+    assert merged["wall_time_s"] == 3.0
+    assert merged["retry_history"][0]["case_ids"] == ["bad"]
+    transcript = json.loads((run_dir / "transcript.json").read_text(encoding="utf-8"))
+    assert transcript["cases"][1]["attempts"][-1] == {"response_text": "new-bad", "retry": 1}

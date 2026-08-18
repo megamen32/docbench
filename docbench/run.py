@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import json
+import os
 import statistics
 import subprocess
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -106,6 +108,8 @@ def run_benchmark(
     dataset_version: str | None = None,
     fx_snapshot: dict[str, Any] | None = None,
     gold_path: Path | None = None,
+    case_ids: set[str] | None = None,
+    use_cache: bool = True,
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
@@ -114,12 +118,18 @@ def run_benchmark(
     effort_label = effort or spec.effort_default or "provider-default"
     runner_cls = (GigaChatRunner if getattr(spec, "auth_method", "bearer") == "gigachat_oauth"
                   else OpenAICompatRunner)
-    runner = runner_cls(spec, cache_dir=CACHE_DIR, offline=offline)
+    runner = runner_cls(spec, cache_dir=CACHE_DIR if use_cache else None, offline=offline)
 
     started_at = datetime.now(timezone.utc)
     run_started_monotonic = time.monotonic()
 
     pairs = load_cases(Path(cases_path))
+    if case_ids is not None:
+        available = {case.id for _, case in pairs}
+        missing = sorted(case_ids - available)
+        if missing:
+            raise KeyError(f"unknown case ids for {cases_path}: {missing}")
+        pairs = [(path, case) for path, case in pairs if case.id in case_ids]
     if limit:
         pairs = pairs[:limit]
     has_private = any(case.private for _, case in pairs)
@@ -227,6 +237,7 @@ def run_benchmark(
         "provider_label": spec.provider_label,
         "effort": effort_label,
         "request_extra": extra_body,
+        "cache_mode": "read_write" if use_cache else "bypass",
         "quantization": spec.quantization,
         "quantization_note": ("providers do not expose served quantization via API; "
                               "pin provider+model+date and see served_models"),
@@ -267,6 +278,83 @@ def run_benchmark(
     _write_transcript(out, transcript, private=has_private)
     (out / "report.md").write_text(render_markdown_report([result]), encoding="utf-8")
     return result
+
+
+def retry_failed_run(
+    run_dir: Path,
+    *,
+    offline: bool = False,
+    max_tokens: int = 8192,
+    gold_path: Path | None = None,
+) -> dict[str, Any]:
+    """Retry failed rows only, then atomically merge them into an existing run."""
+    run_dir = Path(run_dir)
+    result_path = run_dir / "results.json"
+    transcript_path = run_dir / "transcript.json"
+    original = json.loads(result_path.read_text(encoding="utf-8"))
+    if original.get("private") or original.get("artifacts", {}).get("transcript") != "transcript.json":
+        raise ValueError("retry-failures supports runs with a plaintext transcript.json only")
+    transcript = json.loads(transcript_path.read_text(encoding="utf-8"))
+    failed_ids = {row["case_id"] for row in original.get("cases", [])
+                  if row.get("error") or row.get("parse_error")}
+    if not failed_ids:
+        return original
+
+    effort = original.get("effort")
+    if effort == "provider-default":
+        effort = None
+    with tempfile.TemporaryDirectory(prefix="docbench-retry-") as temp:
+        retry = run_benchmark(
+            original["benchmark"], original["model"], Path(original["cases_path"]),
+            offline=offline, out_dir=Path(temp), max_tokens=max_tokens,
+            effort=effort, dataset_version=original.get("dataset_version"),
+            fx_snapshot=original.get("fx_snapshot"), gold_path=gold_path,
+            case_ids=failed_ids, use_cache=False,
+        )
+        retry_transcript = json.loads((Path(temp) / "transcript.json").read_text(encoding="utf-8"))
+
+    retry_rows = {row["case_id"]: row for row in retry["cases"]}
+    merged_cases = [retry_rows.get(row["case_id"], row) for row in original["cases"]]
+    retry_index = len(original.get("retry_history", [])) + 1
+    retry_attempts = {case["case_id"]: case.get("attempts", []) for case in retry_transcript["cases"]}
+    for case in transcript.get("cases", []):
+        if case["case_id"] in retry_attempts:
+            case.setdefault("attempts", []).extend(
+                [{**attempt, "retry": retry_index} for attempt in retry_attempts[case["case_id"]]]
+            )
+
+    finished_at = retry["finished_at"]
+    merged = dict(original)
+    merged.update({
+        "ts": finished_at,
+        "finished_at": finished_at,
+        "wall_time_s": round(float(original.get("wall_time_s") or 0) + float(retry["wall_time_s"]), 3),
+        "served_models": sorted({row.get("usage", {}).get("served_model") for row in merged_cases
+                                 if row.get("usage", {}).get("served_model")}),
+        "n_cases": len(merged_cases),
+        "summary": _aggregate(merged_cases),
+        "cases": merged_cases,
+        "out_dir": str(run_dir),
+    })
+    history = list(original.get("retry_history", []))
+    history.append({
+        "at": finished_at,
+        "retry_index": retry_index,
+        "case_ids": sorted(failed_ids),
+        "wall_time_s": retry["wall_time_s"],
+        "cache_mode": retry["cache_mode"],
+        "summary": retry["summary"],
+    })
+    merged["retry_history"] = history
+
+    result_tmp = result_path.with_suffix(".json.tmp")
+    transcript_tmp = transcript_path.with_suffix(".json.tmp")
+    result_tmp.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+    transcript_tmp.write_text(json.dumps(transcript, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(result_tmp, result_path)
+    os.replace(transcript_tmp, transcript_path)
+    (run_dir / "report.md").write_text(render_markdown_report([merged]), encoding="utf-8")
+    return merged
 
 
 def _write_transcript(out_dir: Path, transcript: dict[str, Any], *, private: bool) -> Path:

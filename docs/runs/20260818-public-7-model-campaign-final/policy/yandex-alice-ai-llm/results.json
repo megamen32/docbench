@@ -1,8 +1,8 @@
 {
-  "ts": "2026-08-18T14:31:35.031242+00:00",
+  "ts": "2026-08-18T15:32:01.274208+00:00",
   "started_at": "2026-08-18T14:31:34.964196+00:00",
-  "finished_at": "2026-08-18T14:31:35.031242+00:00",
-  "wall_time_s": 0.067,
+  "finished_at": "2026-08-18T15:32:01.274208+00:00",
+  "wall_time_s": 2.304,
   "benchmark": "rule_extraction",
   "model": "yandex-alice-ai-llm",
   "model_alias": "gpt://b1gdlat2773471081o37/aliceai-llm",
@@ -35,29 +35,29 @@
   "n_cases": 12,
   "summary": {
     "n_cases": 12,
-    "n_scored": 11,
-    "n_errors": 1,
+    "n_scored": 12,
+    "n_errors": 0,
     "case_pass_rate": 0.0,
-    "finding_precision": 0.611,
-    "finding_recall": 0.611,
-    "finding_f1": 0.611,
+    "finding_precision": 0.6018,
+    "finding_recall": 0.6018,
+    "finding_f1": 0.6018,
     "critical_recall": null,
     "grounding_precision": null,
     "grounding_recall": null,
     "extraction_f1": null,
     "false_accept_rate": 0.0,
     "false_reject_rate": 0.0,
-    "cost_per_case_rub": 0.605442,
+    "cost_per_case_rub": 0.567914,
     "cost_is_estimate": false,
     "latency_p50_s": 2.5655,
-    "total_cost_rub": 7.265299,
+    "total_cost_rub": 6.814974,
     "tokens": {
-      "input_tokens": 6497,
-      "output_tokens": 5966,
-      "total_tokens": 12463,
-      "cache_read_input_tokens": 5504,
+      "input_tokens": 6054,
+      "output_tokens": 5613,
+      "total_tokens": 11667,
+      "cache_read_input_tokens": 4720,
       "cache_write_input_tokens": 0,
-      "cache_input_tokens": 5504,
+      "cache_input_tokens": 4720,
       "reasoning_tokens": 0
     }
   },
@@ -310,21 +310,46 @@
       "case_id": "policy_housing_repair",
       "source": "cases/seed-policy/policy_housing_repair.yaml",
       "generated_by": null,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "tp": 2,
+      "gold_rules": 4,
+      "pred_rules": 4,
+      "severity_accuracy": 0.5,
+      "unmatched_gold": [
+        "('application.submission_date', 'le', '2027-04-01')",
+        "('documents.defect_report.present', 'exists', None)"
+      ],
+      "unmatched_pred": [
+        "('application.submission_date', 'before', '2027-04-01')",
+        "('documents.defect_report.present', 'eq', True)"
+      ],
       "ok": false,
-      "parse_error": "no JSON object in reply",
-      "cost_rub": 0.89318,
-      "cost_usd": 0.010487703,
+      "pred_disposition": null,
+      "gold_disposition": null,
+      "false_accept": false,
+      "false_reject": false,
+      "finding_precision": 0.5,
+      "finding_recall": 0.5,
+      "finding_f1": 0.5,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "cost_rub": 0.442855,
+      "cost_usd": 0.005199999,
       "cost_is_estimate": false,
-      "latency_s": 2.426,
-      "cache_hit": true,
+      "latency_s": 2.109,
+      "cache_hit": false,
       "usage": {
-        "input_tokens": 855,
-        "output_tokens": 710,
-        "total_tokens": 1565,
-        "cache_read_input_tokens": 784,
+        "input_tokens": 412,
+        "output_tokens": 357,
+        "total_tokens": 769,
+        "cache_read_input_tokens": 0,
         "cache_write_input_tokens": 0,
-        "cache_input_tokens": 784,
-        "uncached_input_tokens": 71,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 412,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
       }
@@ -612,5 +637,80 @@
       }
     }
   ],
-  "out_dir": "var/runs/20260818-public-7-model-campaign-final/policy/yandex-alice-ai-llm"
+  "out_dir": "var/runs/20260818-public-7-model-campaign-final/policy/yandex-alice-ai-llm",
+  "retry_history": [
+    {
+      "at": "2026-08-18T15:30:49.353598+00:00",
+      "retry_index": 1,
+      "case_ids": [
+        "policy_housing_repair"
+      ],
+      "wall_time_s": 0.067,
+      "summary": {
+        "n_cases": 1,
+        "n_scored": 0,
+        "n_errors": 1,
+        "case_pass_rate": 0.0,
+        "finding_precision": null,
+        "finding_recall": null,
+        "finding_f1": null,
+        "critical_recall": null,
+        "grounding_precision": null,
+        "grounding_recall": null,
+        "extraction_f1": null,
+        "false_accept_rate": null,
+        "false_reject_rate": null,
+        "cost_per_case_rub": 0.89318,
+        "cost_is_estimate": false,
+        "latency_p50_s": 2.426,
+        "total_cost_rub": 0.89318,
+        "tokens": {
+          "input_tokens": 855,
+          "output_tokens": 710,
+          "total_tokens": 1565,
+          "cache_read_input_tokens": 784,
+          "cache_write_input_tokens": 0,
+          "cache_input_tokens": 784,
+          "reasoning_tokens": 0
+        }
+      }
+    },
+    {
+      "at": "2026-08-18T15:32:01.274208+00:00",
+      "retry_index": 2,
+      "case_ids": [
+        "policy_housing_repair"
+      ],
+      "wall_time_s": 2.17,
+      "cache_mode": "bypass",
+      "summary": {
+        "n_cases": 1,
+        "n_scored": 1,
+        "n_errors": 0,
+        "case_pass_rate": 0.0,
+        "finding_precision": 0.5,
+        "finding_recall": 0.5,
+        "finding_f1": 0.5,
+        "critical_recall": null,
+        "grounding_precision": null,
+        "grounding_recall": null,
+        "extraction_f1": null,
+        "false_accept_rate": 0.0,
+        "false_reject_rate": 0.0,
+        "cost_per_case_rub": 0.442855,
+        "cost_is_estimate": false,
+        "latency_p50_s": 2.109,
+        "total_cost_rub": 0.442855,
+        "tokens": {
+          "input_tokens": 412,
+          "output_tokens": 357,
+          "total_tokens": 769,
+          "cache_read_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "cache_input_tokens": 0,
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ]
 }

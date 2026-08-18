@@ -41,6 +41,16 @@ var/leaderboard/index.html
 Click a model row to see that run's metrics and links to `results.json`,
 `report.md` and, when retained, `transcript.json`.
 
+If a completed run has only API or JSON-format errors, retry just those cases:
+
+```bash
+docbench retry-failures --run-dir var/runs/<campaign>/<suite>/<model>
+```
+
+Successful rows are kept unchanged. The retry bypasses the local response cache,
+adds its elapsed time and replaces only the failed score/cost rows; both the
+previous failure and the new provider response remain in `transcript.json`.
+
 ## What the numbers mean
 
 | Field | Meaning |

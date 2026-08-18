@@ -5,7 +5,7 @@
 <h1>glm-4.7-flash</h1>
 <p>Artifacts: <a href="transcript.json">transcript.json</a> · <a href="results.json">results.json</a> · <a href="report.md">report.md</a></p>
 <h2>Run metadata</h2><pre>{
-  &quot;ts&quot;: &quot;2026-08-18T14:31:08.861094+00:00&quot;,
+  &quot;ts&quot;: &quot;2026-08-18T15:22:06.562358+00:00&quot;,
   &quot;model&quot;: &quot;glm-4.7-flash&quot;,
   &quot;model_alias&quot;: &quot;GLM-4.7-Flash&quot;,
   &quot;provider&quot;: &quot;zai&quot;,
@@ -14,32 +14,34 @@
   &quot;cases_path&quot;: &quot;cases/seed-policy&quot;,
   &quot;effort&quot;: &quot;provider-default&quot;,
   &quot;request_extra&quot;: {},
-  &quot;served_models&quot;: [],
+  &quot;served_models&quot;: [
+    &quot;GLM-4.7-Flash&quot;
+  ],
   &quot;reasoning&quot;: false,
   &quot;reasoning_note&quot;: null,
   &quot;price_source&quot;: &quot;pinned routerai supplement snapshot&quot;
 }</pre>
 <h2>Scores</h2><pre>{
   &quot;n_cases&quot;: 12,
-  &quot;n_scored&quot;: 0,
-  &quot;n_errors&quot;: 12,
+  &quot;n_scored&quot;: 9,
+  &quot;n_errors&quot;: 3,
   &quot;case_pass_rate&quot;: 0.0,
-  &quot;finding_precision&quot;: null,
-  &quot;finding_recall&quot;: null,
-  &quot;finding_f1&quot;: null,
+  &quot;finding_precision&quot;: 0.7828,
+  &quot;finding_recall&quot;: 0.7828,
+  &quot;finding_f1&quot;: 0.7828,
   &quot;extraction_f1&quot;: null,
   &quot;grounding_recall&quot;: null,
-  &quot;latency_p50_s&quot;: null,
+  &quot;latency_p50_s&quot;: 12.719,
   &quot;wall_time_s&quot;: null,
-  &quot;total_cost_rub&quot;: null,
-  &quot;cost_per_case_rub&quot;: null,
+  &quot;total_cost_rub&quot;: 1.09594,
+  &quot;cost_per_case_rub&quot;: 0.121771,
   &quot;tokens&quot;: {
-    &quot;input_tokens&quot;: 0,
-    &quot;output_tokens&quot;: 0,
-    &quot;total_tokens&quot;: 0,
-    &quot;cache_read_input_tokens&quot;: 0,
+    &quot;input_tokens&quot;: 4228,
+    &quot;output_tokens&quot;: 24759,
+    &quot;total_tokens&quot;: 28987,
+    &quot;cache_read_input_tokens&quot;: 1962,
     &quot;cache_write_input_tokens&quot;: 0,
-    &quot;cache_input_tokens&quot;: 0,
-    &quot;reasoning_tokens&quot;: 0
+    &quot;cache_input_tokens&quot;: 1962,
+    &quot;reasoning_tokens&quot;: 21638
   }
 }</pre>

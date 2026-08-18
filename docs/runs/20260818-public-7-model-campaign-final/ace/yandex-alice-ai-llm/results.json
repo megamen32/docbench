@@ -1,8 +1,8 @@
 {
-  "ts": "2026-08-18T14:31:52.072319+00:00",
+  "ts": "2026-08-18T15:32:06.911276+00:00",
   "started_at": "2026-08-18T14:31:48.535517+00:00",
-  "finished_at": "2026-08-18T14:31:52.072319+00:00",
-  "wall_time_s": 3.537,
+  "finished_at": "2026-08-18T15:32:06.911276+00:00",
+  "wall_time_s": 4.764,
   "benchmark": "conformance",
   "model": "yandex-alice-ai-llm",
   "model_alias": "gpt://b1gdlat2773471081o37/aliceai-llm",
@@ -137,8 +137,8 @@
       "cost_rub": null,
       "cost_usd": null,
       "cost_is_estimate": false,
-      "latency_s": 0.381,
-      "cache_hit": true,
+      "latency_s": 0.309,
+      "cache_hit": false,
       "usage": {
         "input_tokens": 0,
         "output_tokens": 0,
@@ -1043,5 +1043,80 @@
       }
     }
   ],
-  "out_dir": "var/runs/20260818-public-7-model-campaign-final/ace/yandex-alice-ai-llm"
+  "out_dir": "var/runs/20260818-public-7-model-campaign-final/ace/yandex-alice-ai-llm",
+  "retry_history": [
+    {
+      "at": "2026-08-18T15:30:54.694566+00:00",
+      "retry_index": 1,
+      "case_ids": [
+        "ace_0002"
+      ],
+      "wall_time_s": 0.289,
+      "summary": {
+        "n_cases": 1,
+        "n_scored": 0,
+        "n_errors": 1,
+        "case_pass_rate": 0.0,
+        "finding_precision": null,
+        "finding_recall": null,
+        "finding_f1": null,
+        "critical_recall": null,
+        "grounding_precision": null,
+        "grounding_recall": null,
+        "extraction_f1": null,
+        "false_accept_rate": null,
+        "false_reject_rate": null,
+        "cost_per_case_rub": null,
+        "cost_is_estimate": false,
+        "latency_p50_s": 0.381,
+        "total_cost_rub": null,
+        "tokens": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "cache_input_tokens": 0,
+          "reasoning_tokens": 0
+        }
+      }
+    },
+    {
+      "at": "2026-08-18T15:32:06.911276+00:00",
+      "retry_index": 2,
+      "case_ids": [
+        "ace_0002"
+      ],
+      "wall_time_s": 0.938,
+      "cache_mode": "bypass",
+      "summary": {
+        "n_cases": 1,
+        "n_scored": 0,
+        "n_errors": 1,
+        "case_pass_rate": 0.0,
+        "finding_precision": null,
+        "finding_recall": null,
+        "finding_f1": null,
+        "critical_recall": null,
+        "grounding_precision": null,
+        "grounding_recall": null,
+        "extraction_f1": null,
+        "false_accept_rate": null,
+        "false_reject_rate": null,
+        "cost_per_case_rub": null,
+        "cost_is_estimate": false,
+        "latency_p50_s": 0.309,
+        "total_cost_rub": null,
+        "tokens": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "cache_input_tokens": 0,
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ]
 }

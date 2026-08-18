@@ -1,8 +1,8 @@
 {
-  "ts": "2026-08-18T14:24:42.664889+00:00",
-  "started_at": "2026-08-18T14:24:36.119131+00:00",
-  "finished_at": "2026-08-18T14:24:42.664889+00:00",
-  "wall_time_s": 6.546,
+  "ts": "2026-08-18T15:11:59.640865+00:00",
+  "started_at": "2026-08-18T14:53:29.168021+00:00",
+  "finished_at": "2026-08-18T15:11:59.640865+00:00",
+  "wall_time_s": 1110.473,
   "benchmark": "conformance",
   "model": "glm-4.5-air",
   "model_alias": "glm-4.5-air",
@@ -29,6 +29,7 @@
   },
   "cases_path": "cases/seed-grant",
   "gold_scope": null,
+  "private": false,
   "dataset_version": "seed-grant-2026.1",
   "n_cases": 10,
   "summary": {
@@ -63,7 +64,7 @@
     {
       "case_id": "grant_00001__corr_equipment_heavy",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -71,7 +72,7 @@
     {
       "case_id": "grant_00001__corr_late_submission",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -79,7 +80,7 @@
     {
       "case_id": "grant_00001__corr_missing_budget",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -87,7 +88,7 @@
     {
       "case_id": "grant_00001__corr_missing_registration",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -95,7 +96,7 @@
     {
       "case_id": "grant_00001__corr_over_budget",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -103,7 +104,7 @@
     {
       "case_id": "grant_00001__corr_sum_mismatch",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -111,7 +112,7 @@
     {
       "case_id": "grant_00001__corr_unregistered",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -119,7 +120,7 @@
     {
       "case_id": "grant_00001__corr_unsigned",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -127,7 +128,7 @@
     {
       "case_id": "grant_00001__corr_wrong_period",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null
@@ -135,7 +136,7 @@
     {
       "case_id": "grant_00001",
       "ok": false,
-      "error": "HTTP 401: {\"error\":{\"code\":\"401\",\"message\":\"token expired or incorrect\"}}",
+      "error": "glm-4.5-air: request failed after 6 retries",
       "cost_rub": null,
       "cost_usd": null,
       "latency_s": null

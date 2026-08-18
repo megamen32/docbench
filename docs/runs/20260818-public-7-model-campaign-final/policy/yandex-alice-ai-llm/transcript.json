@@ -266,6 +266,112 @@
           "served_model": "gpt://aliceai-llm/latest",
           "latency_s": 2.426,
           "cache_hit": true
+        },
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- building.construction_year\n- owners.approval_pct\n- documents.defect_report.present\n- application.submission_date\n\nPOLICY DOCUMENT:\nПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение\nсобственников поддержали не менее 66% голосов. К заявке прилагается акт\nобследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "```\n{\n  \"ruleset_id\": \"capital_repair_program\",\n  \"rules\": [\n    {\n      \"description\": \"Building must be constructed no later than 2005\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"building.construction_year\",\n        \"op\": \"le\",\n        \"value\": 2 Normally\n      }\n    },\n    {\n      \"description\": \"Owners' approval must be at least 66%\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"owners.approval_pct\",\n        \"op\": \"ge\",\n        \"value\": 66\n      }\n    },\n    {\n      \"description\": \"Defect report must be attached to the application\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\n        \"field\": \"documents.defect_report.present\",\n        \"op\": \"eq\",\n        \"value\": true\n      }\n    },\n    {\n      \"description\": \"Application must be submitted by April 1, 2027 inclusive\",\n      \"severity\": \"critical\",\n      \"category\": \"timing\",\n      \"condition\": {\n        \"field\": \"application.submission_date\",\n        \"op\": \"before\",\n        \"value\": \"2027-04-01\"\n      }\n    }\n  ]\n}\n```",
+          "usage": {
+            "prompt_tokens": 412,
+            "total_tokens": 767,
+            "completion_tokens": 355,
+            "prompt_tokens_details": {
+              "cached_tokens": 384
+            },
+            "input_tokens": 412,
+            "output_tokens": 355,
+            "cache_read_input_tokens": 384,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 384,
+            "uncached_input_tokens": 28,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "gpt://aliceai-llm/latest",
+          "latency_s": 2.37,
+          "cache_hit": true,
+          "retry": 1
+        },
+        {
+          "attempt": 2,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- building.construction_year\n- owners.approval_pct\n- documents.defect_report.present\n- application.submission_date\n\nPOLICY DOCUMENT:\nПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение\nсобственников поддержали не менее 66% голосов. К заявке прилагается акт\nобследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            },
+            {
+              "role": "user",
+              "content": "Your previous reply contained no JSON. Output ONLY the JSON object now, starting with '{' with no preamble and no reasoning."
+            }
+          ],
+          "response_text": "```\n{\n  \"ruleset_id\": \"capital_repair_program\",\n  \"rules\": [\n    {\n      \"description\": \"Building must be constructed no later than 2005\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"building.construction_year\",\n        \"op\": \"le\",\n        \"value\": 2 Normally\n      }\n    },\n    {\n      \"description\": \"Owners' approval must be at least 66%\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"owners.approval_pct\",\n        \"op\": \"ge\",\n        \"value\": 66\n      }\n    },\n    {\n      \"description\": \"Defect report must be attached to the application\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\n        \"field\": \"documents.defect_report.present\",\n        \"op\": \"eq\",\n        \"value\": true\n      }\n    },\n    {\n      \"description\": \"Application must be submitted by April 1, 2027 inclusive\",\n      \"severity\": \"critical\",\n      \"category\": \"timing\",\n      \"condition\": {\n        \"field\": \"application.submission_date\",\n        \"op\": \"before\",\n        \"value\": \"2027-04-01\"\n      }\n    }\n  ]\n}\n```",
+          "usage": {
+            "prompt_tokens": 443,
+            "total_tokens": 798,
+            "completion_tokens": 355,
+            "prompt_tokens_details": {
+              "cached_tokens": 400
+            },
+            "input_tokens": 443,
+            "output_tokens": 355,
+            "cache_read_input_tokens": 400,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 400,
+            "uncached_input_tokens": 43,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "gpt://aliceai-llm/latest",
+          "latency_s": 2.426,
+          "cache_hit": true,
+          "retry": 1
+        },
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- building.construction_year\n- owners.approval_pct\n- documents.defect_report.present\n- application.submission_date\n\nPOLICY DOCUMENT:\nПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение\nсобственников поддержали не менее 66% голосов. К заявке прилагается акт\nобследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "```\n{\n  \"ruleset_id\": \"capital_repair_program\",\n  \"rules\": [\n    {\n      \"description\": \"Building must be constructed no later than 2005\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"building.construction_year\",\n        \"op\": \"le\",\n        \"value\": 2005\n      }\n    },\n    {\n      \"description\": \"Owners' approval must be at least 66%\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\n        \"field\": \"owners.approval_pct\",\n        \"op\": \"ge\",\n        \"value\": 66\n      }\n    },\n    {\n      \"description\": \"Defect report must be attached to the application\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\n        \"field\": \"documents.defect_report.present\",\n        \"op\": \"eq\",\n        \"value\": true\n      }\n    },\n    {\n      \"description\": \"Application must be submitted by April 1, 2027 inclusive\",\n      \"severity\": \"critical\",\n      \"category\": \"timing\",\n      \"condition\": {\n        \"field\": \"application.submission_date\",\n        \"op\": \"before\",\n        \"value\": \"2027-04-01\"\n      }\n    }\n  ]\n}\n```",
+          "usage": {
+            "prompt_tokens": 412,
+            "total_tokens": 769,
+            "completion_tokens": 357,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "input_tokens": 412,
+            "output_tokens": 357,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 412,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "gpt://aliceai-llm/latest",
+          "latency_s": 2.109,
+          "cache_hit": false,
+          "retry": 2
         }
       ]
     },
