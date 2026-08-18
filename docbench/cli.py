@@ -84,6 +84,10 @@ def main(argv: list[str] | None = None) -> int:
     p_leaderboard.add_argument("--runs-dir", default=str(REPO_ROOT / "var" / "runs"))
     p_leaderboard.add_argument("--out", default=str(REPO_ROOT / "var" / "leaderboard" / "index.html"))
 
+    p_pages = sub.add_parser("pages", help="copy one campaign into a self-contained GitHub Pages leaderboard")
+    p_pages.add_argument("--campaign-dir", required=True)
+    p_pages.add_argument("--out", default=str(REPO_ROOT / "docs"))
+
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
@@ -119,6 +123,12 @@ def main(argv: list[str] | None = None) -> int:
                 "wall_time_s": result["wall_time_s"],
                 "results": result["out_dir"],
             }, ensure_ascii=False))
+        return 0
+
+    if args.cmd == "pages":
+        from .leaderboard import publish_pages
+        result = publish_pages(Path(args.campaign_dir), Path(args.out))
+        print(json.dumps(result, ensure_ascii=False))
         return 0
 
     if args.cmd == "errorgen":

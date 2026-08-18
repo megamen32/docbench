@@ -1,0 +1,30 @@
+# docbench report
+
+| model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| yandexgpt-pro-5.1 | rule_extraction | 12 | 0.0000 | 0.7542 | 0.6948 | — | 0.0000 | 0.0000 | — | — | 0.4948 | 2.4460 |
+
+## yandexgpt-pro-5.1 · rule_extraction · 2026-08-18T14:30:02.831737+00:00
+
+### Reasoning
+
+- reason=no exposed reasoning control in the OpenAI-compatible route
+
+### Tokens and cost
+
+| input | output | total | cache read | cache write | reasoning | cost RUB |
+|---:|---:|---:|---:|---:|---:|---:|
+| 5594 | 5038 | 10632 | 2416 | 0 | 0 | 5.937503 |
+
+- ❌ `policy_cultural_grant` — disp None vs None
+- ❌ `policy_education_license` — disp None vs None
+- ❌ `policy_energy_efficiency` — disp None vs None
+- ❌ `policy_foundation_v2` — disp None vs None
+- ❌ `policy_grant_2026` — disp None vs None
+- ❌ `policy_housing_repair` — disp None vs None
+- ❌ `policy_medical_procurement` — disp None vs None
+- ❌ `policy_microloan` — disp None vs None
+- ❌ `policy_municipal_subsidy` — disp None vs None
+- ❌ `policy_procurement_supplier` — disp None vs None
+- ❌ `policy_research_competition` — disp None vs None
+- ❌ `policy_social_contract` — disp None vs None

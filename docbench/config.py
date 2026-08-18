@@ -68,7 +68,7 @@ class ModelSpec:
             raise RuntimeError(f"provider {provider}: no base_url configured")
         self.base_url = base.rstrip("/")
         self.api_key_env = provider_cfg["api_key_env"]
-        self.api_key = env.get(self.api_key_env)
+        self.api_key = env.get(self.api_key_env) or env.get(provider_cfg.get("api_key_env_fallback", ""))
         self.auth_method = provider_cfg.get("auth_method", "bearer")
         self.oauth_url = provider_cfg.get("oauth_url")
         self.oauth_scope = provider_cfg.get("oauth_scope")
@@ -78,6 +78,7 @@ class ModelSpec:
         alias_template = model_cfg.get("alias_template")
         if alias_template:
             alias_value = env.get(self.alias_env, "") if self.alias_env else ""
+            alias_value = alias_value or env.get(model_cfg.get("alias_env_fallback", ""), "")
             self.alias = alias_template.format(folder_id=alias_value)
             self.alias_configured = bool(alias_value)
         else:

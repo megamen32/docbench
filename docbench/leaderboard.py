@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import shutil
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -163,7 +164,11 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     for model, model_rows in by_model.items():
         covered = sum(int(r["summary"].get("n_cases") or 0) for r in model_rows)
         passed = sum((r["summary"].get("case_pass_rate") or 0) * (r["summary"].get("n_cases") or 0) for r in model_rows)
-        complete = covered == 52 and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
+        complete = (
+            covered == STANDARD_CASE_COUNT
+            and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
+            and all((r["summary"].get("n_errors") or 0) == 0 for r in model_rows)
+        )
         total_cost = _all_or_missing([r["summary"].get("total_cost_rub") for r in model_rows])
         token_totals = {
             key: _all_or_missing([_tokens(r, key) for r in model_rows])
@@ -211,3 +216,50 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
 <script>document.querySelectorAll('tr[data-href]').forEach(r=>r.onclick=()=>location.href=r.dataset.href)</script>
 </html>""", encoding="utf-8")
     return {"runs": len(rows), "out": str(output)}
+
+
+def publish_pages(campaign_dir: Path, output: Path) -> dict[str, Any]:
+    """Copy one finished campaign and render a self-contained GitHub Pages site."""
+    campaign_dir = campaign_dir.resolve()
+    if not campaign_dir.is_dir():
+        raise FileNotFoundError(f"campaign directory not found: {campaign_dir}")
+    target = output / "runs" / campaign_dir.name
+    if target.exists():
+        shutil.rmtree(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(campaign_dir, target)
+    _sanitize_public_results(target)
+    result = write_leaderboard(output / "runs", output / "index.html")
+    (output / ".nojekyll").touch()
+    return {**result, "campaign": str(target)}
+
+
+def _sanitize_public_results(runs_dir: Path) -> None:
+    """Keep public artifacts reproducible without disclosing local filesystem paths."""
+    for result_path in runs_dir.glob("**/results.json"):
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        changed = False
+        for key in ("cases_path", "out_dir"):
+            value = result.get(key)
+            if isinstance(value, str):
+                cleaned = _public_path(value)
+                changed = changed or cleaned != value
+                result[key] = cleaned
+        for case in result.get("cases", []):
+            value = case.get("source")
+            if isinstance(value, str):
+                cleaned = _public_path(value)
+                changed = changed or cleaned != value
+                case["source"] = cleaned
+        if changed:
+            result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _public_path(value: str) -> str:
+    path = Path(value)
+    if not path.is_absolute():
+        return value
+    parts = path.parts
+    if "cases" in parts:
+        return Path(*parts[parts.index("cases"):]).as_posix()
+    return path.name
