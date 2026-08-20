@@ -410,7 +410,7 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th>Взвешенное полное совпадение</th><th>Статус</th>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th title=\"Среднее pass rate по трём наборам с одинаковым весом\">Среднее по наборам</th><th>Статус</th>"
         "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
         "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th>"
         "</tr></thead><tbody>"
@@ -418,7 +418,9 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     aggregates = []
     for model, model_rows in by_model.items():
         covered = sum(int(r["summary"].get("n_cases") or 0) for r in model_rows)
-        passed = sum((r["summary"].get("case_pass_rate") or 0) * (r["summary"].get("n_cases") or 0) for r in model_rows)
+        suite_rates = [r["summary"].get("case_pass_rate") for r in model_rows]
+        rate = (sum(suite_rates) / len(suite_rates)
+                if suite_rates and all(value is not None for value in suite_rates) else None)
         complete = (
             covered == STANDARD_CASE_COUNT
             and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
@@ -435,7 +437,7 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
             if latency_values and all(value is not None for value in latency_values) else None
         )
         wall_time = _all_or_missing([_wall_time(r) for r in model_rows])
-        aggregates.append((model, covered, passed / covered if covered else None, complete, total_cost,
+        aggregates.append((model, covered, rate, complete, total_cost,
                            token_totals, latency_p50, wall_time))
     for model, covered, rate, complete, total_cost, token_totals, latency_p50, wall_time in sorted(
         aggregates, key=lambda x: (x[3], x[2] or -1), reverse=True

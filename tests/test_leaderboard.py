@@ -44,7 +44,9 @@ def test_leaderboard_generates_clickable_cards_and_marks_legacy(tmp_path):
 
     text = index.read_text()
     assert result["runs"] == 3
-    assert "Взвешенное полное совпадение" in text
+    assert "Среднее по наборам" in text
+    assert "83.3%" in text
+    assert "75.0%" not in text
     assert "42 / 52" in text
     assert "data-href" in text
     assert "legacy / no" in text

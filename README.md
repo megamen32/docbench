@@ -77,6 +77,12 @@ Therefore **`pass rate = 0` and `errors = 0` is possible**: the model answered
 valid JSON for every case, but none exactly matched the gold result. This is a
 score, not an infrastructure failure.
 
+The summary leaderboard uses an **unweighted mean across suites**: grant,
+Russian policy and ACE each contribute one third, regardless of their case
+counts (10, 12 and 30). The coverage column remains separate, so an incomplete
+campaign is not presented as a complete comparison. Suite tables retain the
+ordinary case-level pass rate.
+
 Each new result records the selected provider/model, served-model id, reasoning
 mode, input/output/cached/reasoning tokens, request latency and cost. Price
 metadata states whether the value is an estimate. A model or provider that does
