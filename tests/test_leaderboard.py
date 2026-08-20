@@ -102,7 +102,10 @@ def test_run_card_renders_safe_markdown_and_collapsed_thinking():
     rendered = render_markdown("# Title\n\n- **bold** and " + chr(96) + "code" + chr(96) + "\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n<script>alert(1)</script>")
     assert "<h1>Title</h1>" in rendered
     assert "<strong>bold</strong>" in rendered
-    assert "<table class=md-table>" in rendered
+    assert "<div class=md-table-wrap><table class=md-table>" in rendered
+    status = render_markdown("- ✅ case passed")
+    assert 'class="md-status-row"' in status
+    assert status.index("case passed") < status.index("✅")
     assert "&lt;script&gt;" in rendered
     visible, thinking = _render_message("<think>private reasoning</think>**final**")
     assert "<strong>final</strong>" in visible

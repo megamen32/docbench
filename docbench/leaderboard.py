@@ -122,12 +122,12 @@ def render_markdown(value: str) -> str:
             body: list[list[str]] = []
             while i < len(lines) and "|" in lines[i] and lines[i].strip():
                 body.append(cells(lines[i])); i += 1
-            table = ["<table class=md-table><thead><tr>"]
+            table = ["<div class=md-table-wrap><table class=md-table><thead><tr>"]
             table.extend(f"<th>{_inline_markdown(cell)}</th>" for cell in headers)
             table.append("</tr></thead><tbody>")
             for row in body:
                 table.append("<tr>" + "".join(f"<td>{_inline_markdown(cell)}</td>" for cell in row) + "</tr>")
-            table.append("</tbody></table>")
+            table.append("</tbody></table></div>")
             out.append("".join(table))
             continue
         heading = re.match(r"^\s*(#{1,4})\s+(.+?)\s*$", line)
@@ -144,7 +144,15 @@ def render_markdown(value: str) -> str:
             wanted = "ol" if ordered else "ul"
             if list_kind != wanted:
                 close_list(); list_kind = wanted; out.append(f"<{wanted}>")
-            out.append(f"<li>{_inline_markdown((ordered or bullet).group(1))}</li>")
+            item = (ordered or bullet).group(1)
+            status = re.match(r"^(✅|❌|⚠️)\s+(.+)$", item)
+            if status and not ordered:
+                out.append(
+                    f'<li class="md-status-row"><span>{_inline_markdown(status.group(2))}</span>'
+                    f'<span class="md-status-icon" aria-label="status">{status.group(1)}</span></li>'
+                )
+            else:
+                out.append(f"<li>{_inline_markdown(item)}</li>")
             i += 1
             continue
         if not line.strip():
@@ -279,6 +287,7 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
  .transcript-chat{{display:grid;gap:12px}}.transcript-case{{border:1px solid #2b3858;border-radius:12px;background:#0f172a;padding:10px 13px}}.transcript-case>summary{{cursor:pointer;display:flex;justify-content:space-between;gap:12px}}.chat-status,.attempt-meta{{color:var(--muted);font-size:12px}}.attempt{{border-left:2px solid #30476f;margin:12px 0 4px;padding-left:12px}}.attempt-label,.chat-role{{color:#9fb3d9;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:750;margin:9px 0 5px}}.chat-message{{border:1px solid #2b3858;border-radius:12px;padding:12px 14px;margin:9px 0;overflow:auto}}.chat-message.user{{background:#172c48;border-color:#315685}}.chat-message.assistant{{background:#17283a;border-color:#31616a}}.chat-message.system{{background:#121a2a}}.chat-message p:first-child{{margin-top:0}}.chat-message p:last-child{{margin-bottom:0}}.thinking{{margin-top:10px;border:1px dashed #6d5b2b;border-radius:9px;background:#201c13;padding:8px 11px;color:#cbbd94}}.thinking summary{{cursor:pointer;color:#e5ce7c;font-size:12px;font-weight:700}}.md-code,.chat-message pre{{font-size:12px;line-height:1.5}}.md-table{{border-collapse:collapse;width:100%;font-size:13px}}.md-table th,.md-table td{{border:1px solid #2b3858;padding:7px 9px;text-align:left;vertical-align:top}}.md-table th{{background:#172544;color:#c6d6f3}}.md-table td{{color:#dbe5f9}}.report-preview{{color:#dbe5f9}}
  .transcript-panel>details>summary{{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;list-style:none;border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#111e36;color:var(--text);font-weight:750}}.transcript-panel>details>summary::-webkit-details-marker{{display:none}}.transcript-panel>details>summary:before{{content:"+";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#263e69;color:#dbe6ff;font-size:17px;line-height:1}}.transcript-panel>details[open]>summary:before{{content:"−"}}.transcript-panel>details[open]>summary{{margin-bottom:14px}}.transcript-optin-note{{color:var(--muted);font-size:12px;font-weight:500}}
  .run-columns{{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,420px);gap:18px;align-items:start}}.run-aside{{position:sticky;top:18px}}.run-aside .panel{{margin-top:0}}@media(max-width:900px){{.run-columns{{grid-template-columns:1fr}}.run-aside{{position:static}}}}
+ .md-table-wrap{{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}}.md-table-wrap .md-table{{min-width:max-content;max-width:none}}.md-status-row{{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;list-style:none;margin-left:-1.2em;padding-left:0}}.md-status-row::marker{{content:""}}.md-status-icon{{order:2;flex:0 0 auto;font-size:1.05em}}
 </style>
 <body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
 <section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'provider'))} · {html.escape(str(row.get('benchmark') or 'benchmark'))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
