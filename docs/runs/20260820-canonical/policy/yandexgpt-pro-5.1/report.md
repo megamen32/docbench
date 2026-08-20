@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| yandexgpt-pro-5.1 | rule_extraction | 12 | 0.0000 | 0.7542 | 0.6948 | — | 0.0000 | 0.0000 | — | — | 0.4945 | 2.6345 |
+| yandexgpt-pro-5.1 | rule_extraction | 12 | 0.0000 | 0.9444 | 0.8782 | — | 0.0000 | 0.0000 | — | — | 0.4945 | 2.6345 |
 
 ## yandexgpt-pro-5.1 · rule_extraction · 2026-08-20T10:53:02.987919+00:00
 

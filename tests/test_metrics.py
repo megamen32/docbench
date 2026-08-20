@@ -82,3 +82,24 @@ def test_rules_prf_handles_nested_json_value():
     m = M.rules_prf(gold, pred)
     assert m["tp"] == 0
     assert m["precision"] == 0.0
+
+
+def test_rules_prf_ignores_value_for_presence_operators():
+    gold = [_rule("G1", "documents.venue_consent.present", "exists", None)]
+    pred = [_rule("P1", "documents.venue_consent.present", "exists", True)]
+    m = M.rules_prf(gold, pred)
+    assert m["f1"] == 1.0
+
+
+def test_rules_prf_normalizes_boolean_presence_predicates():
+    gold = [
+        _rule("G1", "documents.budget.present", "exists", None),
+        _rule("G2", "documents.license.present", "not_exists", None),
+    ]
+    pred = [
+        _rule("P1", "documents.budget.present", "eq", True),
+        _rule("P2", "documents.license.present", "eq", False),
+    ]
+    m = M.rules_prf(gold, pred)
+    assert m["tp"] == 2
+    assert m["f1"] == 1.0

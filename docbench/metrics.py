@@ -5,6 +5,8 @@ from typing import Any, Optional
 
 from .schemas import Disposition, Finding, Prediction, Rule, Severity
 
+RULES_SCORE_VERSION = "rules-prf-v2-presence-normalization"
+
 
 def _viol(findings: list[Finding]) -> dict[str, Finding]:
     return {f.rule_id: f for f in findings if f.status == "violation"}
@@ -106,8 +108,13 @@ def _eq(a: Any, b: Any) -> bool:
 
 
 def rules_prf(gold: list[Rule], pred: list[Rule]) -> dict[str, Any]:
-    """Rule extraction score: match rules by normalized machine triple
-    (field, op, value); severity accuracy measured on matched pairs."""
+    """Score extracted rules after normalizing equivalent presence predicates.
+
+    ``exists`` and ``not_exists`` are predicates, so their optional ``value``
+    is not part of the rule meaning.  Presence fields also commonly arrive as
+    ``eq true``/``eq false`` from otherwise valid model outputs; canonicalize
+    those forms to ``exists``/``not_exists`` before matching.
+    """
     def freeze(value: Any) -> Any:
         """Make malformed/nested JSON values safe as comparison keys."""
         if isinstance(value, dict):
@@ -122,10 +129,16 @@ def rules_prf(gold: list[Rule], pred: list[Rule]) -> dict[str, Any]:
         if r.condition is None:
             return None
         c = r.condition
+        op = c.op
         v = c.value
+        if op in ("exists", "not_exists"):
+            v = None
+        elif c.field and c.field.endswith(".present") and op == "eq" and isinstance(v, bool):
+            op = "exists" if v else "not_exists"
+            v = None
         if isinstance(v, float) and v.is_integer():
             v = int(v)
-        return (c.field, c.op, freeze(v))
+        return (c.field, op, freeze(v))
 
     def triples(rs: list[Rule]) -> list[tuple]:
         return [t for t in (triple(r) for r in rs) if t is not None]

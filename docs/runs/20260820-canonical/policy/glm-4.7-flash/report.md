@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| glm-4.7-flash | rule_extraction | 12 | 0.0000 | 0.7919 | 0.8038 | — | 0.0000 | 0.0000 | — | — | 0.1209 | 13.5 |
+| glm-4.7-flash | rule_extraction | 12 | 0.0833 | 0.9430 | 0.9549 | — | 0.0000 | 0.0000 | — | — | 0.1209 | 13.5 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -18,7 +18,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 |---:|---:|---:|---:|---:|---:|---:|
 | 5641 | 32763 | 38404 | 2489 | 0 | 28458 | 1.45053 |
 
-- ❌ `policy_cultural_grant` — disp None vs None
+- ✅ `policy_cultural_grant` — disp None vs None
 - ❌ `policy_education_license` — disp None vs None
 - ❌ `policy_energy_efficiency` — disp None vs None
 - ❌ `policy_foundation_v2` — disp None vs None

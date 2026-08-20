@@ -100,6 +100,10 @@ def main(argv: list[str] | None = None) -> int:
     p_reprice.add_argument("--model", action="append", default=None,
                            help="limit to one or more model keys (repeatable)")
 
+    p_rescore = sub.add_parser(
+        "rescore", help="recompute saved rule-extraction scores from transcripts")
+    p_rescore.add_argument("--runs-dir", required=True)
+
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
@@ -161,6 +165,12 @@ def main(argv: list[str] | None = None) -> int:
         from .run import reprice_saved_results
         result = reprice_saved_results(
             Path(args.runs_dir), models=set(args.model) if args.model else None)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "rescore":
+        from .run import rescore_saved_results
+        result = rescore_saved_results(Path(args.runs_dir))
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
 

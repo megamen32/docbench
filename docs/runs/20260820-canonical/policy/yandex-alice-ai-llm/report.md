@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| yandex-alice-ai-llm | rule_extraction | 12 | 0.0000 | 0.6018 | 0.6018 | — | 0.0000 | 0.0000 | — | — | 0.5677 | 2.5655 |
+| yandex-alice-ai-llm | rule_extraction | 12 | 0.0000 | 0.8501 | 0.8501 | — | 0.0000 | 0.0000 | — | — | 0.5677 | 2.5655 |
 
 ## yandex-alice-ai-llm · rule_extraction · 2026-08-20T12:26:38.258419+00:00
 

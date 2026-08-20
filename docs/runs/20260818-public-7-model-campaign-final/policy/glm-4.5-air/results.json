@@ -157,5 +157,6 @@
       "latency_s": null
     }
   ],
-  "out_dir": "var/runs/20260818-public-7-model-campaign-final/policy/glm-4.5-air"
+  "out_dir": "var/runs/20260818-public-7-model-campaign-final/policy/glm-4.5-air",
+  "scoring_version": "rules-prf-v2-presence-normalization"
 }

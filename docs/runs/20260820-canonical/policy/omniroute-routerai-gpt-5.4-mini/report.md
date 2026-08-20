@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| omniroute-routerai-gpt-5.4-mini | rule_extraction | 12 | 0.0000 | 0.6973 | 0.6904 | — | 0.0000 | 0.0000 | — | — | 0.4329 | 11.5 |
+| omniroute-routerai-gpt-5.4-mini | rule_extraction | 12 | 0.0000 | 0.9015 | 0.8876 | — | 0.0000 | 0.0000 | — | — | 0.4329 | 11.5 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 

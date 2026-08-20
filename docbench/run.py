@@ -16,6 +16,7 @@ from xml.etree import ElementTree
 from .benchmarks import BENCHMARKS
 from .benchmarks.base import load_cases, ruleset_index
 from .config import REPO_ROOT, resolve_model
+from .metrics import RULES_SCORE_VERSION
 from .models.gigachat import GigaChatRunner
 from .models.openai_compat import OpenAICompatRunner
 from .schemas import Prediction
@@ -265,6 +266,7 @@ def run_benchmark(
         "gold_scope": "external_private" if bench_key == "iri_review" else None,
         "private": has_private,
         "dataset_version": dataset_version or f"{Path(cases_path).name}-v1",
+        "scoring_version": RULES_SCORE_VERSION,
         "n_cases": len(per_case),
         "summary": summary,
         "cases": per_case,
@@ -430,6 +432,81 @@ def reprice_saved_results(runs_dir: Path, *, models: set[str] | None = None) -> 
             report_path.write_text(render_markdown_report([result]), encoding="utf-8")
         changed.append(str(result_path))
     return {"changed": changed, "skipped": skipped}
+
+
+def rescore_saved_results(runs_dir: Path) -> dict[str, Any]:
+    """Recompute rule-extraction scores from saved plaintext transcripts.
+
+    This is offline and never calls a provider.  It updates only the derived
+    score fields and report, preserving every response, prompt, timestamp,
+    usage record, and cost ledger.
+    """
+    changed: list[str] = []
+    skipped: list[str] = []
+    score_fields = {
+        "precision", "recall", "f1", "tp", "gold_rules", "pred_rules",
+        "severity_accuracy", "unmatched_gold", "unmatched_pred", "ok",
+        "pred_disposition", "gold_disposition", "false_accept", "false_reject",
+        "finding_precision", "finding_recall", "finding_f1", "critical_recall",
+        "grounding_precision", "grounding_recall", "extraction_f1", "parse_error",
+        "parse_warning",
+    }
+    for result_path in sorted(Path(runs_dir).glob("**/results.json")):
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            skipped.append(str(result_path))
+            continue
+        if result.get("benchmark") != "rule_extraction":
+            continue
+        transcript_path = result_path.with_name("transcript.json")
+        if not transcript_path.is_file():
+            skipped.append(str(result_path))
+            continue
+        cases_path = Path(str(result.get("cases_path", "")))
+        if not cases_path.is_absolute():
+            cases_path = REPO_ROOT / cases_path
+        try:
+            cases = {case.id: case for _, case in load_cases(cases_path)}
+            transcript = json.loads(transcript_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, ValueError):
+            skipped.append(str(result_path))
+            continue
+        transcript_by_id = {str(item.get("case_id")): item for item in transcript.get("cases", [])}
+        bench = BENCHMARKS["rule_extraction"]()
+        rescored: list[dict[str, Any]] = []
+        for old in result.get("cases", []):
+            row = dict(old)
+            case = cases.get(str(old.get("case_id")))
+            tcase = transcript_by_id.get(str(old.get("case_id")))
+            attempts = (tcase or {}).get("attempts", [])
+            response = next((attempt.get("response_text") for attempt in reversed(attempts)
+                             if attempt.get("response_text") is not None), None)
+            if case is None or response is None:
+                rescored.append(row)
+                continue
+            payload, parse_err = bench.parse(str(response), case)
+            row = {key: value for key, value in row.items() if key not in score_fields}
+            if payload is None:
+                row.update({"ok": False, "parse_error": parse_err or "no JSON object in reply"})
+            else:
+                scores = bench.score(payload, bench.gold_for(case), case)
+                if parse_err:
+                    scores["parse_warning"] = parse_err
+                row.update(scores)
+            rescored.append(row)
+        if rescored == result.get("cases", []) and result.get("scoring_version") == RULES_SCORE_VERSION:
+            continue
+        result["cases"] = rescored
+        result["summary"] = _aggregate(rescored)
+        result["scoring_version"] = RULES_SCORE_VERSION
+        tmp = result_path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(tmp, result_path)
+        report_path = result_path.with_name("report.md")
+        report_path.write_text(render_markdown_report([result]), encoding="utf-8")
+        changed.append(str(result_path))
+    return {"changed": changed, "skipped": skipped, "score_version": RULES_SCORE_VERSION}
 
 
 def _write_transcript(out_dir: Path, transcript: dict[str, Any], *, private: bool) -> Path:

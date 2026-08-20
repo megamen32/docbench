@@ -40,9 +40,9 @@
     "n_scored": 12,
     "n_errors": 0,
     "case_pass_rate": 0.0,
-    "finding_precision": 0.6018,
-    "finding_recall": 0.6018,
-    "finding_f1": 0.6018,
+    "finding_precision": 0.8501,
+    "finding_recall": 0.8501,
+    "finding_f1": 0.8501,
     "critical_recall": null,
     "grounding_precision": null,
     "grounding_recall": null,
@@ -68,31 +68,6 @@
       "case_id": "policy_cultural_grant",
       "source": "cases/seed-policy/policy_cultural_grant.yaml",
       "generated_by": null,
-      "precision": 0.75,
-      "recall": 0.75,
-      "f1": 0.75,
-      "tp": 3,
-      "gold_rules": 4,
-      "pred_rules": 4,
-      "severity_accuracy": 0.3333333333333333,
-      "unmatched_gold": [
-        "('documents.venue_consent.present', 'exists', None)"
-      ],
-      "unmatched_pred": [
-        "('documents.venue_consent.present', 'eq', True)"
-      ],
-      "ok": false,
-      "pred_disposition": null,
-      "gold_disposition": null,
-      "false_accept": false,
-      "false_reject": false,
-      "finding_precision": 0.75,
-      "finding_recall": 0.75,
-      "finding_f1": 0.75,
-      "critical_recall": null,
-      "grounding_precision": null,
-      "grounding_recall": null,
-      "extraction_f1": null,
       "cost_rub": 0.457047,
       "cost_usd": 0.005368852,
       "cost_is_estimate": false,
@@ -108,37 +83,33 @@
         "uncached_input_tokens": 422,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_education_license",
-      "source": "cases/seed-policy/policy_education_license.yaml",
-      "generated_by": null,
-      "precision": 0.75,
-      "recall": 0.75,
-      "f1": 0.75,
-      "tp": 3,
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
       "gold_rules": 4,
       "pred_rules": 4,
-      "severity_accuracy": 0.0,
-      "unmatched_gold": [
-        "('documents.education_license.present', 'exists', None)"
-      ],
-      "unmatched_pred": [
-        "('documents.education_license.present', 'eq', True)"
-      ],
+      "severity_accuracy": 0.25,
+      "unmatched_gold": [],
+      "unmatched_pred": [],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.75,
-      "finding_recall": 0.75,
-      "finding_f1": 0.75,
+      "finding_precision": 1.0,
+      "finding_recall": 1.0,
+      "finding_f1": 1.0,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_education_license",
+      "source": "cases/seed-policy/policy_education_license.yaml",
+      "generated_by": null,
       "cost_rub": 0.442882,
       "cost_usd": 0.005202458,
       "cost_is_estimate": false,
@@ -154,39 +125,33 @@
         "uncached_input_tokens": 127,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_energy_efficiency",
-      "source": "cases/seed-policy/policy_energy_efficiency.yaml",
-      "generated_by": null,
-      "precision": 0.5,
-      "recall": 0.5,
-      "f1": 0.5,
-      "tp": 2,
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
       "gold_rules": 4,
       "pred_rules": 4,
-      "severity_accuracy": 0.0,
-      "unmatched_gold": [
-        "('documents.technical_passport.present', 'exists', None)",
-        "('project.completion_date', 'le', '2027-12-31')"
-      ],
-      "unmatched_pred": [
-        "('documents.technical_passport.present', 'eq', True)",
-        "('project.completion_date', 'before', '2027-12-31')"
-      ],
+      "severity_accuracy": 0.25,
+      "unmatched_gold": [],
+      "unmatched_pred": [],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.5,
-      "finding_recall": 0.5,
-      "finding_f1": 0.5,
+      "finding_precision": 1.0,
+      "finding_recall": 1.0,
+      "finding_f1": 1.0,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_energy_efficiency",
+      "source": "cases/seed-policy/policy_energy_efficiency.yaml",
+      "generated_by": null,
       "cost_rub": 0.462489,
       "cost_usd": 0.005432786,
       "cost_is_estimate": false,
@@ -202,39 +167,37 @@
         "uncached_input_tokens": 28,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_foundation_v2",
-      "source": "cases/seed-policy/policy_foundation_v2.yaml",
-      "generated_by": null,
-      "precision": 0.6666666666666666,
-      "recall": 0.6666666666666666,
-      "f1": 0.6666666666666666,
-      "tp": 4,
-      "gold_rules": 6,
-      "pred_rules": 6,
-      "severity_accuracy": 0.75,
+      },
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "tp": 3,
+      "gold_rules": 4,
+      "pred_rules": 4,
+      "severity_accuracy": 0.3333333333333333,
       "unmatched_gold": [
-        "('documents.audit_report.present', 'exists', None)",
-        "('org_v2.submission_date', 'le', '2027-03-31')"
+        "('project.completion_date', 'le', '2027-12-31')"
       ],
       "unmatched_pred": [
-        "('documents.audit_report.present', 'eq', True)",
-        "('org_v2.submission_date', 'before', '2027-03-31')"
+        "('project.completion_date', 'before', '2027-12-31')"
       ],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.6666666666666666,
-      "finding_recall": 0.6666666666666666,
-      "finding_f1": 0.6666666666666666,
+      "finding_precision": 0.75,
+      "finding_recall": 0.75,
+      "finding_f1": 0.75,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_foundation_v2",
+      "source": "cases/seed-policy/policy_foundation_v2.yaml",
+      "generated_by": null,
       "cost_rub": 0.67622,
       "cost_usd": 0.007943441,
       "cost_is_estimate": false,
@@ -250,47 +213,37 @@
         "uncached_input_tokens": 19,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_grant_2026",
-      "source": "cases/seed-policy/policy_grant_2026.yaml",
-      "generated_by": null,
-      "precision": 0.45454545454545453,
-      "recall": 0.45454545454545453,
-      "f1": 0.45454545454545453,
+      },
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
       "tp": 5,
-      "gold_rules": 11,
-      "pred_rules": 11,
+      "gold_rules": 6,
+      "pred_rules": 6,
       "severity_accuracy": 0.8,
       "unmatched_gold": [
-        "('application_form.submission_date', 'le', '2026-10-01')",
-        "('budget.totals.total', 'le', 100000)",
-        "('documents.application_form.present', 'exists', None)",
-        "('documents.budget.present', 'exists', None)",
-        "('documents.finance_statement.present', 'exists', None)",
-        "('documents.registration_cert.present', 'exists', None)"
+        "('org_v2.submission_date', 'le', '2027-03-31')"
       ],
       "unmatched_pred": [
-        "('application_form.requested_total_eur', 'le', 100000)",
-        "('application_form.submission_date', 'before', '2026-10-01')",
-        "('documents.application_form.present', 'eq', True)",
-        "('documents.budget.present', 'eq', True)",
-        "('documents.finance_statement.present', 'eq', True)",
-        "('documents.registration_cert.present', 'eq', True)"
+        "('org_v2.submission_date', 'before', '2027-03-31')"
       ],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.45454545454545453,
-      "finding_recall": 0.45454545454545453,
-      "finding_f1": 0.45454545454545453,
+      "finding_precision": 0.8333333333333334,
+      "finding_recall": 0.8333333333333334,
+      "finding_f1": 0.8333333333333334,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_grant_2026",
+      "source": "cases/seed-policy/policy_grant_2026.yaml",
+      "generated_by": null,
       "cost_rub": 1.067465,
       "cost_usd": 0.012539342,
       "cost_is_estimate": false,
@@ -306,39 +259,39 @@
         "uncached_input_tokens": 18,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_housing_repair",
-      "source": "cases/seed-policy/policy_housing_repair.yaml",
-      "generated_by": null,
-      "precision": 0.5,
-      "recall": 0.5,
-      "f1": 0.5,
-      "tp": 2,
-      "gold_rules": 4,
-      "pred_rules": 4,
-      "severity_accuracy": 0.5,
+      },
+      "precision": 0.8181818181818182,
+      "recall": 0.8181818181818182,
+      "f1": 0.8181818181818182,
+      "tp": 9,
+      "gold_rules": 11,
+      "pred_rules": 11,
+      "severity_accuracy": 0.8888888888888888,
       "unmatched_gold": [
-        "('application.submission_date', 'le', '2027-04-01')",
-        "('documents.defect_report.present', 'exists', None)"
+        "('application_form.submission_date', 'le', '2026-10-01')",
+        "('budget.totals.total', 'le', 100000)"
       ],
       "unmatched_pred": [
-        "('application.submission_date', 'before', '2027-04-01')",
-        "('documents.defect_report.present', 'eq', True)"
+        "('application_form.requested_total_eur', 'le', 100000)",
+        "('application_form.submission_date', 'before', '2026-10-01')"
       ],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.5,
-      "finding_recall": 0.5,
-      "finding_f1": 0.5,
+      "finding_precision": 0.8181818181818182,
+      "finding_recall": 0.8181818181818182,
+      "finding_f1": 0.8181818181818182,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_housing_repair",
+      "source": "cases/seed-policy/policy_housing_repair.yaml",
+      "generated_by": null,
       "cost_rub": 0.442672,
       "cost_usd": 0.005199999,
       "cost_is_estimate": false,
@@ -354,41 +307,37 @@
         "uncached_input_tokens": 412,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_medical_procurement",
-      "source": "cases/seed-policy/policy_medical_procurement.yaml",
-      "generated_by": null,
-      "precision": 0.25,
-      "recall": 0.25,
-      "f1": 0.25,
-      "tp": 1,
+      },
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "tp": 3,
       "gold_rules": 4,
       "pred_rules": 4,
-      "severity_accuracy": 0.0,
+      "severity_accuracy": 0.3333333333333333,
       "unmatched_gold": [
-        "('documents.cold_chain_protocol.present', 'exists', None)",
-        "('documents.medical_registration.present', 'exists', None)",
-        "('product.origin_country', 'in', ('Россия', 'ЕАЭС'))"
+        "('application.submission_date', 'le', '2027-04-01')"
       ],
       "unmatched_pred": [
-        "('documents.cold_chain_protocol.present', 'eq', True)",
-        "('documents.medical_registration.present', 'eq', True)",
-        "('product.origin_country', 'in', ('Russia', 'EAEU state'))"
+        "('application.submission_date', 'before', '2027-04-01')"
       ],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.25,
-      "finding_recall": 0.25,
-      "finding_f1": 0.25,
+      "finding_precision": 0.75,
+      "finding_recall": 0.75,
+      "finding_f1": 0.75,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_medical_procurement",
+      "source": "cases/seed-policy/policy_medical_procurement.yaml",
+      "generated_by": null,
       "cost_rub": 0.893788,
       "cost_usd": 0.010499179,
       "cost_is_estimate": false,
@@ -404,12 +353,53 @@
         "uncached_input_tokens": 49,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
+      },
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "tp": 3,
+      "gold_rules": 4,
+      "pred_rules": 4,
+      "severity_accuracy": 0.6666666666666666,
+      "unmatched_gold": [
+        "('product.origin_country', 'in', ('Россия', 'ЕАЭС'))"
+      ],
+      "unmatched_pred": [
+        "('product.origin_country', 'in', ('Russia', 'EAEU state'))"
+      ],
+      "ok": false,
+      "pred_disposition": null,
+      "gold_disposition": null,
+      "false_accept": false,
+      "false_reject": false,
+      "finding_precision": 0.75,
+      "finding_recall": 0.75,
+      "finding_f1": 0.75,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null
     },
     {
       "case_id": "policy_microloan",
       "source": "cases/seed-policy/policy_microloan.yaml",
       "generated_by": null,
+      "cost_rub": 0.460466,
+      "cost_usd": 0.005409016,
+      "cost_is_estimate": false,
+      "latency_s": 2.599,
+      "cache_hit": true,
+      "usage": {
+        "input_tokens": 427,
+        "output_tokens": 372,
+        "total_tokens": 799,
+        "cache_read_input_tokens": 416,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 416,
+        "uncached_input_tokens": 11,
+        "reasoning_tokens": 0,
+        "served_model": "gpt://aliceai-llm/latest"
+      },
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
@@ -430,55 +420,12 @@
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
-      "cost_rub": 0.460466,
-      "cost_usd": 0.005409016,
-      "cost_is_estimate": false,
-      "latency_s": 2.599,
-      "cache_hit": true,
-      "usage": {
-        "input_tokens": 427,
-        "output_tokens": 372,
-        "total_tokens": 799,
-        "cache_read_input_tokens": 416,
-        "cache_write_input_tokens": 0,
-        "cache_input_tokens": 416,
-        "uncached_input_tokens": 11,
-        "reasoning_tokens": 0,
-        "served_model": "gpt://aliceai-llm/latest"
-      }
+      "extraction_f1": null
     },
     {
       "case_id": "policy_municipal_subsidy",
       "source": "cases/seed-policy/policy_municipal_subsidy.yaml",
       "generated_by": null,
-      "precision": 0.6,
-      "recall": 0.6,
-      "f1": 0.6,
-      "tp": 3,
-      "gold_rules": 5,
-      "pred_rules": 5,
-      "severity_accuracy": 0.6666666666666666,
-      "unmatched_gold": [
-        "('application.submission_date', 'le', '2026-09-15')",
-        "('documents.financial_statement.present', 'exists', None)"
-      ],
-      "unmatched_pred": [
-        "('application.submission_date', 'before', '2026-09-15')",
-        "('documents.financial_statement.present', 'eq', True)"
-      ],
-      "ok": false,
-      "pred_disposition": null,
-      "gold_disposition": null,
-      "false_accept": false,
-      "false_reject": false,
-      "finding_precision": 0.6,
-      "finding_recall": 0.6,
-      "finding_f1": 0.6,
-      "critical_recall": null,
-      "grounding_precision": null,
-      "grounding_recall": null,
-      "extraction_f1": null,
       "cost_rub": 0.53136,
       "cost_usd": 0.006241802,
       "cost_is_estimate": false,
@@ -494,39 +441,37 @@
         "uncached_input_tokens": 27,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_procurement_supplier",
-      "source": "cases/seed-policy/policy_procurement_supplier.yaml",
-      "generated_by": null,
-      "precision": 0.5,
-      "recall": 0.5,
-      "f1": 0.5,
-      "tp": 2,
-      "gold_rules": 4,
-      "pred_rules": 4,
-      "severity_accuracy": 0.5,
+      },
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8000000000000002,
+      "tp": 4,
+      "gold_rules": 5,
+      "pred_rules": 5,
+      "severity_accuracy": 0.75,
       "unmatched_gold": [
-        "('bid.submission_date', 'le', '2026-11-20')",
-        "('documents.sro_certificate.present', 'exists', None)"
+        "('application.submission_date', 'le', '2026-09-15')"
       ],
       "unmatched_pred": [
-        "('bid.submission_date', 'before', '2026-11-20')",
-        "('documents.sro_certificate.present', 'eq', True)"
+        "('application.submission_date', 'before', '2026-09-15')"
       ],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.5,
-      "finding_recall": 0.5,
-      "finding_f1": 0.5,
+      "finding_precision": 0.8,
+      "finding_recall": 0.8,
+      "finding_f1": 0.8000000000000002,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_procurement_supplier",
+      "source": "cases/seed-policy/policy_procurement_supplier.yaml",
+      "generated_by": null,
       "cost_rub": 0.469746,
       "cost_usd": 0.005518032,
       "cost_is_estimate": false,
@@ -542,24 +487,19 @@
         "uncached_input_tokens": 168,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_research_competition",
-      "source": "cases/seed-policy/policy_research_competition.yaml",
-      "generated_by": null,
+      },
       "precision": 0.75,
       "recall": 0.75,
       "f1": 0.75,
       "tp": 3,
       "gold_rules": 4,
       "pred_rules": 4,
-      "severity_accuracy": 0.3333333333333333,
+      "severity_accuracy": 0.6666666666666666,
       "unmatched_gold": [
-        "('documents.open_data_consent.present', 'exists', None)"
+        "('bid.submission_date', 'le', '2026-11-20')"
       ],
       "unmatched_pred": [
-        "('documents.open_data_consent.present', 'eq', True)"
+        "('bid.submission_date', 'before', '2026-11-20')"
       ],
       "ok": false,
       "pred_disposition": null,
@@ -572,7 +512,12 @@
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_research_competition",
+      "source": "cases/seed-policy/policy_research_competition.yaml",
+      "generated_by": null,
       "cost_rub": 0.451464,
       "cost_usd": 0.005303278,
       "cost_is_estimate": false,
@@ -588,39 +533,33 @@
         "uncached_input_tokens": 30,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
-    },
-    {
-      "case_id": "policy_social_contract",
-      "source": "cases/seed-policy/policy_social_contract.yaml",
-      "generated_by": null,
-      "precision": 0.5,
-      "recall": 0.5,
-      "f1": 0.5,
-      "tp": 2,
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
       "gold_rules": 4,
       "pred_rules": 4,
-      "severity_accuracy": 0.5,
-      "unmatched_gold": [
-        "('documents.personal_data_consent.present', 'exists', None)",
-        "('household.region', 'in', ('Москва', 'Московская область'))"
-      ],
-      "unmatched_pred": [
-        "('documents.personal_data_consent.present', 'eq', True)",
-        "('household.region', 'in', ('Moscow', 'Moscow Oblast'))"
-      ],
+      "severity_accuracy": 0.25,
+      "unmatched_gold": [],
+      "unmatched_pred": [],
       "ok": false,
       "pred_disposition": null,
       "gold_disposition": null,
       "false_accept": false,
       "false_reject": false,
-      "finding_precision": 0.5,
-      "finding_recall": 0.5,
-      "finding_f1": 0.5,
+      "finding_precision": 1.0,
+      "finding_recall": 1.0,
+      "finding_f1": 1.0,
       "critical_recall": null,
       "grounding_precision": null,
       "grounding_recall": null,
-      "extraction_f1": null,
+      "extraction_f1": null
+    },
+    {
+      "case_id": "policy_social_contract",
+      "source": "cases/seed-policy/policy_social_contract.yaml",
+      "generated_by": null,
       "cost_rub": 0.456558,
       "cost_usd": 0.005363114,
       "cost_is_estimate": false,
@@ -636,7 +575,32 @@
         "uncached_input_tokens": 23,
         "reasoning_tokens": 0,
         "served_model": "gpt://aliceai-llm/latest"
-      }
+      },
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "tp": 3,
+      "gold_rules": 4,
+      "pred_rules": 4,
+      "severity_accuracy": 0.6666666666666666,
+      "unmatched_gold": [
+        "('household.region', 'in', ('Москва', 'Московская область'))"
+      ],
+      "unmatched_pred": [
+        "('household.region', 'in', ('Moscow', 'Moscow Oblast'))"
+      ],
+      "ok": false,
+      "pred_disposition": null,
+      "gold_disposition": null,
+      "false_accept": false,
+      "false_reject": false,
+      "finding_precision": 0.75,
+      "finding_recall": 0.75,
+      "finding_f1": 0.75,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null
     }
   ],
   "out_dir": "var/runs/20260820-full-13-model-campaign/policy/yandex-alice-ai-llm",
@@ -678,5 +642,6 @@
         }
       }
     }
-  ]
+  ],
+  "scoring_version": "rules-prf-v2-presence-normalization"
 }

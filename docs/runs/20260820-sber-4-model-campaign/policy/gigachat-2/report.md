@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gigachat-2 | rule_extraction | 12 | 0.0000 | 0.5567 | 0.5428 | — | 0.0000 | 0.0000 | — | — | 0.0416 | 1.9760 |
+| gigachat-2 | rule_extraction | 12 | 0.0000 | 0.7912 | 0.7703 | — | 0.0000 | 0.0000 | — | — | 0.0416 | 1.9760 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 

@@ -9,6 +9,7 @@ from docbench.benchmarks.conformance import ConformanceBenchmark
 from docbench.benchmarks.rule_extraction import RuleExtractionBenchmark
 from docbench.benchmarks.base import load_ruleset
 from docbench.oracle import flatten_case, gold_for
+from docbench.run import rescore_saved_results
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -76,6 +77,42 @@ def test_rule_extraction_parse_and_score(tmp_path):
     assert err is None
     scores = bench.score(payload, gold, case)
     assert scores["f1"] == 1.0 and scores["ok"] is True
+
+
+def test_rescore_saved_rule_run_uses_current_presence_normalization(tmp_path):
+    cases = tmp_path / "cases"
+    cases.mkdir()
+    case_path = cases / "policy.yaml"
+    case_path.write_text("""
+id: policy_presence
+benchmark: rule_extraction
+canonical_fields: [documents.venue_consent.present]
+policy_document: "Для мероприятия требуется согласие площадки."
+expected_rules:
+  - {id: P1, description: Согласие площадки, severity: major, category: documents, condition: {field: documents.venue_consent.present, op: exists}}
+""", encoding="utf-8")
+    run = tmp_path / "runs" / "policy" / "model"
+    run.mkdir(parents=True)
+    result = {
+        "benchmark": "rule_extraction", "model": "model", "cases_path": str(cases),
+        "cases": [{"case_id": "policy_presence", "finding_f1": 0.0, "ok": False,
+                   "cost_rub": 0.1, "latency_s": 1.0,
+                   "usage": {"input_tokens": 1, "output_tokens": 1}}],
+    }
+    (run / "results.json").write_text(json.dumps(result), encoding="utf-8")
+    response = json.dumps({"rules": [{
+        "description": "Согласие площадки", "severity": "major", "category": "documents",
+        "condition": {"field": "documents.venue_consent.present", "op": "exists", "value": True},
+    }]}, ensure_ascii=False)
+    (run / "transcript.json").write_text(json.dumps({"cases": [{
+        "case_id": "policy_presence", "attempts": [{"response_text": response}],
+    }]}), encoding="utf-8")
+
+    changed = rescore_saved_results(tmp_path / "runs")
+    assert changed["changed"]
+    rescored = json.loads((run / "results.json").read_text())
+    assert rescored["cases"][0]["finding_f1"] == 1.0
+    assert rescored["cases"][0]["ok"] is True
 
 
 def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monkeypatch):

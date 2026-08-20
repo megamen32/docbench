@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| minimax-m2.5 | rule_extraction | 12 | 0.0000 | 0.6428 | 0.6428 | — | 0.0000 | 0.0000 | — | — | 0.1298 | 7.3725 |
+| minimax-m2.5 | rule_extraction | 12 | 0.0000 | 0.8703 | 0.8703 | — | 0.0000 | 0.0000 | — | — | 0.1298 | 7.3725 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
