@@ -55,7 +55,9 @@ def test_leaderboard_generates_clickable_cards_and_marks_legacy(tmp_path):
     assert "2.5 s" in text
     assert "12.0 s" in text
     assert (runs / "grant" / "run.html").is_file()
-    assert "transcript.json" in (runs / "grant" / "run.html").read_text()
+    card = (runs / "grant" / "run.html").read_text()
+    assert "transcript.json" in card
+    assert '<details class="transcript-optin">' in card
 
 
 def test_leaderboard_uses_dash_for_unpriced_or_missing_measurements(tmp_path):
