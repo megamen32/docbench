@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gigachat-2-pro · DocBench</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#1b2b5b 0,transparent 34rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}main{max-width:1050px;margin:0 auto;padding:28px 20px 64px}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}.back{font-weight:650}.eyebrow{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0 16px}.lead{color:var(--muted);max-width:700px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}.status{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#15223d;color:var(--good);white-space:nowrap;font-weight:700}.status.bad{color:var(--bad)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 28px}.metric,.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 45px #05081555}.metric small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.metric strong{font-size:1.35rem;letter-spacing:-.03em}.panel{margin-top:16px}.panel h2{font-size:1rem;margin:0 0 14px}pre{white-space:pre-wrap;overflow:auto;margin:0;background:#0a0f1d;border:1px solid #273451;border-radius:12px;padding:16px;color:#cad6ef;font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.button{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:#172544;color:var(--text);font-weight:650}.button:hover{background:#22365e;text-decoration:none}.alert{border:1px solid #704353;background:#2a1829;color:#ffc2cc;border-radius:12px;padding:13px 15px;margin-top:16px}.muted{color:var(--muted)}@media(max-width:760px){.hero{display:block}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{margin-bottom:28px}}@media(max-width:430px){main{padding:20px 14px 44px}.grid{grid-template-columns:1fr 1fr;gap:8px}.metric{padding:13px}}
+ .transcript-chat{display:grid;gap:12px}.transcript-case{border:1px solid #2b3858;border-radius:12px;background:#0f172a;padding:10px 13px}.transcript-case>summary{cursor:pointer;display:flex;justify-content:space-between;gap:12px}.chat-status,.attempt-meta{color:var(--muted);font-size:12px}.case-status-icon{font-size:1.1em;vertical-align:-.05em}.attempt{border-left:2px solid #30476f;margin:12px 0 4px;padding-left:12px}.attempt-label,.chat-role{color:#9fb3d9;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:750;margin:9px 0 5px}.chat-message{border:1px solid #2b3858;border-radius:12px;padding:12px 14px;margin:9px 0;overflow:auto}.chat-message.user{background:#172c48;border-color:#315685}.chat-message.assistant{background:#17283a;border-color:#31616a}.chat-message.system{background:#121a2a}.chat-message p:first-child{margin-top:0}.chat-message p:last-child{margin-bottom:0}.thinking{margin-top:10px;border:1px dashed #6d5b2b;border-radius:9px;background:#201c13;padding:8px 11px;color:#cbbd94}.thinking summary{cursor:pointer;color:#e5ce7c;font-size:12px;font-weight:700}.md-code,.chat-message pre{font-size:12px;line-height:1.5}.md-table{border-collapse:collapse;width:100%;font-size:13px}.md-table th,.md-table td{border:1px solid #2b3858;padding:7px 9px;text-align:left;vertical-align:top}.md-table th{background:#172544;color:#c6d6f3}.md-table td{color:#dbe5f9}.report-preview{color:#dbe5f9}
+ .transcript-panel>details>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;list-style:none;border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#111e36;color:var(--text);font-weight:750}.transcript-panel>details>summary::-webkit-details-marker{display:none}.transcript-panel>details>summary:before{content:"+";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#263e69;color:#dbe6ff;font-size:17px;line-height:1}.transcript-panel>details[open]>summary:before{content:"−"}.transcript-panel>details[open]>summary{margin-bottom:14px}.transcript-optin-note{color:var(--muted);font-size:12px;font-weight:500}
+ .run-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,420px);gap:18px;align-items:start}.run-aside{position:sticky;top:18px}.run-aside .panel{margin-top:0}@media(max-width:900px){.run-columns{grid-template-columns:1fr}.run-aside{position:static}}
+ .md-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.md-table-wrap .md-table{min-width:max-content;max-width:none}.md-status-icon{display:inline-block;font-size:1.05em;line-height:1}
+</style>
+<body><main><div class=top><a class=back href="../../../../index.html">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
+<section class=hero><div><div class=eyebrow>GigaChat API (OAuth) · rule_extraction</div><h1>gigachat-2-pro</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status">Готово</div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Pass rate</small><strong>0.0%</strong></div><div class=metric><small>F1</small><strong>59.4%</strong></div><div class=metric><small>Стоимость</small><strong>—</strong></div><div class=metric><small>Время</small><strong>57.7 s</strong></div></section>
+<div class=actions><a class=button href="transcript.json">transcript.json ↗</a><a class=button href="results.json">results.json ↗</a><a class=button href="report.md">report.md ↗</a></div>
+
+<section class="panel report-preview"><h2>Отчёт</h2><h1>docbench report</h1><div class=md-table-wrap><table class=md-table><thead><tr><th>model</th><th>benchmark</th><th>n_cases</th><th>case_pass_rate</th><th>finding_precision</th><th>finding_recall</th><th>critical_recall</th><th>false_accept_rate</th><th>false_reject_rate</th><th>extraction_f1</th><th>grounding_recall</th><th>cost_per_case_rub</th><th>latency_p50_s</th></tr></thead><tbody><tr><td>gigachat-2-pro</td><td>rule_extraction</td><td>12</td><td>0.0000</td><td>0.6000</td><td>0.5879</td><td>—</td><td>0.0000</td><td>0.0000</td><td>—</td><td>—</td><td>—</td><td>3.9840</td></tr></tbody></table></div><p><em>Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate.</em></p><h2>gigachat-2-pro · rule_extraction · 2026-08-20T15:30:08.108936+00:00</h2><h3>Reasoning</h3><ul><li>reason=no provider reasoning field requested</li></ul><h3>Tokens and cost</h3><div class=md-table-wrap><table class=md-table><thead><tr><th>input</th><th>output</th><th>total</th><th>cache read</th><th>cache write</th><th>reasoning</th><th>cost RUB</th></tr></thead><tbody><tr><td>2989</td><td>4218</td><td>7207</td><td>0</td><td>0</td><td>0</td><td>—</td></tr></tbody></table></div><ul><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_cultural_grant</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_education_license</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_energy_efficiency</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_foundation_v2</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_grant_2026</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_housing_repair</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_medical_procurement</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_microloan</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_municipal_subsidy</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_procurement_supplier</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_research_competition</code> — disp None vs None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_social_contract</code> — disp None vs None</li></ul></section>
+<section class=panel><h2>Детали и ресурсы</h2><pre>{
+  &quot;n_cases&quot;: 12,
+  &quot;n_scored&quot;: 12,
+  &quot;n_errors&quot;: 0,
+  &quot;case_pass_rate&quot;: 0.0,
+  &quot;finding_precision&quot;: 0.6,
+  &quot;finding_recall&quot;: 0.5879,
+  &quot;finding_f1&quot;: 0.5935,
+  &quot;extraction_f1&quot;: null,
+  &quot;grounding_recall&quot;: null,
+  &quot;latency_p50_s&quot;: 3.984,
+  &quot;wall_time_s&quot;: null,
+  &quot;total_cost_rub&quot;: null,
+  &quot;cost_per_case_rub&quot;: null,
+  &quot;tokens&quot;: {
+    &quot;input_tokens&quot;: 2989,
+    &quot;output_tokens&quot;: 4218,
+    &quot;total_tokens&quot;: 7207,
+    &quot;cache_read_input_tokens&quot;: 0,
+    &quot;cache_write_input_tokens&quot;: 0,
+    &quot;cache_input_tokens&quot;: 0,
+    &quot;reasoning_tokens&quot;: 0
+  }
+}</pre></section>
+<section class=panel><h2>Метаданные запуска</h2><pre>{
+  &quot;ts&quot;: &quot;2026-08-20T15:30:08.108936+00:00&quot;,
+  &quot;model&quot;: &quot;gigachat-2-pro&quot;,
+  &quot;model_alias&quot;: &quot;GigaChat-2-Pro&quot;,
+  &quot;provider&quot;: &quot;gigachat&quot;,
+  &quot;provider_label&quot;: &quot;GigaChat API (OAuth)&quot;,
+  &quot;benchmark&quot;: &quot;rule_extraction&quot;,
+  &quot;cases_path&quot;: &quot;cases/seed-policy&quot;,
+  &quot;effort&quot;: &quot;provider-default&quot;,
+  &quot;request_extra&quot;: {},
+  &quot;served_models&quot;: [
+    &quot;GigaChat-2-Pro:2.0.30.01&quot;
+  ],
+  &quot;reasoning&quot;: false,
+  &quot;reasoning_note&quot;: &quot;no provider reasoning field requested&quot;,
+  &quot;price_source&quot;: &quot;GigaChat API catalog; per-token invoice rate not exposed&quot;
+}</pre></section>
+</div><aside class=run-aside><section class="panel transcript-panel"><details class="transcript-optin"><summary><span>Полный транскрипт</span><span class="transcript-optin-note">Показать чат</span></summary><p class=muted>Сообщения отображаются как чат; системные инструкции и thinking можно раскрывать отдельно.</p><div class=transcript-chat><details class="transcript-case"><summary><strong>policy_cultural_grant</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>team.project_lead_age</li><li>budget.co_financing_pct</li><li>documents.venue_consent.present</li><li>application.requested_rub</li></ul><p>POLICY DOCUMENT:<br>КУЛЬТУРНЫЙ ГРАНТ «ГОРОДСКАЯ СЦЕНА». Руководитель проекта должен быть<br>совершеннолетним. Не менее 20% бюджета обеспечивает заявитель за счёт<br>софинансирования. Для очных мероприятий требуется согласие площадки.<br>Запрашиваемый грант не превышает 1 500 000 рублей.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;cultural_grant_city_stage&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Project leader must be an adult.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;age_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;team.project_lead_age&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 18
+      }
+    },
+    {
+      &quot;description&quot;: &quot;At least 20% of the budget must come from applicant&#x27;s co-financing.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;budget_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;budget.co_financing_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 20
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Venue consent document must be present for in-person events.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;document_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.venue_consent.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Requested grant amount cannot exceed 1,500,000 rubles.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;grant_limit&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application.requested_rub&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 1500000
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">4.029 · 697 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_education_license</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>documents.education_license.present</li><li>curriculum.total_hours</li><li>staff.qualified_teachers_pct</li><li>programme.delivery_format</li></ul><p>POLICY DOCUMENT:<br>ПРОГРАММА ДОПОЛНИТЕЛЬНОГО ОБРАЗОВАНИЯ. Организация предоставляет действующую<br>лицензию на образовательную деятельность. Объём программы составляет не менее<br>72 часов. Не менее 80% преподавателей имеют профильную квалификацию. Формат<br>реализации допускается только «очно» или «смешанно».</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;additional_education_program_policy&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;The organization must provide an active education license.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;licensing&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.education_license.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;The program volume must be at least 72 hours.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;program_duration&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;curriculum.total_hours&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 72
+      }
+    },
+    {
+      &quot;description&quot;: &quot;At least 80% of teachers must have relevant qualifications.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;staff_qualification&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;staff.qualified_teachers_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 80
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Delivery format must be either &#x27;face-to-face&#x27; or &#x27;blended&#x27;.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;delivery_method&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;programme.delivery_format&quot;,
+        &quot;op&quot;: &quot;in&quot;,
+        &quot;value&quot;: [
+          &quot;очно&quot;,
+          &quot;смешанно&quot;
+        ]
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.829 · 684 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_energy_efficiency</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>project.energy_consumption_reduction_pct</li><li>budget.co_financing_pct</li><li>documents.technical_passport.present</li><li>project.completion_date</li></ul><p>POLICY DOCUMENT:<br>СУБСИДИЯ НА ЭНЕРГОЭФФЕКТИВНОСТЬ. Проект обязан снизить потребление энергии не<br>менее чем на 20%. Доля софинансирования заявителя составляет не менее 30%.<br>К заявке прикладывается технический паспорт объекта. Работы должны быть<br>завершены не позднее 31 декабря 2027 года.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;subsidy_energy_efficiency&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Project must reduce energy consumption by at least 20%&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;energy-efficiency&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;project.energy_consumption_reduction_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 20
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Applicant&#x27;s co-financing must be at least 30%&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;budget&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;budget.co_financing_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 30
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Technical passport document must be present&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documentation&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.technical_passport.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Project completion date must be on or before 2027-12-31&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;schedule&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;project.completion_date&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: &quot;2027-12-31&quot;
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.815 · 462 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_foundation_v2</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>org_v2.months_registered</li><li>org_v2.total_requested</li><li>documents.audit_report.present</li><li>org_v2.submission_date</li><li>org_v2.declared_headcount</li><li>annual_report.headcount</li><li>annual_report.ifrs</li></ul><p>POLICY DOCUMENT:<br>ФОНД «НОРДСТАР» — ПРИЁМ ЗАЯВОК НА ОСНОВНОЙ ГРАНТОВЫЙ ТРЕК, версия 2.4</p><p>Допуск. Заявитель основного трека должен быть зарегистрирован не менее<br>24 месяцев. Исключение: организация младше 24 месяцев может подать заявку<br>только на трек «Акселератор»; этот документ регулирует исключительно<br>основной трек.</p><p>Лимит запроса. Сумма, запрашиваемая по гранту основного трека, не может<br>превышать 250 000 евро.</p><p>Аудит. К заявке необходимо приложить независимое аудиторское заключение за<br>последний завершённый финансовый год. Пакеты без заключения отклоняются.</p><p>Срок. Приём заявок на цикл 2027 года завершается 31 марта 2027 года<br>включительно.</p><p>Согласованность численности. Число сотрудников в заявке должно совпадать с<br>численностью в годовом отчёте.</p><p>Стандарт отчётности. Годовой отчёт должен быть подготовлен по МСФО.<br>Отчёт не по МСФО считается только формальным недостатком.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;nordstar_grant_track_2.4&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Заявитель должен быть зарегистрирован минимум 24 месяца.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;registration_duration&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;org_v2.months_registered&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 24
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Запрашиваемая сумма не должна превышать 250 000 евро.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;grant_amount_limit&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;org_v2.total_requested&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 250000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Независимый аудит за последний завершённый финансовый год обязателен.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;audit_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.audit_report.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Подача заявок завершается 31 марта 2027 года включительно.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;submission_deadline&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;org_v2.submission_date&quot;,
+        &quot;op&quot;: &quot;before&quot;,
+        &quot;value&quot;: &quot;2027-04-01&quot;
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Численность сотрудников в заявке должна совпадать с численностью в годовом отчёте.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;headcount_consistency&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: [
+          &quot;org_v2.declared_headcount&quot;,
+          &quot;annual_report.headcount&quot;
+        ],
+        &quot;op&quot;: &quot;consistent&quot;,
+        &quot;value&quot;: null
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Годовой отчёт должен быть подготовлен по стандартам МСФО.&quot;,
+      &quot;severity&quot;: &quot;minor&quot;,
+      &quot;category&quot;: &quot;reporting_standard&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;annual_report.ifrs&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">5.832 · 806 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_grant_2026</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>POLICY DOCUMENT:<br>ФОНД «ПРИМЕР» — ГРАНТОВАЯ ПРОГРАММА 2026<br>Формальные правила приёма, версия 2026.1 (каноническая).</p><ol><li>Допуск. На дату подачи организация-заявитель должна быть зарегистрирована</li></ol><p>не менее 12 месяцев. Это жёсткий критерий: заявки более молодых организаций<br>отклоняются автоматически.</p><ol><li>Лимит бюджета. Запрашиваемая сумма не может превышать 100 000 евро.</li></ol><p>Превышающие лимит заявки возвращаются на доработку.</p><ol><li>Доля оборудования. Расходы на оборудование не могут превышать 40% общего бюджета.</li></ol><ol><li>Обязательные документы. Полный пакет включает: (а) форму заявки;</li></ol><p>(б) детализированный бюджет; (в) свидетельство о регистрации, то есть выписку<br>из реестра; (г) последнюю финансовую отчётность. Пакет без любого из этих<br>документов не принимается и отклоняется.</p><ol><li>Срок. Заявки принимаются до 1 октября 2026 года включительно. Поздние</li></ol><p>заявки возвращаются.</p><ol><li>Подпись. Форму заявки подписывает законный представитель. Неподписанные</li></ol><p>формы отклоняются.</p><ol><li>Согласованность. Запрашенная в форме сумма должна точно совпадать с итогом</li></ol><p>детализированного бюджета.</p><ol><li>Отчётный период. Финансовая отчётность должна охватывать FY2025.</li></ol><p>Отчётность за другой период — формальный недостаток.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;prim-examples-foundation-grants-2026&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Организация должна быть зарегистрирована минимум 12 месяцев.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;eligibility&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application_form.months_registered&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 12
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Запрашиваемая сумма не должна превышать 100 000 евро.&quot;,
+      &quot;severity&quot;: &quot;major&quot;,
+      &quot;category&quot;: &quot;budget&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application_form.requested_total_eur&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 100000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Расходы на оборудование не должны превышать 40% бюджета.&quot;,
+      &quot;severity&quot;: &quot;major&quot;,
+      &quot;category&quot;: &quot;budget&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;budget.row.equipment.share_pct&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 40
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Форма заявки должна быть представлена.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documents&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.application_form.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Детализированный бюджет должен быть представлен.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documents&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.budget.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Свидетельство о регистрации должно быть представлено.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documents&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.registration_cert.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Последняя финансовая отчетность должна быть представлена.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documents&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.finance_statement.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Дата подачи заявки должна быть до или равна 1 октября 2026 года.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;submission&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application_form.submission_date&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: &quot;2026-10-01&quot;
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Заявка должна быть подписана законным представителем.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;signature&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application_form.signature_present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Запрошенная сумма должна совпадать с итогом детализированного бюджета.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;consistency&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: [
+          &quot;application_form.requested_total_eur&quot;,
+          &quot;budget.totals.total&quot;
+        ],
+        &quot;op&quot;: &quot;consistent&quot;,
+        &quot;value&quot;: null
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Финансовая отчетность должна охватывать финансовый год 2025.&quot;,
+      &quot;severity&quot;: &quot;minor&quot;,
+      &quot;category&quot;: &quot;reporting_period&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;finance_statement.period&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: &quot;FY2025&quot;
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">9.43 · 1189 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_housing_repair</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>building.construction_year</li><li>owners.approval_pct</li><li>documents.defect_report.present</li><li>application.submission_date</li></ul><p>POLICY DOCUMENT:<br>ПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение<br>собственников поддержали не менее 66% голосов. К заявке прилагается акт<br>обследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;capital_repair_program&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Building construction year must be 2005 or earlier.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;construction_year&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;building.construction_year&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 2005
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Owner approval percentage must be at least 66%.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;owner_approval&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;owners.approval_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 66
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Defect report must be present.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;defect_report&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.defect_report.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Application submission date must be on or before April 1, 2027.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;submission_date&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application.submission_date&quot;,
+        &quot;op&quot;: &quot;before&quot;,
+        &quot;value&quot;: &quot;2027-04-02&quot;
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.805 · 445 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_medical_procurement</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>documents.medical_registration.present</li><li>product.expiry_months</li><li>documents.cold_chain_protocol.present</li><li>product.origin_country</li></ul><p>POLICY DOCUMENT:<br>ЗАКУПКА МЕДИЦИНСКИХ ИЗДЕЛИЙ. Для товара обязательно регистрационное<br>удостоверение. На дату поставки остаточный срок годности составляет не менее<br>12 месяцев. Для изделий, требующих холодовой цепи, обязателен протокол её<br>соблюдения. Страной происхождения может быть Россия или государство ЕАЭС.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;medical_device_purchase&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Medical registration document must be present.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documentation&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.medical_registration.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Remaining shelf life must be at least 12 months on delivery date.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;shelf-life&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;product.expiry_months&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 12
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Cold chain compliance protocol must be present if cold chain required.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;cold-chain&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.cold_chain_protocol.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Product origin country must be Russia or EAEU member state.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;origin&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;product.origin_country&quot;,
+        &quot;op&quot;: &quot;in&quot;,
+        &quot;value&quot;: [
+          &quot;Russia&quot;,
+          &quot;Armenia&quot;,
+          &quot;Belarus&quot;,
+          &quot;Kazakhstan&quot;,
+          &quot;Kyrgyzstan&quot;
+        ]
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.796 · 457 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_microloan</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>company.annual_revenue_rub</li><li>company.overdue_debt</li><li>company.russian_ownership_pct</li><li>loan.requested_rub</li></ul><p>POLICY DOCUMENT:<br>ЛЬГОТНЫЙ МИКРОЗАЁМ ДЛЯ МСП. Годовая выручка компании не превышает<br>120 000 000 рублей. Просроченная задолженность отсутствует. Не менее 51%<br>долей принадлежит российским владельцам. Сумма займа не превышает 10 000 000<br>рублей.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot; льготный_микрозайм_для_мсп&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Годовая выручка компании не превышает 120 000 000 рублей.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;financials&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;company.annual_revenue_rub&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 120000000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Отсутствует просроченная задолженность.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;creditworthiness&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;company.overdue_debt&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: 0
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Не менее 51% долей принадлежит российским владельцам.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;ownership&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;company.russian_ownership_pct&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 51
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Сумма займа не превышает 10 000 000 рублей.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;loan_amount&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;loan.requested_rub&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 10000000
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.939 · 477 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_municipal_subsidy</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>applicant.registration_months</li><li>application.requested_rub</li><li>documents.financial_statement.present</li><li>application.submission_date</li><li>applicant.tax_arrears</li></ul><p>POLICY DOCUMENT:<br>МУНИЦИПАЛЬНАЯ СУБСИДИЯ 2026<br>Получатель должен быть зарегистрирован не менее 12 месяцев. Запрашиваемая<br>субсидия не превышает 5 000 000 рублей. К заявке обязательно прилагается<br>финансовая отчётность за последний год. Приём заканчивается 15 сентября 2026<br>года включительно. Организации с задолженностью по налогам не допускаются.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;municipal_subsidy_2026&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Applicant must be registered for at least 12 months.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;registration_duration&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;applicant.registration_months&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 12
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Requested subsidy amount cannot exceed 5,000,000 rubles.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;subsidy_amount&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application.requested_rub&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 5000000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Financial statement must be present in the application.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;documentation&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.financial_statement.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Application submission deadline is September 15, 2026 inclusive.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;submission_date&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application.submission_date&quot;,
+        &quot;op&quot;: &quot;before&quot;,
+        &quot;value&quot;: &quot;2026-09-16&quot;
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Applicants with tax arrears are ineligible.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;tax_compliance&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;applicant.tax_arrears&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: false
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">4.836 · 559 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_procurement_supplier</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>supplier.annual_turnover_rub</li><li>documents.sro_certificate.present</li><li>supplier.sanctions_status</li><li>bid.submission_date</li></ul><p>POLICY DOCUMENT:<br>ЗАКУПКА РЕМОНТНЫХ РАБОТ. Годовая выручка поставщика должна составлять не<br>менее 10 000 000 рублей. Для допуска требуется действующее свидетельство СРО.<br>Участник допускается только со статусом санкционной проверки «clear». Заявки<br>принимаются не позднее 20 ноября 2026 года.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;repair_contractor_eligibility&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Годовая выручка поставщика должна быть не менее 10 000 000 рублей.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;financial_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;supplier.annual_turnover_rub&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 10000000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Требуется наличие действующего свидетельства СРО.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;document_requirement&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.sro_certificate.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Статус санкционной проверки должен быть &#x27;clear&#x27;.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;compliance&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;supplier.sanctions_status&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: &quot;clear&quot;
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Заявки принимаются не позднее 20 ноября 2026 года.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;submission_deadline&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;bid.submission_date&quot;,
+        &quot;op&quot;: &quot;before&quot;,
+        &quot;value&quot;: &quot;2026-11-21&quot;
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">3.78 · 471 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_research_competition</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>researcher.degree</li><li>researcher.peer_reviewed_publications</li><li>documents.open_data_consent.present</li><li>application.declared_budget_rub</li><li>budget.total_rub</li></ul><p>POLICY DOCUMENT:<br>КОНКУРС ПРИКЛАДНЫХ ИССЛЕДОВАНИЙ. Руководитель имеет степень «кандидат наук»<br>или «доктор наук» и не менее трёх публикаций в рецензируемых журналах.<br>Обязательно согласие на размещение обезличенных данных исследования. Бюджет,<br>заявленный в форме, должен совпадать с итогом сметы.</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;applied_research_competition&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Researcher must hold degree &#x27;candidate of sciences&#x27; or &#x27;doctor of sciences&#x27;.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;qualifications&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;researcher.degree&quot;,
+        &quot;op&quot;: &quot;in&quot;,
+        &quot;value&quot;: [
+          &quot;candidate of sciences&quot;,
+          &quot;doctor of sciences&quot;
+        ]
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Researcher must have at least three peer-reviewed publications.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;publications&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;researcher.peer_reviewed_publications&quot;,
+        &quot;op&quot;: &quot;ge&quot;,
+        &quot;value&quot;: 3
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Open data consent document must be present.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;consent&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.open_data_consent.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Declared budget must match total budget calculated.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;budget_consistency&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;application.declared_budget_rub&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: {
+          &quot;field&quot;: &quot;budget.total_rub&quot;
+        }
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">5.406 · 482 токенов · API</div></div></details><details class="transcript-case"><summary><strong>policy_social_contract</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;one-line restatement of the rule&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;short tag&gt;",<br>     "condition": {"field": "&lt;canonical field path&gt;", "op": "&lt;operator&gt;", "value": &lt;value or null&gt;}<br>  }<br>}</p><p>Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Use ONLY the canonical field registry given in the task for <code>field</code>.</li><li><code>value</code> is the bound from the policy (number, ISO date, string, or list for in/not_in).</li><li>For "the same value must appear in N places" rules use op=consistent with "fields": [...].</li><li>Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>CANONICAL FIELD REGISTRY (use only these paths in conditions):</p><ul><li>household.region</li><li>household.monthly_income_per_person_rub</li><li>documents.personal_data_consent.present</li><li>applicant.employment_status</li></ul><p>POLICY DOCUMENT:<br>СОЦИАЛЬНЫЙ КОНТРАКТ. Участвовать могут домохозяйства из Москвы или Московской<br>области с доходом на человека не выше 25 000 рублей в месяц. Требуется<br>согласие на обработку персональных данных. Заявитель должен иметь статус<br>«unemployed» или «job_seeker».</p><p>Extract the complete ruleset. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;ruleset_id&quot;: &quot;social_contract_participation&quot;,
+  &quot;rules&quot;: [
+    {
+      &quot;description&quot;: &quot;Household must be from Moscow or Московская область.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;region&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;household.region&quot;,
+        &quot;op&quot;: &quot;in&quot;,
+        &quot;value&quot;: [
+          &quot;Москва&quot;,
+          &quot;Московская область&quot;
+        ]
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Monthly income per person must not exceed 25,000 rubles.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;income&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;household.monthly_income_per_person_rub&quot;,
+        &quot;op&quot;: &quot;le&quot;,
+        &quot;value&quot;: 25000
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Personal data consent document must be present.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;consent&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;documents.personal_data_consent.present&quot;,
+        &quot;op&quot;: &quot;eq&quot;,
+        &quot;value&quot;: true
+      }
+    },
+    {
+      &quot;description&quot;: &quot;Applicant&#x27;s employment status must be &#x27;unemployed&#x27; or &#x27;job_seeker&#x27;.&quot;,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;category&quot;: &quot;employment&quot;,
+      &quot;condition&quot;: {
+        &quot;field&quot;: &quot;applicant.employment_status&quot;,
+        &quot;op&quot;: &quot;in&quot;,
+        &quot;value&quot;: [
+          &quot;unemployed&quot;,
+          &quot;job_seeker&quot;
+        ]
+      }
+    }
+  ]
+}</code></pre></div><div class="attempt-meta">5.123 · 478 токенов · API</div></div></details></div></details></section></aside></div>
+</main></body></html>

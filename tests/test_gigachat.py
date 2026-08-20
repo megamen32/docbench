@@ -48,8 +48,13 @@ def test_gigachat_mints_and_reuses_access_token(monkeypatch):
 
 def test_gigachat_model_catalog_uses_oauth(monkeypatch):
     monkeypatch.setenv("SBER", "test-authorization-key")
-    model = resolve_model("gigachat-3-ultra")
-
-    assert model.alias == "GigaChat-3-Ultra"
-    assert model.auth_method == "gigachat_oauth"
-    assert model.oauth_scope == "GIGACHAT_API_PERS"
+    for key, alias in {
+        "gigachat-2": "GigaChat-2",
+        "gigachat-2-max": "GigaChat-2-Max",
+        "gigachat-2-pro": "GigaChat-2-Pro",
+        "gigachat-3-ultra": "GigaChat-3-Ultra",
+    }.items():
+        model = resolve_model(key)
+        assert model.alias == alias
+        assert model.auth_method == "gigachat_oauth"
+        assert model.oauth_scope == "GIGACHAT_API_PERS"

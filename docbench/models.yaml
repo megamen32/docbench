@@ -226,6 +226,36 @@ providers:
     oauth_scope: GIGACHAT_API_PERS
     ca_bundle_env: DOCBENCH_GIGACHAT_CA_BUNDLE
     models:
+      gigachat-2:
+        alias: GigaChat-2
+        price_currency: RUB
+        price_source: GigaChat API catalog; per-token invoice rate not exposed
+        pricing_snapshot: https://developers.sber.ru/docs/ru/gigachat/models
+        reasoning: false
+        reasoning_note: no provider reasoning field requested
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
+      gigachat-2-max:
+        alias: GigaChat-2-Max
+        price_currency: RUB
+        price_source: GigaChat API catalog; per-token invoice rate not exposed
+        pricing_snapshot: https://developers.sber.ru/docs/ru/gigachat/models
+        reasoning: false
+        reasoning_note: no provider reasoning field requested
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
+      gigachat-2-pro:
+        alias: GigaChat-2-Pro
+        price_currency: RUB
+        price_source: GigaChat API catalog; per-token invoice rate not exposed
+        pricing_snapshot: https://developers.sber.ru/docs/ru/gigachat/models
+        reasoning: false
+        reasoning_note: no provider reasoning field requested
+        effort_levels:
+          provider-default: {}
+        effort_default: provider-default
       gigachat-3-ultra:
         alias: GigaChat-3-Ultra
         price_currency: RUB
