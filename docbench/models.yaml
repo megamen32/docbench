@@ -88,6 +88,26 @@ providers:
           provider-default: {}
           no_thinking: {thinking: false}
         effort_default: no_thinking
+      omniroute-cx-gpt-5.6-terra-medium:
+        alias: cx/gpt-5.6-terra-medium
+        price_currency: RUB
+        price_source: live OmniRoute route; price not pinned in local snapshot
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
+      omniroute-cx-gpt-5.6-sol-medium:
+        alias: cx/gpt-5.6-sol-medium
+        price_currency: RUB
+        price_source: live OmniRoute route; price not pinned in local snapshot
+        reasoning: true
+        reasoning_note: capability present; DocBench requests thinking:false by default
+        effort_levels:
+          provider-default: {}
+          no_thinking: {thinking: false}
+        effort_default: no_thinking
       omniroute-routerai-gpt-5.4-mini:
         alias: routerai/openai/gpt-5.4-mini
         price_currency: RUB

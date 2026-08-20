@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "run": {
+    "benchmark": "rule_extraction",
+    "model": "minimax-m2.5",
+    "model_alias": "MiniMax-M2.5",
+    "provider": "minimax",
+    "result": "results.json"
+  },
+  "cases": [
+    {
+      "case_id": "policy_cultural_grant",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- team.project_lead_age\n- budget.co_financing_pct\n- documents.venue_consent.present\n- application.requested_rub\n\nPOLICY DOCUMENT:\nКУЛЬТУРНЫЙ ГРАНТ «ГОРОДСКАЯ СЦЕНА». Руководитель проекта должен быть\nсовершеннолетним. Не менее 20% бюджета обеспечивает заявитель за счёт\nсофинансирования. Для очных мероприятий требуется согласие площадки.\nЗапрашиваемый грант не превышает 1 500 000 рублей.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\"ruleset_id\":\"gorodskaya-scena-grant\",\"rules\":[{\"description\":\"Project lead must be adult (age 18 or older)\",\"severity\":\"critical\",\"category\":\"eligibility\",\"condition\":{\"field\":\"team.project_lead_age\",\"op\":\"ge\",\"value\":18}},{\"description\":\"Applicant must provide at least 20% co-financing\",\"severity\":\"critical\",\"category\":\"funding\",\"condition\":{\"field\":\"budget.co_financing_pct\",\"op\":\"ge\",\"value\":20}},{\"description\":\"Venue consent required for in-person events\",\"severity\":\"major\",\"category\":\"documents\",\"condition\":{\"field\":\"documents.venue_consent.present\",\"op\":\"eq\",\"value\":true}},{\"description\":\"Requested grant must not exceed 1500000 rubles\",\"severity\":\"critical\",\"category\":\"funding\",\"condition\":{\"field\":\"application.requested_rub\",\"op\":\"le\",\"value\":1500000}}]}",
+          "usage": {
+            "total_tokens": 1387,
+            "total_characters": 0,
+            "prompt_tokens": 422,
+            "completion_tokens": 965,
+            "input_tokens": 422,
+            "output_tokens": 965,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 422,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 14.654,
+          "cache_hit": true
+        }
+      ]
+    },
+    {
+      "case_id": "policy_education_license",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- documents.education_license.present\n- curriculum.total_hours\n- staff.qualified_teachers_pct\n- programme.delivery_format\n\nPOLICY DOCUMENT:\nПРОГРАММА ДОПОЛНИТЕЛЬНОГО ОБРАЗОВАНИЯ. Организация предоставляет действующую\nлицензию на образовательную деятельность. Объём программы составляет не менее\n72 часов. Не менее 80% преподавателей имеют профильную квалификацию. Формат\nреализации допускается только «очно» или «смешанно».\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"additional-education-requirements\",\n  \"rules\": [\n    {\n      \"description\": \"Organization must provide a valid educational license\",\n      \"severity\": \"critical\",\n      \"category\": \"license\",\n      \"condition\": {\"field\": \"documents.education_license.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Program volume must be at least 72 hours\",\n      \"severity\": \"critical\",\n      \"category\": \"curriculum\",\n      \"condition\": {\"field\": \"curriculum.total_hours\", \"op\": \"ge\", \"value\": 72}\n    },\n    {\n      \"description\": \"At least 80% of teachers must have relevant qualifications\",\n      \"severity\": \"major\",\n      \"category\": \"staff\",\n      \"condition\": {\"field\": \"staff.qualified_teachers_pct\", \"op\": \"ge\", \"value\": 80}\n    },\n    {\n      \"description\": \"Delivery format must be in-person or mixed only\",\n      \"severity\": \"critical\",\n      \"category\": \"delivery\",\n      \"condition\": {\"field\": \"programme.delivery_format\", \"op\": \"in\", \"value\": [\"очно\", \"смешанно\"]}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1115,
+            "total_characters": 0,
+            "prompt_tokens": 417,
+            "completion_tokens": 698,
+            "input_tokens": 417,
+            "output_tokens": 698,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 417,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 6.543,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_energy_efficiency",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- project.energy_consumption_reduction_pct\n- budget.co_financing_pct\n- documents.technical_passport.present\n- project.completion_date\n\nPOLICY DOCUMENT:\nСУБСИДИЯ НА ЭНЕРГОЭФФЕКТИВНОСТЬ. Проект обязан снизить потребление энергии не\nменее чем на 20%. Доля софинансирования заявителя составляет не менее 30%.\nК заявке прикладывается технический паспорт объекта. Работы должны быть\nзавершены не позднее 31 декабря 2027 года.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"energy-efficiency-subsidy\",\n  \"rules\": [\n    {\n      \"description\": \"Project must reduce energy consumption by at least 20%\",\n      \"severity\": \"critical\",\n      \"category\": \"energy-performance\",\n      \"condition\": {\"field\": \"project.energy_consumption_reduction_pct\", \"op\": \"ge\", \"value\": 20}\n    },\n    {\n      \"description\": \"Applicant co-financing share must be at least 30%\",\n      \"severity\": \"critical\",\n      \"category\": \"budget\",\n      \"condition\": {\"field\": \"budget.co_financing_pct\", \"op\": \"ge\", \"value\": 30}\n    },\n    {\n      \"description\": \"Technical passport of the object must be provided\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\"field\": \"documents.technical_passport.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Project must be completed no later than December 31, 2027\",\n      \"severity\": \"critical\",\n      \"category\": \"timeline\",\n      \"condition\": {\"field\": \"project.completion_date\", \"op\": \"before\", \"value\": \"2027-12-31\"}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1004,
+            "total_characters": 0,
+            "prompt_tokens": 420,
+            "completion_tokens": 584,
+            "input_tokens": 420,
+            "output_tokens": 584,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 420,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 5.694,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_foundation_v2",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- org_v2.months_registered\n- org_v2.total_requested\n- documents.audit_report.present\n- org_v2.submission_date\n- org_v2.declared_headcount\n- annual_report.headcount\n- annual_report.ifrs\n\nPOLICY DOCUMENT:\nФОНД «НОРДСТАР» — ПРИЁМ ЗАЯВОК НА ОСНОВНОЙ ГРАНТОВЫЙ ТРЕК, версия 2.4\n\nДопуск. Заявитель основного трека должен быть зарегистрирован не менее\n24 месяцев. Исключение: организация младше 24 месяцев может подать заявку\nтолько на трек «Акселератор»; этот документ регулирует исключительно\nосновной трек.\n\nЛимит запроса. Сумма, запрашиваемая по гранту основного трека, не может\nпревышать 250 000 евро.\n\nАудит. К заявке необходимо приложить независимое аудиторское заключение за\nпоследний завершённый финансовый год. Пакеты без заключения отклоняются.\n\nСрок. Приём заявок на цикл 2027 года завершается 31 марта 2027 года\nвключительно.\n\nСогласованность численности. Число сотрудников в заявке должно совпадать с\nчисленностью в годовом отчёте.\n\nСтандарт отчётности. Годовой отчёт должен быть подготовлен по МСФО.\nОтчёт не по МСФО считается только формальным недостатком.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"nordstar-main-track-v2\",\n  \"rules\": [\n    {\n      \"description\": \"Applicant must be registered for at least 24 months to qualify for main track\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"org_v2.months_registered\", \"op\": \"ge\", \"value\": 24}\n    },\n    {\n      \"description\": \"Requested grant amount cannot exceed 250,000 euros\",\n      \"severity\": \"critical\",\n      \"category\": \"limit\",\n      \"condition\": {\"field\": \"org_v2.total_requested\", \"op\": \"le\", \"value\": 250000}\n    },\n    {\n      \"description\": \"Independent audit report for last completed financial year must be attached\",\n      \"severity\": \"critical\",\n      \"category\": \"required_document\",\n      \"condition\": {\"field\": \"documents.audit_report.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Application must be submitted by March 31, 2027 for 2027 cycle\",\n      \"severity\": \"critical\",\n      \"category\": \"deadline\",\n      \"condition\": {\"field\": \"org_v2.submission_date\", \"op\": \"before\", \"value\": \"2027-03-31\"}\n    },\n    {\n      \"description\": \"Declared headcount must match annual report headcount\",\n      \"severity\": \"major\",\n      \"category\": \"consistency\",\n      \"condition\": {\"field\": \"org_v2.declared_headcount\", \"op\": \"consistent\", \"value\": [\"annual_report.headcount\"]}\n    },\n    {\n      \"description\": \"Annual report must be prepared according to IFRS\",\n      \"severity\": \"minor\",\n      \"category\": \"reporting_standard\",\n      \"condition\": {\"field\": \"annual_report.ifrs\", \"op\": \"eq\", \"value\": true}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1761,
+            "total_characters": 0,
+            "prompt_tokens": 655,
+            "completion_tokens": 1106,
+            "input_tokens": 655,
+            "output_tokens": 1106,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 655,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 9.815,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_grant_2026",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- application_form.months_registered\n- budget.totals.total\n- budget.row.equipment.share_pct\n- documents.application_form.present\n- documents.budget.present\n- documents.registration_cert.present\n- documents.finance_statement.present\n- application_form.submission_date\n- application_form.signature_present\n- application_form.requested_total_eur\n- finance_statement.period\n\nPOLICY DOCUMENT:\nФОНД «ПРИМЕР» — ГРАНТОВАЯ ПРОГРАММА 2026\nФормальные правила приёма, версия 2026.1 (каноническая).\n\n1. Допуск. На дату подачи организация-заявитель должна быть зарегистрирована\nне менее 12 месяцев. Это жёсткий критерий: заявки более молодых организаций\nотклоняются автоматически.\n\n2. Лимит бюджета. Запрашиваемая сумма не может превышать 100 000 евро.\nПревышающие лимит заявки возвращаются на доработку.\n\n3. Доля оборудования. Расходы на оборудование не могут превышать 40% общего бюджета.\n\n4. Обязательные документы. Полный пакет включает: (а) форму заявки;\n(б) детализированный бюджет; (в) свидетельство о регистрации, то есть выписку\nиз реестра; (г) последнюю финансовую отчётность. Пакет без любого из этих\nдокументов не принимается и отклоняется.\n\n5. Срок. Заявки принимаются до 1 октября 2026 года включительно. Поздние\nзаявки возвращаются.\n\n6. Подпись. Форму заявки подписывает законный представитель. Неподписанные\nформы отклоняются.\n\n7. Согласованность. Запрашенная в форме сумма должна точно совпадать с итогом\nдетализированного бюджета.\n\n8. Отчётный период. Финансовая отчётность должна охватывать FY2025.\nОтчётность за другой период — формальный недостаток.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"primер-грант-2026\",\n  \"rules\": [\n    {\n      \"description\": \"Organization must be registered for at least 12 months\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"application_form.months_registered\", \"op\": \"ge\", \"value\": 12}\n    },\n    {\n      \"description\": \"Requested amount cannot exceed 100,000 EUR\",\n      \"severity\": \"major\",\n      \"category\": \"budget\",\n      \"condition\": {\"field\": \"application_form.requested_total_eur\", \"op\": \"le\", \"value\": 100000}\n    },\n    {\n      \"description\": \"Equipment expenses cannot exceed 40% of total budget\",\n      \"severity\": \"major\",\n      \"category\": \"budget\",\n      \"condition\": {\"field\": \"budget.row.equipment.share_pct\", \"op\": \"le\", \"value\": 40}\n    },\n    {\n      \"description\": \"Application form must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"documents\",\n      \"condition\": {\"field\": \"documents.application_form.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Detailed budget must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"documents\",\n      \"condition\": {\"field\": \"documents.budget.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Registration certificate must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"documents\",\n      \"condition\": {\"field\": \"documents.registration_cert.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Financial statement must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"documents\",\n      \"condition\": {\"field\": \"documents.finance_statement.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Application must be submitted before October 1, 2026\",\n      \"severity\": \"major\",\n      \"category\": \"deadline\",\n      \"condition\": {\"field\": \"application_form.submission_date\", \"op\": \"before\", \"value\": \"2026-10-01\"}\n    },\n    {\n      \"description\": \"Application form must be signed by legal representative\",\n      \"severity\": \"critical\",\n      \"category\": \"signature\",\n      \"condition\": {\"field\": \"application_form.signature_present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Requested amount in form must match budget total\",\n      \"severity\": \"major\",\n      \"category\": \"consistency\",\n      \"condition\": {\"field\": \"application_form.requested_total_eur\", \"op\": \"consistent\", \"value\": [\"application_form.requested_total_eur\", \"budget.totals.total\"]}\n    },\n    {\n      \"description\": \"Financial statement must cover FY2025\",\n      \"severity\": \"minor\",\n      \"category\": \"reporting_period\",\n      \"condition\": {\"field\": \"finance_statement.period\", \"op\": \"eq\", \"value\": \"FY2025\"}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 2204,
+            "total_characters": 0,
+            "prompt_tokens": 788,
+            "completion_tokens": 1416,
+            "input_tokens": 788,
+            "output_tokens": 1416,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 788,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 13.968,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_housing_repair",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- building.construction_year\n- owners.approval_pct\n- documents.defect_report.present\n- application.submission_date\n\nPOLICY DOCUMENT:\nПРОГРАММА КАПИТАЛЬНОГО РЕМОНТА. Дом построен не позднее 2005 года. Решение\nсобственников поддержали не менее 66% голосов. К заявке прилагается акт\nобследования дефектов. Заявка подаётся до 1 апреля 2027 года включительно.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"kapremont-program\",\n  \"rules\": [\n    {\n      \"description\": \"Дом должен быть построен не позднее 2005 года\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"building.construction_year\", \"op\": \"le\", \"value\": 2005}\n    },\n    {\n      \"description\": \"Решение собственников должно быть поддержано не менее 66% голосов\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"owners.approval_pct\", \"op\": \"ge\", \"value\": 66}\n    },\n    {\n      \"description\": \"К заявке должен прилагаться акт обследования дефектов\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\"field\": \"documents.defect_report.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Заявка должна быть подана до 1 апреля 2027 года включительно\",\n      \"severity\": \"critical\",\n      \"category\": \"deadline\",\n      \"condition\": {\"field\": \"application.submission_date\", \"op\": \"le\", \"value\": \"2027-04-01\"}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1004,
+            "total_characters": 0,
+            "prompt_tokens": 403,
+            "completion_tokens": 601,
+            "input_tokens": 403,
+            "output_tokens": 601,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 403,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 6.055,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_medical_procurement",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- documents.medical_registration.present\n- product.expiry_months\n- documents.cold_chain_protocol.present\n- product.origin_country\n\nPOLICY DOCUMENT:\nЗАКУПКА МЕДИЦИНСКИХ ИЗДЕЛИЙ. Для товара обязательно регистрационное\nудостоверение. На дату поставки остаточный срок годности составляет не менее\n12 месяцев. Для изделий, требующих холодовой цепи, обязателен протокол её\nсоблюдения. Страной происхождения может быть Россия или государство ЕАЭС.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\"ruleset_id\":\"medical-devices-procurement-ru\",\"rules\":[{\"description\":\"Medical device must have valid registration certificate\",\"severity\":\"critical\",\"category\":\"eligibility\",\"condition\":{\"field\":\"documents.medical_registration.present\",\"op\":\"eq\",\"value\":true}},{\"description\":\"Product must have at least 12 months shelf life at delivery\",\"severity\":\"critical\",\"category\":\"product_quality\",\"condition\":{\"field\":\"product.expiry_months\",\"op\":\"ge\",\"value\":12}},{\"description\":\"Cold chain protocol must be provided for products requiring cold chain\",\"severity\":\"critical\",\"category\":\"cold_chain\",\"condition\":{\"field\":\"documents.cold_chain_protocol.present\",\"op\":\"exists\",\"value\":null}},{\"description\":\"Country of origin must be Russia or EAEU member state\",\"severity\":\"critical\",\"category\":\"origin\",\"condition\":{\"field\":\"product.origin_country\",\"op\":\"in\",\"value\":[\"Russia\",\"Armenia\",\"Belarus\",\"Kazakhstan\",\"Kyrgyzstan\"]}}]}",
+          "usage": {
+            "total_tokens": 6087,
+            "total_characters": 0,
+            "prompt_tokens": 417,
+            "completion_tokens": 5670,
+            "input_tokens": 417,
+            "output_tokens": 5670,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 417,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 67.396,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_microloan",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- company.annual_revenue_rub\n- company.overdue_debt\n- company.russian_ownership_pct\n- loan.requested_rub\n\nPOLICY DOCUMENT:\nЛЬГОТНЫЙ МИКРОЗАЁМ ДЛЯ МСП. Годовая выручка компании не превышает\n120 000 000 рублей. Просроченная задолженность отсутствует. Не менее 51%\nдолей принадлежит российским владельцам. Сумма займа не превышает 10 000 000\nрублей.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"preferential-microloan-msp\",\n  \"rules\": [\n    {\n      \"description\": \"Annual revenue must not exceed 120,000,000 rubles\",\n      \"severity\": \"critical\",\n      \"category\": \"revenue-limit\",\n      \"condition\": {\"field\": \"company.annual_revenue_rub\", \"op\": \"le\", \"value\": 120000000}\n    },\n    {\n      \"description\": \"No overdue debt may exist\",\n      \"severity\": \"critical\",\n      \"category\": \"debt-status\",\n      \"condition\": {\"field\": \"company.overdue_debt\", \"op\": \"eq\", \"value\": 0}\n    },\n    {\n      \"description\": \"At least 51% ownership must be Russian\",\n      \"severity\": \"critical\",\n      \"category\": \"ownership\",\n      \"condition\": {\"field\": \"company.russian_ownership_pct\", \"op\": \"ge\", \"value\": 51}\n    },\n    {\n      \"description\": \"Requested loan amount must not exceed 10,000,000 rubles\",\n      \"severity\": \"critical\",\n      \"category\": \"loan-limit\",\n      \"condition\": {\"field\": \"loan.requested_rub\", \"op\": \"le\", \"value\": 10000000}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1009,
+            "total_characters": 0,
+            "prompt_tokens": 412,
+            "completion_tokens": 597,
+            "input_tokens": 412,
+            "output_tokens": 597,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 412,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 5.726,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_municipal_subsidy",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- applicant.registration_months\n- application.requested_rub\n- documents.financial_statement.present\n- application.submission_date\n- applicant.tax_arrears\n\nPOLICY DOCUMENT:\nМУНИЦИПАЛЬНАЯ СУБСИДИЯ 2026\nПолучатель должен быть зарегистрирован не менее 12 месяцев. Запрашиваемая\nсубсидия не превышает 5 000 000 рублей. К заявке обязательно прилагается\nфинансовая отчётность за последний год. Приём заканчивается 15 сентября 2026\nгода включительно. Организации с задолженностью по налогам не допускаются.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"municipal-subsidy-2026\",\n  \"rules\": [\n    {\n      \"description\": \"Applicant must be registered for at least 12 months\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"applicant.registration_months\", \"op\": \"ge\", \"value\": 12}\n    },\n    {\n      \"description\": \"Requested subsidy must not exceed 5,000,000 rubles\",\n      \"severity\": \"critical\",\n      \"category\": \"limit\",\n      \"condition\": {\"field\": \"application.requested_rub\", \"op\": \"le\", \"value\": 5000000}\n    },\n    {\n      \"description\": \"Financial statement for the last year must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"documentation\",\n      \"condition\": {\"field\": \"documents.financial_statement.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Application must be submitted no later than September 15, 2026\",\n      \"severity\": \"critical\",\n      \"category\": \"deadline\",\n      \"condition\": {\"field\": \"application.submission_date\", \"op\": \"before\", \"value\": \"2026-09-15\"}\n    },\n    {\n      \"description\": \"Applicant must not have tax arrears\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"applicant.tax_arrears\", \"op\": \"eq\", \"value\": false}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1270,
+            "total_characters": 0,
+            "prompt_tokens": 444,
+            "completion_tokens": 826,
+            "input_tokens": 444,
+            "output_tokens": 826,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 444,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 7.663,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_procurement_supplier",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- supplier.annual_turnover_rub\n- documents.sro_certificate.present\n- supplier.sanctions_status\n- bid.submission_date\n\nPOLICY DOCUMENT:\nЗАКУПКА РЕМОНТНЫХ РАБОТ. Годовая выручка поставщика должна составлять не\nменее 10 000 000 рублей. Для допуска требуется действующее свидетельство СРО.\nУчастник допускается только со статусом санкционной проверки «clear». Заявки\nпринимаются не позднее 20 ноября 2026 года.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"repair-works-procurement-2026\",\n  \"rules\": [\n    {\n      \"description\": \"Annual turnover must be at least 10,000,000 rubles\",\n      \"severity\": \"critical\",\n      \"category\": \"financial_capability\",\n      \"condition\": {\"field\": \"supplier.annual_turnover_rub\", \"op\": \"ge\", \"value\": 10000000}\n    },\n    {\n      \"description\": \"Valid SRO certificate must be present\",\n      \"severity\": \"critical\",\n      \"category\": \"certification\",\n      \"condition\": {\"field\": \"documents.sro_certificate.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Sanctions check status must be clear\",\n      \"severity\": \"critical\",\n      \"category\": \"sanctions_compliance\",\n      \"condition\": {\"field\": \"supplier.sanctions_status\", \"op\": \"eq\", \"value\": \"clear\"}\n    },\n    {\n      \"description\": \"Bid submission deadline is November 20, 2026\",\n      \"severity\": \"major\",\n      \"category\": \"submission_timeline\",\n      \"condition\": {\"field\": \"bid.submission_date\", \"op\": \"le\", \"value\": \"2026-11-20\"}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1178,
+            "total_characters": 0,
+            "prompt_tokens": 416,
+            "completion_tokens": 762,
+            "input_tokens": 416,
+            "output_tokens": 762,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 416,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 7.082,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_research_competition",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- researcher.degree\n- researcher.peer_reviewed_publications\n- documents.open_data_consent.present\n- application.declared_budget_rub\n- budget.total_rub\n\nPOLICY DOCUMENT:\nКОНКУРС ПРИКЛАДНЫХ ИССЛЕДОВАНИЙ. Руководитель имеет степень «кандидат наук»\nили «доктор наук» и не менее трёх публикаций в рецензируемых журналах.\nОбязательно согласие на размещение обезличенных данных исследования. Бюджет,\nзаявленный в форме, должен совпадать с итогом сметы.\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"applied-research-contest\",\n  \"rules\": [\n    {\n      \"description\": \"Руководитель должен иметь степень кандидат наук или доктор наук\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"researcher.degree\", \"op\": \"in\", \"value\": [\"кандидат наук\", \"доктор наук\"]}\n    },\n    {\n      \"description\": \"Руководитель должен иметь не менее трёх публикаций в рецензируемых журналах\",\n      \"severity\": \"critical\",\n      \"category\": \"eligibility\",\n      \"condition\": {\"field\": \"researcher.peer_reviewed_publications\", \"op\": \"ge\", \"value\": 3}\n    },\n    {\n      \"description\": \"Необходимо согласие на размещение обезличенных данных исследования\",\n      \"severity\": \"critical\",\n      \"category\": \"data_policy\",\n      \"condition\": {\"field\": \"documents.open_data_consent.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Заявленный бюджет должен совпадать с итогом сметы\",\n      \"severity\": \"critical\",\n      \"category\": \"budget\",\n      \"condition\": {\"op\": \"consistent\", \"fields\": [\"application.declared_budget_rub\", \"budget.total_rub\"]}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1193,
+            "total_characters": 0,
+            "prompt_tokens": 428,
+            "completion_tokens": 765,
+            "input_tokens": 428,
+            "output_tokens": 765,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 428,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 8.257,
+          "cache_hit": false
+        }
+      ]
+    },
+    {
+      "case_id": "policy_social_contract",
+      "attempts": [
+        {
+          "attempt": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a policy formalization engine. You convert institutional policy documents into a machine-checkable ruleset. You extract only what the document actually states; you never add rules from general knowledge.\n\nReply with ONE JSON object and nothing else, exactly this shape:\n{\n  \"ruleset_id\": \"<slug>\",\n  \"rules\": [\n    {\"description\": \"<one-line restatement of the rule>\",\n     \"severity\": \"critical|major|minor\",\n     \"category\": \"<short tag>\",\n     \"condition\": {\"field\": \"<canonical field path>\", \"op\": \"<operator>\", \"value\": <value or null>}\n  }\n}\n\nAllowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.\n- Use ONLY the canonical field registry given in the task for `field`.\n- `value` is the bound from the policy (number, ISO date, string, or list for in/not_in).\n- For \"the same value must appear in N places\" rules use op=consistent with \"fields\": [...].\n- Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.\n"
+            },
+            {
+              "role": "user",
+              "content": "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n- household.region\n- household.monthly_income_per_person_rub\n- documents.personal_data_consent.present\n- applicant.employment_status\n\nPOLICY DOCUMENT:\nСОЦИАЛЬНЫЙ КОНТРАКТ. Участвовать могут домохозяйства из Москвы или Московской\nобласти с доходом на человека не выше 25 000 рублей в месяц. Требуется\nсогласие на обработку персональных данных. Заявитель должен иметь статус\n«unemployed» или «job_seeker».\n\n\nExtract the complete ruleset. Reply with the JSON object only."
+            }
+          ],
+          "response_text": "{\n  \"ruleset_id\": \"social-contract-eligibility\",\n  \"rules\": [\n    {\n      \"description\": \"Household must be located in Moscow or Moscow Oblast\",\n      \"severity\": \"critical\",\n      \"category\": \"region\",\n      \"condition\": {\"field\": \"household.region\", \"op\": \"in\", \"value\": [\"Moscow\", \"Moscow Oblast\"]}\n    },\n    {\n      \"description\": \"Monthly income per person must not exceed 25000 rubles\",\n      \"severity\": \"critical\",\n      \"category\": \"income\",\n      \"condition\": {\"field\": \"household.monthly_income_per_person_rub\", \"op\": \"le\", \"value\": 25000}\n    },\n    {\n      \"description\": \"Consent for personal data processing must be provided\",\n      \"severity\": \"critical\",\n      \"category\": \"documents\",\n      \"condition\": {\"field\": \"documents.personal_data_consent.present\", \"op\": \"eq\", \"value\": true}\n    },\n    {\n      \"description\": \"Applicant must have employment status of unemployed or job_seeker\",\n      \"severity\": \"critical\",\n      \"category\": \"employment\",\n      \"condition\": {\"field\": \"applicant.employment_status\", \"op\": \"in\", \"value\": [\"unemployed\", \"job_seeker\"]}\n    }\n  ]\n}",
+          "usage": {
+            "total_tokens": 1076,
+            "total_characters": 0,
+            "prompt_tokens": 406,
+            "completion_tokens": 670,
+            "input_tokens": 406,
+            "output_tokens": 670,
+            "cache_read_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "cache_input_tokens": 0,
+            "uncached_input_tokens": 406,
+            "reasoning_tokens": 0,
+            "token_count_source": "prompt_tokens_with_cache_details"
+          },
+          "served_model": "MiniMax-M2.5",
+          "latency_s": 6.719,
+          "cache_hit": false
+        }
+      ]
+    }
+  ]
+}

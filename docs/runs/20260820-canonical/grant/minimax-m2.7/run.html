@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>minimax-m2.7 · DocBench</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#1b2b5b 0,transparent 34rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}main{max-width:1050px;margin:0 auto;padding:28px 20px 64px}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}.back{font-weight:650}.eyebrow{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0 16px}.lead{color:var(--muted);max-width:700px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}.status{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#15223d;color:var(--good);white-space:nowrap;font-weight:700}.status.bad{color:var(--bad)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 28px}.metric,.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 45px #05081555}.metric small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.metric strong{font-size:1.35rem;letter-spacing:-.03em}.panel{margin-top:16px}.panel h2{font-size:1rem;margin:0 0 14px}pre{white-space:pre-wrap;overflow:auto;margin:0;background:#0a0f1d;border:1px solid #273451;border-radius:12px;padding:16px;color:#cad6ef;font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.button{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:#172544;color:var(--text);font-weight:650}.button:hover{background:#22365e;text-decoration:none}.alert{border:1px solid #704353;background:#2a1829;color:#ffc2cc;border-radius:12px;padding:13px 15px;margin-top:16px}.muted{color:var(--muted)}@media(max-width:760px){.hero{display:block}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{margin-bottom:28px}}@media(max-width:430px){main{padding:20px 14px 44px}.grid{grid-template-columns:1fr 1fr;gap:8px}.metric{padding:13px}}
+</style>
+<body><main><div class=top><a class=back href="../../../../index.html">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
+<section class=hero><div><div class=eyebrow>MiniMax (OpenAI-compatible) · conformance</div><h1>minimax-m2.7</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status">Готово</div></section>
+<section class=grid><div class=metric><small>Pass rate</small><strong>90.0%</strong></div><div class=metric><small>F1</small><strong>94.0%</strong></div><div class=metric><small>Стоимость</small><strong>2.32 ₽</strong></div><div class=metric><small>Время</small><strong>1.5 s</strong></div></section>
+<div class=actions><a class=button href="transcript.json">transcript.json ↗</a><a class=button href="results.json">results.json ↗</a><a class=button href="report.md">report.md ↗</a></div>
+
+<section class=panel><h2>Детали и ресурсы</h2><pre>{
+  &quot;n_cases&quot;: 10,
+  &quot;n_scored&quot;: 10,
+  &quot;n_errors&quot;: 0,
+  &quot;case_pass_rate&quot;: 0.9,
+  &quot;finding_precision&quot;: 0.925,
+  &quot;finding_recall&quot;: 1.0,
+  &quot;finding_f1&quot;: 0.94,
+  &quot;extraction_f1&quot;: 0.9727,
+  &quot;grounding_recall&quot;: 0.875,
+  &quot;latency_p50_s&quot;: 18.8045,
+  &quot;wall_time_s&quot;: null,
+  &quot;total_cost_rub&quot;: 2.323532,
+  &quot;cost_per_case_rub&quot;: 0.232353,
+  &quot;tokens&quot;: {
+    &quot;input_tokens&quot;: 14868,
+    &quot;output_tokens&quot;: 18715,
+    &quot;total_tokens&quot;: 33583,
+    &quot;cache_read_input_tokens&quot;: 0,
+    &quot;cache_write_input_tokens&quot;: 0,
+    &quot;cache_input_tokens&quot;: 0,
+    &quot;reasoning_tokens&quot;: 0
+  }
+}</pre></section>
+<section class=panel><h2>Метаданные запуска</h2><pre>{
+  &quot;ts&quot;: &quot;2026-08-20T10:50:21.428536+00:00&quot;,
+  &quot;model&quot;: &quot;minimax-m2.7&quot;,
+  &quot;model_alias&quot;: &quot;MiniMax-M2.7&quot;,
+  &quot;provider&quot;: &quot;minimax&quot;,
+  &quot;provider_label&quot;: &quot;MiniMax (OpenAI-compatible)&quot;,
+  &quot;benchmark&quot;: &quot;conformance&quot;,
+  &quot;cases_path&quot;: &quot;cases/seed-grant&quot;,
+  &quot;effort&quot;: &quot;provider-default&quot;,
+  &quot;request_extra&quot;: {},
+  &quot;served_models&quot;: [
+    &quot;MiniMax-M2.7&quot;
+  ],
+  &quot;reasoning&quot;: false,
+  &quot;reasoning_note&quot;: null,
+  &quot;price_source&quot;: &quot;pinned routerai supplement snapshot&quot;
+}</pre></section>
+</main></body></html>

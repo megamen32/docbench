@@ -74,3 +74,11 @@ def test_rules_prf_penalizes_invented():
     assert m["tp"] == 1
     assert m["precision"] < 1.0
     assert m["recall"] == 1.0
+
+
+def test_rules_prf_handles_nested_json_value():
+    gold = [_rule("G1", "f.age", "ge", 12)]
+    pred = [_rule("P1", "f.age", "ge", {"unexpected": [1, 2]})]
+    m = M.rules_prf(gold, pred)
+    assert m["tp"] == 0
+    assert m["precision"] == 0.0

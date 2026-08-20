@@ -82,24 +82,36 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
         if refusals else ""
     )
     transcript_link = (
-        f'<a href="{html.escape(_href(card_path, transcript))}">transcript.json</a>'
+        f'<a class=button href="{html.escape(_href(card_path, transcript))}">transcript.json ↗</a>'
         if transcript.is_file() else
         '<span class="missing">legacy run: transcript was not retained</span>'
     )
+    errors = int(summary.get("n_errors") or 0)
+    status_label = "Готово" if errors == 0 else f"{errors} ошибок"
     card_path.write_text(f"""<!doctype html>
-<meta charset="utf-8"><title>DocBench run</title>
-<style>body{{font:15px system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}}pre{{white-space:pre-wrap;background:#f6f8fa;padding:1rem}}a{{color:#0969da}}.missing{{color:#a40e26}}</style>
-<p><a href="{html.escape(_href(card_path, leaderboard_path))}">← leaderboard</a></p>
-<h1>{html.escape(str(row.get('model', 'unknown')))}</h1>
-<p>Artifacts: {transcript_link} · <a href="{html.escape(_href(card_path, result_path))}">results.json</a> · <a href="{html.escape(_href(card_path, report))}">report.md</a></p>
-<h2>Run metadata</h2><pre>{html.escape(json.dumps(meta, ensure_ascii=False, indent=2))}</pre>
-<h2>Scores</h2><pre>{html.escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre>
-{response_contract}
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{html.escape(str(row.get('model', 'unknown')))} · DocBench</title>
+<style>
+:root{{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}}
+*{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 10% 0%,#1b2b5b 0,transparent 34rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}}main{{max-width:1050px;margin:0 auto;padding:28px 20px 64px}}a{{color:var(--accent);text-decoration:none}}a:hover{{text-decoration:underline}}.top{{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}}.back{{font-weight:650}}.eyebrow{{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}}h1{{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0 16px}}.lead{{color:var(--muted);max-width:700px}}.hero{{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}}.status{{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#15223d;color:var(--good);white-space:nowrap;font-weight:700}}.status.bad{{color:var(--bad)}}.grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 28px}}.metric,.panel{{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 45px #05081555}}.metric small{{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}}.metric strong{{font-size:1.35rem;letter-spacing:-.03em}}.panel{{margin-top:16px}}.panel h2{{font-size:1rem;margin:0 0 14px}}pre{{white-space:pre-wrap;overflow:auto;margin:0;background:#0a0f1d;border:1px solid #273451;border-radius:12px;padding:16px;color:#cad6ef;font-size:12px}}.actions{{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}}.button{{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:#172544;color:var(--text);font-weight:650}}.button:hover{{background:#22365e;text-decoration:none}}.alert{{border:1px solid #704353;background:#2a1829;color:#ffc2cc;border-radius:12px;padding:13px 15px;margin-top:16px}}.muted{{color:var(--muted)}}@media(max-width:760px){{.hero{{display:block}}.grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}.top{{margin-bottom:28px}}}}@media(max-width:430px){{main{{padding:20px 14px 44px}}.grid{{grid-template-columns:1fr 1fr;gap:8px}}.metric{{padding:13px}}}}
+</style>
+<body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
+<section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'provider'))} · {html.escape(str(row.get('benchmark') or 'benchmark'))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
+<section class=grid><div class=metric><small>Pass rate</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_rub(summary.get('total_cost_rub'))}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
+<div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">report.md ↗</a></div>
+{response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
+<section class=panel><h2>Детали и ресурсы</h2><pre>{html.escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre></section>
+<section class=panel><h2>Метаданные запуска</h2><pre>{html.escape(json.dumps(meta, ensure_ascii=False, indent=2))}</pre></section>
+</main></body></html>
 """, encoding="utf-8")
 
 
 def _score(value: Any) -> str:
     return "—" if value is None else f"{float(value):.4f}"
+
+
+def _percent(value: Any) -> str:
+    return "—" if value is None else f"{float(value) * 100:.1f}%"
 
 
 def _rub(value: Any) -> str:
@@ -130,10 +142,10 @@ def _all_or_missing(values: list[Any]) -> Any:
 
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
     parts = [
-        "<table><thead><tr><th>Model</th><th>Cases</th><th>Pass rate</th><th>Errors</th><th>F1</th>"
-        "<th>Cost, RUB</th><th>RUB / case</th><th>Input tokens</th><th>Output tokens</th>"
-        "<th>Cache tokens</th><th>Reasoning tokens</th><th>API latency p50</th><th>Wall time</th>"
-        "<th>Transcript</th></tr></thead><tbody>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Кейсы</th><th>Pass rate</th><th>Ошибки</th><th>F1</th>"
+        "<th>Стоимость (Cost, RUB)</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
+        "<th>Кэш</th><th>Reasoning</th><th>p50</th><th>Время</th>"
+        "<th>Транскрипт</th></tr></thead><tbody>"
     ]
     for row in sorted(rows, key=lambda x: (x["summary"].get("case_pass_rate") or -1), reverse=True):
         result_path = Path(row["_path"])
@@ -141,21 +153,25 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
         _run_card(row, card, output)
         transcript = result_path.with_name("transcript.json")
         summary = row["summary"]
+        errors = int(summary.get("n_errors") or 0)
+        status = "ok" if errors == 0 else "error"
         parts.append(
-            "<tr class=clickable data-href=\"%s\"><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"
+            "<tr class=run-row data-href=\"%s\" data-model=\"%s\" data-errors=\"%s\" tabindex=\"0\" role=\"link\"><td>"
+            "<div class=model-cell><span class=model-dot></span><span class=model-name>%s</span></div></td><td>%s</td>"
+            "<td><strong class=rate>%s</strong></td><td><span class=badge-%s>%s</span></td><td>%s</td>"
             "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
-                html.escape(_href(output, card)), html.escape(str(row.get("model", ""))),
-                summary.get("n_cases", "—"), _score(summary.get("case_pass_rate")),
-                summary.get("n_errors", "—"),
-                _score(summary.get("finding_f1") or summary.get("extraction_f1")),
+                html.escape(_href(output, card)), html.escape(str(row.get("model", "")).lower()), errors,
+                html.escape(str(row.get("model", ""))), summary.get("n_cases", "—"),
+                _percent(summary.get("case_pass_rate")), status, errors or "OK",
+                _percent(summary.get("finding_f1") or summary.get("extraction_f1")),
                 _rub(summary.get("total_cost_rub")), _rub(summary.get("cost_per_case_rub")),
                 _count(_tokens(row, "input_tokens")), _count(_tokens(row, "output_tokens")),
                 _count(_tokens(row, "cache_input_tokens")), _count(_tokens(row, "reasoning_tokens")),
                 _seconds(summary.get("latency_p50_s")), _seconds(_wall_time(row)),
-                "yes" if transcript.is_file() else "legacy / no",
+                "есть" if transcript.is_file() else "<!-- legacy / no -->нет",
             )
         )
-    return "".join(parts) + "</tbody></table>"
+    return "".join(parts) + "</tbody></table></div>"
 
 
 def _overall_table(rows: list[dict[str, Any]]) -> str:
@@ -163,9 +179,9 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
     parts = [
-        "<table><thead><tr><th>Model</th><th>Coverage</th><th>Weighted pass rate</th><th>Comparable</th>"
-        "<th>Cost, RUB</th><th>RUB / case</th><th>Input tokens</th><th>Output tokens</th>"
-        "<th>Cache tokens</th><th>Reasoning tokens</th><th>API latency p50</th><th>Wall time</th>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th>Weighted pass rate</th><th>Статус</th>"
+        "<th>Стоимость (Cost, RUB)</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
+        "<th>Кэш</th><th>Reasoning</th><th>p50</th><th>Время</th>"
         "</tr></thead><tbody>"
     ]
     aggregates = []
@@ -193,15 +209,15 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     for model, covered, rate, complete, total_cost, token_totals, latency_p50, wall_time in sorted(
         aggregates, key=lambda x: (x[3], x[2] or -1), reverse=True
     ):
-        parts.append("<tr><td>%s</td><td>%s / %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"
+        parts.append("<tr><td><strong>%s</strong></td><td>%s / %s</td><td><strong>%s</strong></td><td>%s</td><td>%s</td><td>%s</td>"
                      "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
-            html.escape(model), covered, STANDARD_CASE_COUNT, _score(rate), "yes" if complete else "partial — do not rank",
+            html.escape(model), covered, STANDARD_CASE_COUNT, _percent(rate), "<span class=badge-ok>готово</span>" if complete else "<span class=badge-warn>частично</span>",
             _rub(total_cost), _rub(total_cost / covered if total_cost is not None and covered else None),
             _count(token_totals["input_tokens"]), _count(token_totals["output_tokens"]),
             _count(token_totals["cache_input_tokens"]), _count(token_totals["reasoning_tokens"]),
             _seconds(latency_p50), _seconds(wall_time),
         ))
-    return "".join(parts) + "</tbody></table>"
+    return "".join(parts) + "</tbody></table></div>"
 
 
 def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
@@ -212,17 +228,29 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in standard:
         groups[row["_cases_key"]].append(row)
-    sections = ["<h2>Overall standard suite</h2>", _overall_table(standard)]
+    model_count = len({str(row.get("model", "")) for row in standard})
+    total_cases = sum(int(row["summary"].get("n_cases") or 0) for row in standard)
+    total_errors = sum(int(row["summary"].get("n_errors") or 0) for row in standard)
+    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все стандартные suite</h2></div></div>", _overall_table(standard), "</section>"]
     for key, (name, expected) in STANDARD_SUITES.items():
-        sections.extend([f"<h2>{html.escape(name)} · {expected} cases</h2>", _table(groups[key], output)])
+        sections.extend([f'<section class="section suite-section" data-suite="{html.escape(key)}"><div class=section-heading><div><div class=eyebrow>{expected} кейсов</div><h2>{html.escape(name)}</h2></div><span class=suite-count>{len(groups[key])} моделей</span></div>', _table(groups[key], output), "</section>"])
     output.write_text(f"""<!doctype html>
-<html lang="en"><meta charset="utf-8"><title>DocBench leaderboard</title>
-<style>body{{font:15px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}}table{{border-collapse:collapse;width:100%;margin-bottom:2rem}}th,td{{border:1px solid #d0d7de;padding:.45rem;text-align:left}}th{{background:#f6f8fa}}tr.clickable{{cursor:pointer}}tr.clickable:hover{{background:#ddf4ff}}.note{{color:#57606a}}</style>
-<h1>DocBench leaderboard</h1>
-<p class="note">Generated {html.escape(datetime.now().isoformat(timespec='seconds'))}. Standard rank requires all {STANDARD_CASE_COUNT} cases. Click a row for its metadata, scores, and transcript. Legacy runs are visibly marked because they predate transcript retention.</p>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DocBench · рейтинг моделей</title>
+<style>
+:root{{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--accent2:#a78bfa;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}}
+*{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 8% -4%,#253c7b 0,transparent 34rem),radial-gradient(circle at 94% 0%,#30215e 0,transparent 28rem),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif}}main{{max-width:1440px;margin:0 auto;padding:28px 28px 80px}}.topbar{{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}}.brand{{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.02em}}.brand-mark{{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 30px #7da7ff66;position:relative}}.brand-mark:after{{content:"";position:absolute;inset:7px;border:2px solid #fff;border-radius:5px;opacity:.9}}.top-meta{{color:var(--muted);font-size:12px}}.hero{{display:flex;justify-content:space-between;gap:28px;align-items:flex-end;margin-bottom:30px}}.eyebrow{{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-weight:750}}h1{{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.075em;margin:11px 0 17px;max-width:900px}}.hero-copy{{color:var(--muted);font-size:16px;max-width:680px;margin:0}}.hero-copy strong{{color:var(--text)}}.hero-mark{{font-size:11px;color:#c8d4ef;background:#162544;border:1px solid var(--line);padding:9px 12px;border-radius:999px;white-space:nowrap}}.stats{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:30px 0 38px}}.stat{{background:linear-gradient(145deg,#1d2b4b,#121a2e);border:1px solid var(--line);border-radius:17px;padding:18px 19px;box-shadow:0 18px 50px #05081555}}.stat small{{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}}.stat strong{{display:block;font-size:1.7rem;letter-spacing:-.045em}}.stat .hint{{color:var(--muted);font-size:12px;margin-top:4px}}.toolbar{{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:30px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#111a2eaa;backdrop-filter:blur(12px)}}.toolbar label{{color:var(--muted);font-size:12px;font-weight:650}}input,select{{appearance:none;border:1px solid var(--line);border-radius:10px;background:#0e172b;color:var(--text);padding:10px 12px;font:inherit;min-height:40px}}input{{min-width:250px}}input:focus,select:focus{{outline:2px solid #7da7ff66;outline-offset:1px}}.section{{margin-top:34px}}.section-heading{{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 14px}}h2{{font-size:1.55rem;letter-spacing:-.04em;margin:5px 0 0}}.suite-count{{color:var(--muted);font-size:12px;background:#141f37;border:1px solid var(--line);padding:6px 9px;border-radius:999px}}.table-shell{{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#10182b;box-shadow:0 18px 50px #05081544}}table{{border-collapse:collapse;width:100%;min-width:1120px}}th,td{{padding:13px 14px;text-align:left;border-bottom:1px solid #25324d;white-space:nowrap}}th{{color:#8493b2;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:#141e35;position:sticky;top:0;z-index:1}}tbody tr:last-child td{{border-bottom:0}}.run-row{{cursor:pointer;transition:background .18s,transform .18s}}.run-row:hover,.run-row:focus{{background:#192847;outline:none}}.run-row:hover{{box-shadow:inset 3px 0 0 var(--accent)}}.model-cell{{display:flex;align-items:center;gap:9px;min-width:215px}}.model-dot{{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 13px #7da7ffaa;flex:none}}.model-name{{font-weight:700;color:#edf2ff}}.rate{{font-size:15px;color:#e5edff}}.badge-ok,.badge-error,.badge-warn{{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:750}}.badge-ok{{background:#12372f;color:var(--good)}}.badge-error{{background:#3c1a2a;color:var(--bad)}}.badge-warn{{background:#3c2d18;color:var(--warn)}}.note{{color:var(--muted);font-size:12px;margin-top:12px}}.empty{{display:none;padding:28px;color:var(--muted);text-align:center}}.footer{{margin-top:54px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:18px}}@media(max-width:800px){{main{{padding:20px 14px 56px}}.hero{{display:block}}.hero-mark{{display:inline-block;margin-top:20px}}.stats{{grid-template-columns:repeat(2,minmax(0,1fr))}}.topbar{{margin-bottom:38px}}}}@media(max-width:480px){{.stats{{gap:8px}}.stat{{padding:14px}}.stat strong{{font-size:1.35rem}}input{{min-width:0;width:100%}}.toolbar label{{width:100%}}.footer{{display:block}}}}
+</style>
+<body><main><header class=topbar><div class=brand><span class=brand-mark></span><span>DocBench</span></div><div class=top-meta>Russian document benchmark · {html.escape(datetime.now().strftime('%d.%m.%Y %H:%M'))}</div></header>
+<section class=hero><div><div class=eyebrow>Benchmark intelligence</div><h1>Рейтинг моделей<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>Сравнение качества, скорости, стоимости и полноты ответов. <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>seed datasets · auditable runs</span></section>
+<section class=stats><div class=stat><small>Моделей</small><strong>{model_count}</strong><div class=hint>в текущем срезе</div></div><div class=stat><small>Прогонов</small><strong>{len(standard)}</strong><div class=hint>по всем suite</div></div><div class=stat><small>Кейсов</small><strong>{total_cases:,}</strong><div class=hint>{total_errors} с ошибкой</div></div><div class=stat><small>Полные транскрипты</small><strong>{sum(1 for row in standard if (Path(row['_path']).with_name('transcript.json')).is_file())}/{len(standard)}</strong><div class=hint>сохранены рядом</div></div></section>
+<div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Suite</label><select id=suite-filter><option value=all>Все suite</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in STANDARD_SUITES.items())}</select><span class=note id=visible-count></span></div>
 {''.join(sections)}
-<script>document.querySelectorAll('tr[data-href]').forEach(r=>r.onclick=()=>location.href=r.dataset.href)</script>
-</html>""", encoding="utf-8")
+<footer class=footer><span>Generated {html.escape(datetime.now().isoformat(timespec='seconds'))}</span><span>Standard rank requires all {STANDARD_CASE_COUNT} cases · prices in RUB</span></footer>
+</main><script>
+const rows=[...document.querySelectorAll('.run-row')], filter=document.querySelector('#model-filter'), suite=document.querySelector('#suite-filter'), count=document.querySelector('#visible-count');
+function applyFilter(){{const q=(filter.value||'').toLowerCase().trim(), s=suite.value;let shown=0;document.querySelectorAll('.suite-section').forEach(section=>{{const suiteOk=s==='all'||section.dataset.suite===s;let sectionShown=0;section.querySelectorAll('.run-row').forEach(row=>{{const ok=suiteOk&&(!q||row.dataset.model.includes(q));row.style.display=ok?'':'none';if(ok){{shown++;sectionShown++}}}});section.style.display=sectionShown?'':'none'}});count.textContent=shown+' строк'}}
+filter.addEventListener('input',applyFilter);suite.addEventListener('change',applyFilter);rows.forEach(row=>{{row.addEventListener('click',()=>location.href=row.dataset.href);row.addEventListener('keydown',e=>{{if(e.key==='Enter'||e.key===' '){{e.preventDefault();location.href=row.dataset.href}}}})}});applyFilter();
+</script></body></html>""", encoding="utf-8")
     return {"runs": len(rows), "out": str(output)}
 
 

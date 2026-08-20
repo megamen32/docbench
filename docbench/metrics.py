@@ -108,6 +108,16 @@ def _eq(a: Any, b: Any) -> bool:
 def rules_prf(gold: list[Rule], pred: list[Rule]) -> dict[str, Any]:
     """Rule extraction score: match rules by normalized machine triple
     (field, op, value); severity accuracy measured on matched pairs."""
+    def freeze(value: Any) -> Any:
+        """Make malformed/nested JSON values safe as comparison keys."""
+        if isinstance(value, dict):
+            return tuple(sorted((str(k), freeze(v)) for k, v in value.items()))
+        if isinstance(value, (list, tuple)):
+            return tuple(freeze(v) for v in value)
+        if isinstance(value, set):
+            return tuple(sorted(freeze(v) for v in value))
+        return value
+
     def triple(r: Rule) -> Optional[tuple]:
         if r.condition is None:
             return None
@@ -115,7 +125,7 @@ def rules_prf(gold: list[Rule], pred: list[Rule]) -> dict[str, Any]:
         v = c.value
         if isinstance(v, float) and v.is_integer():
             v = int(v)
-        return (c.field, c.op, tuple(v) if isinstance(v, list) else v)
+        return (c.field, c.op, freeze(v))
 
     def triples(rs: list[Rule]) -> list[tuple]:
         return [t for t in (triple(r) for r in rs) if t is not None]
