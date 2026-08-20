@@ -39,7 +39,19 @@ var/leaderboard/index.html
 ```
 
 Click a model row to see that run's metrics and links to `results.json`,
-`report.md` and, when retained, `transcript.json`.
+`report.md` and, when retained, `transcript.json`. The run page renders the
+full transcript as a chat: system prompts and `<think>...</think>` reasoning
+blocks are folded by default, while the final answer and user message remain
+readable. `report.md` is rendered on the same page as formatted Markdown.
+
+If a saved run was created before its catalog price was added, recompute only
+its ledger from persisted token usage (without calling a provider again):
+
+```bash
+docbench reprice --runs-dir var/runs/<campaign> \
+  --model omniroute-cx-gpt-5.6-terra-medium \
+  --model omniroute-cx-gpt-5.6-sol-medium
+```
 
 If a completed run has only API or JSON-format errors, retry just those cases:
 
@@ -69,6 +81,10 @@ Each new result records the selected provider/model, served-model id, reasoning
 mode, input/output/cached/reasoning tokens, request latency and cost. Price
 metadata states whether the value is an estimate. A model or provider that does
 not publish a price is shown as unknown — never as free.
+
+The OmniRoute CX Terra/Sol routes use the pinned OpenAI GPT-5.6 catalog rates
+($1.30/$7.80 and $6.50/$39.00 per 1M input/output tokens respectively), with
+the campaign's recorded CBR USD/RUB snapshot used for the displayed rubles.
 
 ## Evidence boundary
 

@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| omniroute-cx-gpt-5.6-terra-medium | conformance | 10 | 0.9000 | 1.0000 | 0.9250 | 1.0000 | 0.0000 | 0.0000 | 0.9818 | 0.8000 | — | 17.9 |
+| omniroute-cx-gpt-5.6-terra-medium | conformance | 10 | 0.9000 | 1.0000 | 0.9250 | 1.0000 | 0.0000 | 0.0000 | 0.9818 | 0.8000 | 0.7340 | 17.9 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -16,7 +16,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 
 | input | output | total | cache read | cache write | reasoning | cost RUB |
 |---:|---:|---:|---:|---:|---:|---:|
-| 13247 | 9130 | 22377 | 0 | 0 | 1273 | — |
+| 13247 | 9130 | 22377 | 0 | 0 | 1273 | 7.33991 |
 
 - ✅ `grant_00001__corr_equipment_heavy` _(set_field: set budget.row.equipment.share_pct = 55.5)_ — disp needs_correction vs needs_correction
 - ✅ `grant_00001__corr_late_submission` _(shift_date: shifted application_form.submission_date: 2026-09-12 -> 2026-10-27)_ — disp needs_correction vs needs_correction

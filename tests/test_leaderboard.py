@@ -1,6 +1,7 @@
 import json
 
-from docbench.leaderboard import publish_pages, write_leaderboard
+from docbench.leaderboard import _render_message, publish_pages, render_markdown, write_leaderboard
+from docbench.run import reprice_saved_results
 
 
 def _result(model: str, cases_path: str, n_cases: int, rate: float, *, priced: bool = True) -> dict:
@@ -93,3 +94,34 @@ def test_publish_pages_copies_campaign_and_renders_relative_artifacts(tmp_path):
     assert "runs/campaign/grant/test-model/run.html" in (pages / "index.html").read_text()
     copied = json.loads((pages / "runs" / "campaign" / "grant" / "test-model" / "results.json").read_text())
     assert copied["cases_path"] == "cases/seed-grant"
+
+
+def test_run_card_renders_safe_markdown_and_collapsed_thinking():
+    rendered = render_markdown("# Title\n\n- **bold** and " + chr(96) + "code" + chr(96) + "\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n<script>alert(1)</script>")
+    assert "<h1>Title</h1>" in rendered
+    assert "<strong>bold</strong>" in rendered
+    assert "<table class=md-table>" in rendered
+    assert "&lt;script&gt;" in rendered
+    visible, thinking = _render_message("<think>private reasoning</think>**final**")
+    assert "<strong>final</strong>" in visible
+    assert "private reasoning" in thinking
+    assert "<details" in thinking
+
+
+def test_reprice_saved_results_uses_pinned_catalog_rates(tmp_path):
+    run = tmp_path / "runs" / "terra"
+    run.mkdir(parents=True)
+    data = _result("omniroute-cx-gpt-5.6-terra-medium", "cases/seed-grant", 1, 1.0, priced=False)
+    data["cases"] = [{
+        "case_id": "one", "ok": True, "finding_precision": 1.0,
+        "usage": {"input_tokens": 1000, "output_tokens": 500,
+                  "cache_read_input_tokens": 100, "cache_write_input_tokens": 0,
+                  "uncached_input_tokens": 900, "reasoning_tokens": 0},
+        "cost_rub": None,
+    }]
+    (run / "results.json").write_text(json.dumps(data))
+    changed = reprice_saved_results(tmp_path / "runs")
+    assert changed["changed"]
+    repriced = json.loads((run / "results.json").read_text())
+    assert repriced["cases"][0]["cost_rub"] == 0.431588
+    assert repriced["summary"]["total_cost_rub"] == 0.431588

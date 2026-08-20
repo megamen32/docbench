@@ -91,7 +91,10 @@ providers:
       omniroute-cx-gpt-5.6-terra-medium:
         alias: cx/gpt-5.6-terra-medium
         price_currency: RUB
-        price_source: live OmniRoute route; price not pinned in local snapshot
+        price_in_per_m: 107.89701
+        price_out_per_m: 647.38206
+        price_source: pinned OpenAI GPT-5.6 Terra price via routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
         effort_levels:
@@ -101,7 +104,10 @@ providers:
       omniroute-cx-gpt-5.6-sol-medium:
         alias: cx/gpt-5.6-sol-medium
         price_currency: RUB
-        price_source: live OmniRoute route; price not pinned in local snapshot
+        price_in_per_m: 539.48505
+        price_out_per_m: 3236.9103
+        price_source: pinned OpenAI GPT-5.6 Sol price via routerai supplement snapshot
+        pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
         effort_levels:

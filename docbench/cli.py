@@ -94,6 +94,12 @@ def main(argv: list[str] | None = None) -> int:
     p_retry.add_argument("--max-tokens", type=int, default=8192)
     p_retry.add_argument("--gold", default=None, help="private gold YAML for an iri_review run")
 
+    p_reprice = sub.add_parser(
+        "reprice", help="recompute saved run costs from usage and the pinned model catalog")
+    p_reprice.add_argument("--runs-dir", required=True)
+    p_reprice.add_argument("--model", action="append", default=None,
+                           help="limit to one or more model keys (repeatable)")
+
     args = ap.parse_args(argv)
 
     if args.cmd == "run":
@@ -149,6 +155,13 @@ def main(argv: list[str] | None = None) -> int:
             "errors_remaining": result["summary"]["n_errors"],
             "wall_time_s": result["wall_time_s"],
         }, ensure_ascii=False))
+        return 0
+
+    if args.cmd == "reprice":
+        from .run import reprice_saved_results
+        result = reprice_saved_results(
+            Path(args.runs_dir), models=set(args.model) if args.model else None)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
 
     if args.cmd == "errorgen":

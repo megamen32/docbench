@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import re
 import shutil
 from collections import defaultdict
 from datetime import datetime
@@ -56,6 +57,176 @@ def _href(from_path: Path, target: Path) -> str:
     return Path(os.path.relpath(target, from_path.parent)).as_posix()
 
 
+def _inline_markdown(value: str) -> str:
+    """Small, safe GFM subset for reports and model messages."""
+    value = html.escape(value, quote=False)
+    tick = chr(96)
+    value = re.sub(tick + r"([^" + tick + r"\n]+)" + tick, r"<code>\1</code>", value)
+    value = re.sub(r"\*\*([^*\n]+)\*\*", r"<strong>\1</strong>", value)
+    value = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", value)
+    value = re.sub(
+        r"\[([^\]]+)\]\((https?://[^\s)]+)\)",
+        lambda m: '<a href="%s" target="_blank" rel="noreferrer">%s</a>'
+        % (html.escape(html.unescape(m.group(2)), quote=True), m.group(1)),
+        value,
+    )
+    return value
+
+
+def render_markdown(value: str) -> str:
+    """Render a dependency-free, escaped Markdown view for the run card."""
+    lines = (value or "").replace("\r\n", "\n").split("\n")
+    out: list[str] = []
+    paragraph: list[str] = []
+    list_kind: str | None = None
+    in_code = False
+    code_lines: list[str] = []
+    fence = chr(96) * 3
+
+    def flush_paragraph() -> None:
+        nonlocal paragraph
+        if paragraph:
+            out.append("<p>" + "<br>".join(_inline_markdown(line) for line in paragraph) + "</p>")
+            paragraph = []
+
+    def close_list() -> None:
+        nonlocal list_kind
+        if list_kind:
+            out.append(f"</{list_kind}>")
+            list_kind = None
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if in_code:
+            if line.strip().startswith(fence):
+                out.append('<pre class="md-code"><code>' + html.escape("\n".join(code_lines)) + "</code></pre>")
+                in_code = False
+                code_lines = []
+            else:
+                code_lines.append(line)
+            i += 1
+            continue
+        if line.strip().startswith(fence):
+            flush_paragraph(); close_list()
+            in_code = True
+            code_lines = []
+            i += 1
+            continue
+        table_separator = r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$"
+        if i + 1 < len(lines) and "|" in line and re.match(table_separator, lines[i + 1]):
+            flush_paragraph(); close_list()
+            def cells(raw: str) -> list[str]:
+                return [part.strip() for part in raw.strip().strip("|").split("|")]
+            headers = cells(line); i += 2
+            body: list[list[str]] = []
+            while i < len(lines) and "|" in lines[i] and lines[i].strip():
+                body.append(cells(lines[i])); i += 1
+            table = ["<table class=md-table><thead><tr>"]
+            table.extend(f"<th>{_inline_markdown(cell)}</th>" for cell in headers)
+            table.append("</tr></thead><tbody>")
+            for row in body:
+                table.append("<tr>" + "".join(f"<td>{_inline_markdown(cell)}</td>" for cell in row) + "</tr>")
+            table.append("</tbody></table>")
+            out.append("".join(table))
+            continue
+        heading = re.match(r"^\s*(#{1,4})\s+(.+?)\s*$", line)
+        if heading:
+            flush_paragraph(); close_list()
+            level = len(heading.group(1))
+            out.append(f"<h{level}>{_inline_markdown(heading.group(2))}</h{level}>")
+            i += 1
+            continue
+        bullet = re.match(r"^\s*[-*]\s+(.+)$", line)
+        ordered = re.match(r"^\s*\d+[.)]\s+(.+)$", line)
+        if bullet or ordered:
+            flush_paragraph()
+            wanted = "ol" if ordered else "ul"
+            if list_kind != wanted:
+                close_list(); list_kind = wanted; out.append(f"<{wanted}>")
+            out.append(f"<li>{_inline_markdown((ordered or bullet).group(1))}</li>")
+            i += 1
+            continue
+        if not line.strip():
+            flush_paragraph(); close_list(); i += 1; continue
+        close_list(); paragraph.append(line); i += 1
+    if in_code:
+        out.append('<pre class="md-code"><code>' + html.escape("\n".join(code_lines)) + "</code></pre>")
+    flush_paragraph(); close_list()
+    return "".join(out)
+
+
+def _render_message(value: str) -> tuple[str, str]:
+    """Return visible message HTML and collapsed thinking HTML."""
+    def format_part(part: str) -> str:
+        candidate = part.strip()
+        if candidate and candidate[0] in "[{":
+            try:
+                parsed = json.loads(candidate)
+            except (TypeError, json.JSONDecodeError):
+                parsed = None
+            if isinstance(parsed, (dict, list)):
+                return '<pre class="md-code json-response"><code>' + html.escape(
+                    json.dumps(parsed, ensure_ascii=False, indent=2)
+                ) + "</code></pre>"
+        return render_markdown(part)
+
+    text = value or ""
+    thinking: list[str] = []
+    visible: list[str] = []
+    pos = 0
+    pattern = re.compile(r"<think>(.*?)(?:</think>|$)", re.IGNORECASE | re.DOTALL)
+    for match in pattern.finditer(text):
+        visible.append(text[pos:match.start()])
+        thinking.append(match.group(1).strip())
+        pos = match.end()
+        if not match.group(0).lower().endswith("</think>"):
+            break
+    visible.append(text[pos:])
+    visible_html = format_part("\n\n".join(part for part in visible if part.strip()))
+    thinking_html = "".join(
+        '<details class="thinking"><summary>Thinking · скрыто по умолчанию</summary>'
+        + format_part(part) + "</details>" for part in thinking if part
+    )
+    return visible_html, thinking_html
+
+
+def _render_transcript_chat(transcript: dict[str, Any], result_cases: list[dict[str, Any]]) -> str:
+    if not transcript or not transcript.get("cases"):
+        return '<p class="muted">Транскрипт не сохранён или недоступен для этого запуска.</p>'
+    result_by_id = {str(case.get("case_id")): case for case in result_cases}
+    blocks: list[str] = []
+    for case in transcript.get("cases", []):
+        case_id = str(case.get("case_id", "unknown"))
+        result = result_by_id.get(case_id, {})
+        status = "OK" if result.get("ok") else ("ошибка" if result else "без оценки")
+        attempts = case.get("attempts") or []
+        inner = [f'<details class="transcript-case" open><summary><strong>{html.escape(case_id)}</strong><span class="chat-status">{html.escape(status)} · {len(attempts)} попыт.</span></summary>']
+        for attempt in attempts:
+            inner.append(f'<div class="attempt"><div class="attempt-label">Попытка {html.escape(str(attempt.get("attempt", "—")))}</div>')
+            for message in attempt.get("messages") or []:
+                role = str(message.get("role", "message"))
+                content = str(message.get("content", ""))
+                visible, thinking = _render_message(content)
+                if role == "system":
+                    inner.append('<details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary>' + visible + thinking + "</details>")
+                else:
+                    inner.append(f'<div class="chat-message {html.escape(role)}"><div class="chat-role">{html.escape(role)}</div>{visible}{thinking}</div>')
+            response = attempt.get("response_text")
+            if response is not None:
+                visible, thinking = _render_message(str(response))
+                inner.append('<div class="chat-message assistant"><div class="chat-role">assistant</div>' + (visible or '<p class="muted">Пустой финальный ответ</p>') + thinking + "</div>")
+            usage = attempt.get("usage") or {}
+            inner.append('<div class="attempt-meta">%s · %s токенов · %s</div>' % (
+                html.escape(str(attempt.get("latency_s") or "—")),
+                html.escape(str(usage.get("total_tokens") or "—")),
+                "cache hit" if attempt.get("cache_hit") else "API"))
+            inner.append("</div>")
+        inner.append("</details>")
+        blocks.append("".join(inner))
+    return "<div class=transcript-chat>" + "".join(blocks) + "</div>"
+
+
 def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> None:
     result_path = Path(row["_path"])
     transcript = result_path.with_name("transcript.json")
@@ -88,18 +259,32 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
     )
     errors = int(summary.get("n_errors") or 0)
     status_label = "Готово" if errors == 0 else f"{errors} ошибок"
+    transcript_data: dict[str, Any] = {}
+    if transcript.is_file():
+        try:
+            transcript_data = json.loads(transcript.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            transcript_data = {}
+    chat_html = _render_transcript_chat(transcript_data, row.get("cases", []))
+    report_html = (
+        render_markdown(report.read_text(encoding="utf-8"))
+        if report.is_file() else '<p class="muted">Отчёт отсутствует.</p>'
+    )
     card_path.write_text(f"""<!doctype html>
 <html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(str(row.get('model', 'unknown')))} · DocBench</title>
 <style>
 :root{{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}}
 *{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 10% 0%,#1b2b5b 0,transparent 34rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}}main{{max-width:1050px;margin:0 auto;padding:28px 20px 64px}}a{{color:var(--accent);text-decoration:none}}a:hover{{text-decoration:underline}}.top{{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}}.back{{font-weight:650}}.eyebrow{{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}}h1{{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0 16px}}.lead{{color:var(--muted);max-width:700px}}.hero{{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}}.status{{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#15223d;color:var(--good);white-space:nowrap;font-weight:700}}.status.bad{{color:var(--bad)}}.grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 28px}}.metric,.panel{{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 45px #05081555}}.metric small{{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}}.metric strong{{font-size:1.35rem;letter-spacing:-.03em}}.panel{{margin-top:16px}}.panel h2{{font-size:1rem;margin:0 0 14px}}pre{{white-space:pre-wrap;overflow:auto;margin:0;background:#0a0f1d;border:1px solid #273451;border-radius:12px;padding:16px;color:#cad6ef;font-size:12px}}.actions{{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}}.button{{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:#172544;color:var(--text);font-weight:650}}.button:hover{{background:#22365e;text-decoration:none}}.alert{{border:1px solid #704353;background:#2a1829;color:#ffc2cc;border-radius:12px;padding:13px 15px;margin-top:16px}}.muted{{color:var(--muted)}}@media(max-width:760px){{.hero{{display:block}}.grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}.top{{margin-bottom:28px}}}}@media(max-width:430px){{main{{padding:20px 14px 44px}}.grid{{grid-template-columns:1fr 1fr;gap:8px}}.metric{{padding:13px}}}}
+ .transcript-chat{{display:grid;gap:12px}}.transcript-case{{border:1px solid #2b3858;border-radius:12px;background:#0f172a;padding:10px 13px}}.transcript-case>summary{{cursor:pointer;display:flex;justify-content:space-between;gap:12px}}.chat-status,.attempt-meta{{color:var(--muted);font-size:12px}}.attempt{{border-left:2px solid #30476f;margin:12px 0 4px;padding-left:12px}}.attempt-label,.chat-role{{color:#9fb3d9;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:750;margin:9px 0 5px}}.chat-message{{border:1px solid #2b3858;border-radius:12px;padding:12px 14px;margin:9px 0;overflow:auto}}.chat-message.user{{background:#172c48;border-color:#315685}}.chat-message.assistant{{background:#17283a;border-color:#31616a}}.chat-message.system{{background:#121a2a}}.chat-message p:first-child{{margin-top:0}}.chat-message p:last-child{{margin-bottom:0}}.thinking{{margin-top:10px;border:1px dashed #6d5b2b;border-radius:9px;background:#201c13;padding:8px 11px;color:#cbbd94}}.thinking summary{{cursor:pointer;color:#e5ce7c;font-size:12px;font-weight:700}}.md-code,.chat-message pre{{font-size:12px;line-height:1.5}}.md-table{{border-collapse:collapse;width:100%;font-size:13px}}.md-table th,.md-table td{{border:1px solid #2b3858;padding:7px 9px;text-align:left;vertical-align:top}}.md-table th{{background:#172544;color:#c6d6f3}}.md-table td{{color:#dbe5f9}}.report-preview{{color:#dbe5f9}}
 </style>
 <body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
 <section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'provider'))} · {html.escape(str(row.get('benchmark') or 'benchmark'))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
 <section class=grid><div class=metric><small>Pass rate</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_rub(summary.get('total_cost_rub'))}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
 <div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">report.md ↗</a></div>
 {response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
+<section class=panel><h2>Полный транскрипт</h2><p class=muted>Сообщения отображаются как чат; системные инструкции и thinking свернуты по умолчанию.</p>{chat_html}</section>
+<section class="panel report-preview"><h2>Отчёт</h2>{report_html}</section>
 <section class=panel><h2>Детали и ресурсы</h2><pre>{html.escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre></section>
 <section class=panel><h2>Метаданные запуска</h2><pre>{html.escape(json.dumps(meta, ensure_ascii=False, indent=2))}</pre></section>
 </main></body></html>

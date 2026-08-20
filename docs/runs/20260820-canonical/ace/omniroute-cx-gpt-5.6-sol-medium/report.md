@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| omniroute-cx-gpt-5.6-sol-medium | conformance | 30 | 0.5333 | — | — | — | 0.3000 | 0.1667 | — | — | — | 12.1 |
+| omniroute-cx-gpt-5.6-sol-medium | conformance | 30 | 0.5333 | — | — | — | 0.3000 | 0.1667 | — | — | 2.8245 | 12.1 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -16,7 +16,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 
 | input | output | total | cache read | cache write | reasoning | cost RUB |
 |---:|---:|---:|---:|---:|---:|---:|
-| 48724 | 18057 | 66781 | 0 | 0 | 8718 | — |
+| 48724 | 18057 | 66781 | 0 | 0 | 8718 | 84.73476 |
 
 - ❌ `ace_0000` — disp accept vs needs_correction
 - ✅ `ace_0001` — disp accept vs accept

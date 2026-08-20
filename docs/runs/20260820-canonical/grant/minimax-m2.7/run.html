@@ -4,12 +4,1465 @@
 <style>
 :root{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#1b2b5b 0,transparent 34rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}main{max-width:1050px;margin:0 auto;padding:28px 20px 64px}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}.back{font-weight:650}.eyebrow{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.05em;margin:8px 0 16px}.lead{color:var(--muted);max-width:700px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}.status{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#15223d;color:var(--good);white-space:nowrap;font-weight:700}.status.bad{color:var(--bad)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 28px}.metric,.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 45px #05081555}.metric small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.metric strong{font-size:1.35rem;letter-spacing:-.03em}.panel{margin-top:16px}.panel h2{font-size:1rem;margin:0 0 14px}pre{white-space:pre-wrap;overflow:auto;margin:0;background:#0a0f1d;border:1px solid #273451;border-radius:12px;padding:16px;color:#cad6ef;font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.button{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:#172544;color:var(--text);font-weight:650}.button:hover{background:#22365e;text-decoration:none}.alert{border:1px solid #704353;background:#2a1829;color:#ffc2cc;border-radius:12px;padding:13px 15px;margin-top:16px}.muted{color:var(--muted)}@media(max-width:760px){.hero{display:block}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{margin-bottom:28px}}@media(max-width:430px){main{padding:20px 14px 44px}.grid{grid-template-columns:1fr 1fr;gap:8px}.metric{padding:13px}}
+ .transcript-chat{display:grid;gap:12px}.transcript-case{border:1px solid #2b3858;border-radius:12px;background:#0f172a;padding:10px 13px}.transcript-case>summary{cursor:pointer;display:flex;justify-content:space-between;gap:12px}.chat-status,.attempt-meta{color:var(--muted);font-size:12px}.attempt{border-left:2px solid #30476f;margin:12px 0 4px;padding-left:12px}.attempt-label,.chat-role{color:#9fb3d9;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:750;margin:9px 0 5px}.chat-message{border:1px solid #2b3858;border-radius:12px;padding:12px 14px;margin:9px 0;overflow:auto}.chat-message.user{background:#172c48;border-color:#315685}.chat-message.assistant{background:#17283a;border-color:#31616a}.chat-message.system{background:#121a2a}.chat-message p:first-child{margin-top:0}.chat-message p:last-child{margin-bottom:0}.thinking{margin-top:10px;border:1px dashed #6d5b2b;border-radius:9px;background:#201c13;padding:8px 11px;color:#cbbd94}.thinking summary{cursor:pointer;color:#e5ce7c;font-size:12px;font-weight:700}.md-code,.chat-message pre{font-size:12px;line-height:1.5}.md-table{border-collapse:collapse;width:100%;font-size:13px}.md-table th,.md-table td{border:1px solid #2b3858;padding:7px 9px;text-align:left;vertical-align:top}.md-table th{background:#172544;color:#c6d6f3}.md-table td{color:#dbe5f9}.report-preview{color:#dbe5f9}
 </style>
 <body><main><div class=top><a class=back href="../../../../index.html">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
 <section class=hero><div><div class=eyebrow>MiniMax (OpenAI-compatible) · conformance</div><h1>minimax-m2.7</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status">Готово</div></section>
 <section class=grid><div class=metric><small>Pass rate</small><strong>90.0%</strong></div><div class=metric><small>F1</small><strong>94.0%</strong></div><div class=metric><small>Стоимость</small><strong>2.32 ₽</strong></div><div class=metric><small>Время</small><strong>1.5 s</strong></div></section>
 <div class=actions><a class=button href="transcript.json">transcript.json ↗</a><a class=button href="results.json">results.json ↗</a><a class=button href="report.md">report.md ↗</a></div>
 
+<section class=panel><h2>Полный транскрипт</h2><p class=muted>Сообщения отображаются как чат; системные инструкции и thinking свернуты по умолчанию.</p><div class=transcript-chat><details class="transcript-case" open><summary><strong>grant_00001__corr_equipment_heavy</strong><span class="chat-status">OK · 2 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 55.5</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><p>{"extracted":{"application_form.months_registered":26,"budget.totals.total":84200,"budget.row.equipment.share_pct":55.5,"documents.application_form.present":null,"documents.budget.present":null,"documents.registration_cert.present":null,"documents.finance_statement.present":null,"application_form.submission_date":"2026-09-12","application_form.signature_present":true,"application_form.requested_total_eur":84200,"finance_statement.period":"FY2025"},"findings":[{"rule_id":"R001","status":"ok","expected":"months_registered &gt;= 12","observed":"26","evidence":{"document":"application_form","locator":"months_registered","quote":"26"}},{"rule_id":"R002","status":"ok","expected":"total &lt;= 100000","observed":"84200","evidence":{"document":"budget","locator":"totals.total","quote":"84200"}},{"rule_id":"R003","status":"violation","expected":"equipment share_pct &lt;= 40","observed":"55.5","evidence":{"document":"budget","locator":"rows[equipment].share_pct","quote":"55.5"}},{"rule_id":"R004","status":"violation","expected":"documents.application_form.present exists","observed":"field absent from packet","evidence":{"document":"application_form","locator":"documents.application_form.present","quote":"field not present in JSON"}},{"rule_id":"R005","status":"violation","expected":"documents.budget.present exists","observed":"field absent from packet","evidence":{"document":"budget","locator":"documents.budget.present","quote":"field not present in JSON"}},{"rule_id":"R006","status":"violation","expected":"documents.registration_cert.present exists","observed":"field absent from packet","evidence":{"document":"registration_cert","locator":"documents.registration_cert.present","quote":"field not present in JSON"}},{"rule_id":"R007","status":"violation","expected":"documents.finance_statement.present exists","observed":"field absent from packet","evidence":{"document":"finance_statement","locator":"documents.finance_statement.present","quote":"field not present in JSON"}},{"rule_id":"R008","status":"ok","expected":"submission_date &lt;= 2026-10-01","observed":"2026-09-12","evidence":{"document":"application_form","locator":"submission_date","quote":"2026-09-12"}},{"rule_id":"R009","status":"ok","expected":"signature_present = true","observed":"true","evidence":{"document":"application_form","locator":"signature_present","quote":"true"}},{"rule_id":"R010","status":"ok","expected":"requested_total_eur identical to budget totals.total","observed":"84200 = 84200","evidence":{"document":"application_form","locator":"requested_total_eur","quote":"84200"},{"document":"budget","locator":"totals.total","quote":"84200"}},{"rule_id":"R011","status":"ok","expected":"period = FY2025","observed":"FY2025","evidence":{"document":"finance_statement","locator":"period","quote":"FY2025"}}],"disposition":"reject"}</p><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me analyze the application packet against each rule in the ruleset.</p><p>First, let me extract the canonical fields:</p><ol><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 55.5 (equipment row has share_pct of 55.5)</li><li>documents.application_form.present: null (no explicit "present" field, but document exists)</li><li>documents.budget.present: null (no explicit "present" field, but document exists)</li><li>documents.registration_cert.present: null (no explicit "present" field, but document exists)</li><li>documents.finance_statement.present: null (no explicit "present" field, but document exists)</li><li>application_form.submission_date: 2026-09-12</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: FY2025</li></ol><p>Now let me verify each rule:</p><p><strong>R001</strong>: Applicant organisation must be registered for at least 12 months</p><ul><li>Field: application_form.months_registered = 26</li><li>26 &gt;= 12? YES</li><li>Status: OK</li></ul><p><strong>R002</strong>: Total requested budget must not exceed 100000 EUR</p><ul><li>Field: budget.totals.total = 84200</li><li>84200 &lt;= 100000? YES</li><li>Status: OK</li></ul><p><strong>R003</strong>: Equipment line must not exceed 40 percent of the total budget</p><ul><li>Field: budget.row.equipment.share_pct = 55.5</li><li>55.5 &lt;= 40? NO</li><li>Status: VIOLATION</li></ul><p><strong>R004</strong>: Required document - signed application form</p><ul><li>Field: documents.application_form.present</li><li>The application form document exists but there's no explicit "present" field</li><li>The document id="application_form" exists, and it has signature_present: true</li></ul><ul><li>The existence of the document itself might be considered as "present", but the ruleset specifically checks for a "present" field</li><li>Looking at the documents provided: application_form, budget, registration_cert, and finance_statement all exist</li><li>The "present" field might be inferred from the existence of the document itself</li><li>But the ruleset says "op: exists" for the field, so I need to check if the field exists</li><li>Since none of the documents have an explicit "present" field, this would be a violation</li><li>However, I could argue that the document's existence indicates it is present</li></ul><p>. Given the machine op is "exists" with field "documents.application_form.present", if that exact field doesn't exist in the data, it would fail the check.</p><p>For a stricter reading of the ruleset, the "present" field needs to explicitly exist for each document. This means R004, R005, R006, and R007 would all be violations since none have the required "present" fields. Though alternatively, the presence of the document itself could be interpreted as sufficient, which would make all of them pass.</p><p>I'll apply the strictest interpretation: the "present" field must be explicitly present. For R004, the application form exists with a signature, but there's no "present" field, so it's a violation. For R005, the budget document exists, but again no "present" field, so it's a violation. For R006, the registration certificate exists with registry details, but no "present" field, so it's a violation. For R007, the financial statement exists, but no "present" field, so it's a violation. All four document requirements fail under strict interpretation.</p><p>For R008, the submission date of 2026-09-12 is before the deadline of 2026-10-01, so this passes. R009 checks whether the signature field is marked as true on the application form, and it is, so this passes. R010 requires consistency between the requested total on the application form and the budget total, both showing 84200, which matches. R011 requires the financial statement period to be FY2025, and it is, so this passes.</p><p>The document presence fields (R004-R007) are problematic because they reference fields like documents.application_form.present that don't actually exist in the data. This creates a constraint violation for each required document—application form, budget, registration certificate, and financial statement are all marked as missing even though the documents themselves are present in the packet.</p><p>However, reconsidering the data structure: the application form exists with a signature, the budget document exists with totals, the registration certificate exists with registry information, and the financial statement exists with period data. Each document ID is present in the packet. The strict interpretation requires an explicit "present" field in the JSON for each document, which the packet doesn't have. A lenient interpretation would treat the document's existence as sufficient evidence of presence.</p><p>Given the instruction to report every rule exactly once and the critical severity of the documents requirement, the strict interpretation is more appropriate. The machine operation "exists" checks for the specific field's presence in the JSON structure itself. Since documents.application_form.present, documents.budget.present, documents.registration_cert.present, and documents.finance_statement.present are all absent from the JSON, all four documents fail this check and should be marked as violations.</p><p>For the evidence field, I need to include the document ID and locator for each violated rule. The application_form document shows no "present" field exists, the budget document similarly lacks one, and the registration certificate is missing its required "present" field as well. For R009, the application_form shows "signature_present": true, which satisfies the requirement. R010 passes since both application_form.requested_total_eur and budget.totals.total equal 84200, and R011 passes because finance_statement.period is FY2025.</p><p>R004 through R007 all fail because the documents lack "present" fields—the application_form, budget, registration_cert, and finance_statement documents are all missing this required field.</p><p>R003 violates the equipment share limit, showing 55.5% when only 40% is permitted. The total of 84200 falls within the 100000 threshold, but the equipment allocation exceeds the allowed percentage, making the application ineligible for approval despite passing other requirements.</p><p>For document validation, the application_form presents a contradiction: while the signature exists in the document, the "present" field itself is absent from the JSON structure, which would trigger a validation failure under strict interpretation. The budget, registration_cert, and finance_statement documents similarly lack the required "present" field, compounding the eligibility issues.</p></details></div><div class="attempt-meta">30.599 · 3389 токенов · cache hit</div></div><div class="attempt"><div class="attempt-label">Попытка 2</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 55.5</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message user"><div class="chat-role">user</div><p>Your previous reply contained no JSON. Output ONLY the JSON object now, starting with '{' with no preamble and no reasoning.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 55.5,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;55.5&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[1].share_pct&quot;,
+        &quot;quote&quot;: &quot;55.5&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;table&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;registration_cert present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;certificate&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;requested_total_eur == budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;84200 == 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;needs_correction&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me verify each rule against the application packet:</p><p><strong>R001</strong>: Applicant must be registered for at least 12 months</p><ul><li>application_form.months_registered = 26</li><li>26 &gt;= 12 ✓ OK</li></ul><p><strong>R002</strong>: Total requested budget must not exceed 100000 EUR</p><ul><li>budget.totals.total = 84200</li><li>84200 &lt;= 100000 ✓ OK</li></ul><p><strong>R003</strong>: Equipment line must not exceed 40% of total budget</p><ul><li>budget.row.equipment.share_pct = 55.5</li><li>55.5 &gt; 40 ✗ VIOLATION</li></ul><p><strong>R004</strong>: Required document - signed application form</p><ul><li>documents.application_form.present = true (form is present)</li><li>✓ OK</li></ul><p><strong>R005</strong>: Required document - itemised budget</p><ul><li>documents.budget.present = true (budget document is present)</li><li>✓ OK</li></ul><p><strong>R006</strong>: Required document - registration certificate</p><ul><li>documents.registration_cert.present = true (certificate is present)</li><li>✓ OK</li></ul><p><strong>R007</strong>: Required document - most recent financial statement</p><ul><li>documents.finance_statement.present = true (statement is present)</li><li>✓ OK</li></ul><p><strong>R008</strong>: Applications accepted until 2026-10-01 inclusive</p><ul><li>application_form.submission_date = "2026-09-12"</li><li>2026-09-12 &lt;= 2026-10-01 ✓ OK</li></ul><p><strong>R009</strong>: Application form must be signed by legal representative</p><ul><li>application_form.signature_present = true</li><li>✓ OK</li></ul><p><strong>R010</strong>: Total requested on application form must match budget total</p><ul><li>application_form.requested_total_eur = 84200</li><li>budget.totals.total = 84200</li></ul><ul><li>✓ OK (consistent)</li></ul><p><strong>R011</strong>: Financial statement must cover FY2025</p><ul><li>finance_statement.period = "FY2025"</li><li>✓ OK</li></ul><p>Now extracting the canonical fields: months_registered is 26, total budget is 84200, equipment represents 55.5% of the budget. The application form and budget documents are both present, along with the registration certificate and financial statement. The submission date is 2026-09-12 with signature confirmed.</p><p>One major issue stands out: equipment spending exceeds the 40% cap, which is a significant budget violation requiring correction.</p></details></div><div class="attempt-meta">15.548 · 2783 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_late_submission</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-10-27'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-10-27&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget.totals.total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget.row.equipment.share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;row.equipment.share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form present&quot;,
+      &quot;observed&quot;: &quot;present&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=application_form kind=form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.budget present&quot;,
+      &quot;observed&quot;: &quot;present&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=budget kind=table&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert present&quot;,
+      &quot;observed&quot;: &quot;present&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=registration_cert kind=certificate&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement present&quot;,
+      &quot;observed&quot;: &quot;present&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=finance_statement kind=statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;application_form.submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-10-27&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-10-27&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur == budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;84200 == 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;needs_correction&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me analyze the application packet against each rule in the ruleset.</p><p>First, let me extract the canonical fields:</p><ol><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9</li><li>documents.application_form.present: The document exists, so true</li><li>documents.budget.present: The document exists, so true</li><li>documents.registration_cert.present: The document exists, so true</li><li>documents.finance_statement.present: The document exists, so true</li><li>application_form.submission_date: '2026-10-27'</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: FY2025</li></ol><p>Now let me check each rule:</p><p><strong>R001</strong>: months_registered &gt;= 12</p><ul><li>Expected: &gt;= 12</li><li>Observed: 26</li><li>Status: ok</li></ul><p><strong>R002</strong>: budget.totals.total &lt;= 100000</p><ul><li>Expected: &lt;= 100000</li><li>Observed: 84200</li><li>Status: ok</li></ul><p><strong>R003</strong>: equipment share_pct &lt;= 40</p><ul><li>Expected: &lt;= 40</li><li>Observed: 29.9</li><li>Status: ok</li></ul><p><strong>R004</strong>: documents.application_form.present exists</p><ul><li>Expected: exists</li><li>Observed: present (document exists)</li><li>Status: ok</li></ul><p><strong>R005</strong>: documents.budget.present exists</p><ul><li>Expected: exists</li><li>Observed: present (document exists)</li><li>Status: ok</li></ul><p><strong>R006</strong>: documents.registration_cert.present exists</p><ul><li>Expected: exists</li><li>Observed: present (document exists)</li><li>Status: ok</li></ul><p><strong>R007</strong>: documents.finance_statement.present exists</p><ul><li>Expected: exists</li><li>Observed: present (document exists)</li></ul><ul><li>Status: ok</li></ul><p><strong>R008</strong>: submission_date &lt;= '2026-10-01'</p><ul><li>Expected: &lt;= 2026-10-01</li><li>Observed: 2026-10-27</li><li>Status: violation</li></ul><p><strong>R009</strong>: application_form.signature_present == true</p><ul><li>Expected: true</li><li>Observed: true</li><li>Status: ok</li></ul><p><strong>R010</strong>: consistency between application_form.requested_total_eur and budget.totals.total</p><ul><li>application_form.requested_total_eur: 84200</li><li>budget.totals.total: 84200</li><li>Status: ok (consistent)</li></ul><p><strong>R011</strong>: finance_statement.period == FY2025</p><ul><li>Expected: FY2025</li><li>Observed: FY2025</li><li>Status: ok</li></ul><p>The deadline violation (R008) is critical and must be addressed. The application was submitted on 2026-10-27, which exceeds the cutoff of 2026-10-01, so this needs to be corrected before the submission can proceed. All other requirements check out.</p><p>I should verify the financial statement document is properly formatted and the consistency check between requested and total amounts is accurate. For R008, I'll reference the submission_date field directly from the application form. The other rules validate cleanly: R001 through R007, R009, and R010 all pass their respective checks.</p></details></div><div class="attempt-meta">19.453 · 3000 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_missing_budget</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: null,
+    &quot;budget.row.equipment.share_pct&quot;: null,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: null,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;budget.totals.total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;null - budget document not provided&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;budget.totals.total&quot;,
+        &quot;quote&quot;: &quot;Document not present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;budget.row.equipment.share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;null - budget document not provided&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;budget.row.equipment.share_pct&quot;,
+        &quot;quote&quot;: &quot;Document not present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;null - no budget document in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;documents.budget.present&quot;,
+        &quot;quote&quot;: &quot;Document not present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;certificate&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur consistent with budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;Cannot verify - budget.totals.total is null (budget document missing)&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;fields.requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;budget.totals.total&quot;,
+          &quot;quote&quot;: &quot;Document not present&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;reject&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me extract the canonical fields and verify each rule against the application packet.</p><p><strong>Canonical Fields Extraction:</strong></p><ol><li><code>application_form.months_registered</code> = 26</li><li><code>budget.totals.total</code> = null (no budget document provided)</li><li><code>budget.row.equipment.share_pct</code> = null (no budget document provided)</li><li><code>documents.application_form.present</code> = true</li><li><code>documents.budget.present</code> = null (no budget document provided)</li><li><code>documents.registration_cert.present</code> = true (registration cert is provided)</li><li><code>documents.finance_statement.present</code> = true</li><li><code>application_form.submission_date</code> = '2026-09-12'</li><li><code>application_form.signature_present</code> = true</li><li><code>application_form.requested_total_eur</code> = 84200</li><li><code>finance_statement.period</code> = 'FY2025'</li></ol><p><strong>Rule Verification:</strong></p><p>R001: Applicant organisation must be registered for at least 12 months</p><ul><li>Field: application_form.months_registered = 26</li><li>Op: ge, Value: 12</li><li>26 &gt;= 12 → OK</li></ul><p>R002: Total requested budget must not exceed 100000 EUR</p><ul><li>Field: budget.totals.total = null (no budget document)</li><li>This is a violation because we cannot verify the budget total</li><li>Actually, since the field is null/missing, this is a violation</li></ul><p>R003: Equipment line must not exceed 40 percent of the total budget</p><ul><li>Field: budget.row.equipment.share_pct = null</li><li>Cannot verify → violation</li></ul><p>R004: Required document - signed application form</p><ul><li>Field: documents.application_form.present = true</li><li>Op: exists</li><li>true exists → OK</li></ul><p>R005: Required document - itemised budget</p><ul><li>Field: documents.budget.present = null</li><li>Op: exists</li></ul><ul><li>null means document doesn't exist → VIOLATION</li></ul><p>R006: Required document - registration certificate (registry extract)</p><ul><li>Field: documents.registration_cert.present = true (registration_cert document exists)</li><li>Op: exists</li><li>true → OK</li></ul><p>R007: Required document - most recent financial statement</p><ul><li>Field: documents.finance_statement.present = true</li><li>Op: exists</li><li>true → OK</li></ul><p>R008: Applications are accepted until 2026-10-01 inclusive</p><ul><li>Field: application_form.submission_date = '2026-09-12'</li><li>Op: le, Value: '2026-10-01'</li><li>2026-09-12 &lt;= 2026-10-01 → OK</li></ul><p>R009: Application form must be signed by the legal representative</p><ul><li>Field: application_form.signature_present = true</li><li>Op: eq, Value: true</li><li>true = true → OK</li></ul><p>R010: Total requested on the application form must be identical to the budget total</p><ul><li>Op: consistent</li><li>Fields: application_form.requested_total_eur (84200) and budget.totals.total (null)</li><li>Cannot verify consistency without budget document → VIOLATION</li></ul><p>R011: Financial statement must cover reporting period FY2025</p><ul><li>Field: finance_statement.period = 'FY2025'</li><li>Op: eq, Value: 'FY2025'</li><li>'FY2025' = 'FY2025' → OK</li></ul><p><strong>Summary:</strong></p><ul><li>R001: OK (26 &gt;= 12)</li><li>R002: VIOLATION (budget document missing, cannot verify)</li><li>R003: VIOLATION (equipment share data missing, cannot verify)</li><li>R004: OK</li><li>R005: VIOLATION (budget document missing)</li><li>R006: OK</li><li>R007: OK</li><li>R008: OK (2026-09-12 &lt;= 2026-10-01)</li><li>R009: OK</li><li>R010: VIOLATION (cannot verify consistency without budget document)</li><li>R011: OK</li></ul><p>The application is incomplete due to missing budget documentation, which is required for both R002 and R005. R010 also fails because the budget total cannot be compared against the stated requested amount. With critical violations present, the disposition is REJECT.</p><p><strong>Disposal: REJECT</strong></p><p>The budget document (R005) is required for two critical checks: verifying the total requested amount stays under 100,000 EUR (R002) and ensuring consistency between the application form total and the actual budget total (R010).</p></details></div><div class="attempt-meta">20.36 · 3115 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_missing_registration</strong><span class="chat-status">ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: null,
+    &quot;documents.budget.present&quot;: null,
+    &quot;documents.registration_cert.present&quot;: null,
+    &quot;documents.finance_statement.present&quot;: null,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget totals total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[category=equipment].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;null - no documents manifest section in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;N/A&quot;,
+        &quot;quote&quot;: &quot;N/A&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;null - no documents manifest section in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;N/A&quot;,
+        &quot;quote&quot;: &quot;N/A&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;null - no documents manifest section in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;N/A&quot;,
+        &quot;locator&quot;: &quot;N/A&quot;,
+        &quot;quote&quot;: &quot;N/A&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;null - no documents manifest section in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;N/A&quot;,
+        &quot;quote&quot;: &quot;N/A&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;requested_total_eur consistent with budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;84200 == 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;fields.requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;reject&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me carefully verify each rule against the application packet.</p><p>First, let me extract the canonical fields:</p><ul><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9 (equipment has share_pct of 29.9)</li><li>documents.application_form.present: null (no documents section showing presence)</li><li>documents.budget.present: null</li><li>documents.registration_cert.present: null</li><li>documents.finance_statement.present: null</li><li>application_form.submission_date: "2026-09-12"</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: "FY2025"</li></ul><p>Now let me check each rule:</p><p><strong>R001</strong> (critical, eligibility): months_registered &gt;= 12</p><ul><li>Expected: &gt;= 12</li><li>Observed: 26</li><li>Status: OK</li></ul><p><strong>R002</strong> (major, budget): total &lt;= 100000</p><ul><li>Expected: &lt;= 100000</li><li>Observed: 84200</li><li>Status: OK</li></ul><p><strong>R003</strong> (major, budget): equipment share_pct &lt;= 40</p><ul><li>Expected: &lt;= 40</li><li>Observed: 29.9</li><li>Status: OK</li></ul><p><strong>R004</strong> (critical, required_documents): documents.application_form.present exists</p><ul><li>Expected: field exists</li><li>Observed: null (no documents section in the packet)</li><li>This is a violation - the required document is not shown as present</li></ul><p><strong>R005</strong> (critical, required_documents): documents.budget.present exists</p><ul><li>Expected: field exists</li><li>Observed: null</li><li>Violation</li></ul><p><strong>R006</strong> (critical, required_documents): documents.registration_cert.present exists</p><ul><li>Expected: field exists</li><li>Observed: null</li><li>Violation</li></ul><p><strong>R007</strong> (critical, required_documents): documents.finance_statement.present exists</p><ul><li>Expected: field exists</li><li>Observed: null</li><li>Violation</li></ul><p><strong>R008</strong> (major, deadlines): submission_date &lt;= 2026-10-01</p><ul><li>Expected: &lt;= 2026-10-01</li><li>Observed: 2026-09-12</li><li>Status: OK</li></ul><p><strong>R009</strong> (critical, formal): signature_present == true</p><ul><li>Expected: true</li><li>Observed: true</li><li>Status: OK</li></ul><p><strong>R010</strong> (major, consistency): application_form.requested_total_eur must match budget.totals.total</p><ul><li>Expected: 84200</li><li>Observed: 84200</li><li>Status: OK</li></ul><p><strong>R011</strong> (minor, reporting): finance_statement.period == "FY2025"</p><ul><li>Expected: "FY2025"</li><li>Observed: "FY2025"</li><li>Status: OK</li></ul><p>Four critical violations exist: missing application form, budget, registration certificate, and finance statement documents. These require document submission before proceeding.</p><p>The packet lacks a documents section entirely, yet the application form and budget are clearly present as separate documents. This suggests either a structural gap in how documents are organized or an assumption about what needs explicit documentation. The critical status of these requirements means they must be resolved before the application can advance, regardless of other compliance.</p></details></div><div class="attempt-meta">16.365 · 2663 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_over_budget</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 60800<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 40320<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 19200<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 14400<br>  share_pct: 10.7<br>totals:<br>  total: 134720<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 134720,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;134720&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;134720&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;row.equipment.share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form document present&quot;,
+      &quot;observed&quot;: &quot;document exists&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget document present&quot;,
+      &quot;observed&quot;: &quot;document exists&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;registration_cert document present&quot;,
+      &quot;observed&quot;: &quot;document exists&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement document present&quot;,
+      &quot;observed&quot;: &quot;document exists&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document present&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;requested_total_eur identical to budget totals.total&quot;,
+      &quot;observed&quot;: &quot;application_form shows 84200, budget shows 134720&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;134720&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;needs_correction&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me analyze each rule against the application packet:</p><p><strong>CANONICAL FIELDS to extract:</strong></p><ul><li>application_form.months_registered: 26</li><li>budget.totals.total: 134720</li><li>budget.row.equipment.share_pct: 29.9 (from equipment row)</li><li>documents.application_form.present: true (application_form document exists)</li><li>documents.budget.present: true (budget document exists)</li><li>documents.registration_cert.present: true (registration_cert document exists)</li><li>documents.finance_statement.present: true (finance_statement document exists)</li><li>application_form.submission_date: "2026-09-12"</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: "FY2025"</li></ul><p><strong>RULES CHECK:</strong></p><p><strong>R001 (critical, eligibility):</strong> Applicant organisation must be registered for at least 12 months at submission</p><ul><li>Field: application_form.months_registered = 26</li><li>Op: ge (&gt;=) 12</li><li>26 &gt;= 12 → TRUE</li><li>Status: ok</li></ul><p><strong>R002 (major, budget):</strong> Total requested budget must not exceed 100000 EUR</p><ul><li>Field: budget.totals.total = 134720</li><li>Op: le (&lt;=) 100000</li><li>134720 &lt;= 100000 → FALSE</li><li>Status: violation</li><li>Evidence: document id="budget", locator="totals.total", quote="134720"</li></ul><p><strong>R003 (major, budget):</strong> Equipment line must not exceed 40 percent of the total budget</p><ul><li>Field: budget.row.equipment.share_pct = 29.9</li><li>Op: le (&lt;=) 40</li><li>29.9 &lt;= 40 → TRUE</li></ul><ul><li>Status: ok</li></ul><p><strong>R004 (critical, required_documents):</strong> Required document - signed application form</p><ul><li>Field: documents.application_form.present</li><li>The application_form document exists with signature_present: true</li><li>Status: ok</li></ul><p><strong>R005 (critical, required_documents):</strong> Required document - itemised budget</p><ul><li>Field: documents.budget.present</li><li>The budget document exists</li><li>Status: ok</li></ul><p><strong>R006 (critical, required_documents):</strong> Required document - registration certificate (registry extract)</p><ul><li>Field: documents.registration_cert.present</li><li>The registration_cert document exists</li><li>Status: ok</li></ul><p><strong>R007 (critical, required_documents):</strong> Required document - most recent financial statement</p><ul><li>Field: documents.finance_statement.present</li><li>The finance_statement document exists</li><li>Status: ok</li></ul><p><strong>R008 (major, deadlines):</strong> Applications are accepted until 2026-10-01 inclusive</p><ul><li>Field: application_form.submission_date = "2026-09-12"</li><li>Op: le (&lt;=) 2026-10-01</li><li>2026-09-12 &lt;= 2026-10-01 → TRUE</li><li>Status: ok</li></ul><p><strong>R009 (critical, formal):</strong> Application form must be signed by the legal representative</p><ul><li>Field: application_form.signature_present = true</li><li>Op: eq true</li><li>Status: ok</li></ul><p><strong>R010 (major, consistency):</strong> Total requested on the application form must be identical to the budget total</p><ul><li>Fields: application_form.requested_total_eur = 84200, budget.totals.total = 134720</li><li>These values are not consistent</li><li>Status: violation</li><li>Evidence: document id="application_form", locator="requested_total_eur", quote="84200"; document id="budget", locator="totals.total", quote="134720"</li></ul><p><strong>R011 (minor, reporting):</strong> Financial statement must cover reporting period FY2025</p><ul><li>Field: finance_statement.period = "FY2025"</li><li>Op: eq "FY2025"</li><li>Status: ok</li></ul><p><strong>DISPOSITION:</strong><br>Two major violations identified: budget exceeds the 100000 EUR threshold at 134720, and the application form total doesn't match the budget total. Since major violations are present, the application requires correction.</p></details></div><div class="attempt-meta">16.798 · 2828 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_sum_mismatch</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 89200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 89200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget.totals.total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[equipment].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;id&quot;,
+        &quot;quote&quot;: &quot;application_form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;id&quot;,
+        &quot;quote&quot;: &quot;budget&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;id&quot;,
+        &quot;quote&quot;: &quot;registration_cert&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;id&quot;,
+        &quot;quote&quot;: &quot;finance_statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur identical to budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;89200 vs 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;89200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;needs_correction&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me carefully analyze the application packet against each rule in the ruleset.</p><p>First, let me extract the canonical fields:</p><ul><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9 (equipment row share_pct)</li><li>documents.application_form.present: not explicitly stated, but implied by the document existing - let me check if this field is "present" - the document exists, so this would be true</li><li>documents.budget.present: same logic, the document exists so true</li><li>documents.registration_cert.present: document exists so true</li><li>documents.finance_statement.present: document exists so true</li><li>application_form.submission_date: "2026-09-12"</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 89200</li><li>finance_statement.period: "FY2025"</li></ul><p>Wait, I need to be careful. The "present" fields for documents - I need to check if the documents are actually present. Looking at the packet, I see documents with id="application_form", id="budget", id="registration_cert", id="finance_statement". So yes, all these documents are present.</p><p>Now let me check each rule:</p><p>R001: Applicant organisation must be registered for at least 12 months</p><ul><li>field: application_form.months_registered</li><li>op: ge</li><li>value: 12</li><li>observed: 26 &gt;= 12 ✓</li><li>status: ok</li></ul><p>R002: Total requested budget must not exceed 100000 EUR</p><ul><li>field: budget.totals.total</li><li>op: le</li><li>value: 100000</li><li>observed: 84200 &lt;= 100000 ✓</li><li>status: ok</li></ul><p>R003: Equipment line must not exceed 40 percent of the total budget</p><ul><li>field: budget.row.equipment.share_pct</li></ul><ul><li>op: le</li><li>value: 40</li><li>observed: 29.9 &lt;= 40 ✓</li><li>status: ok</li></ul><p>R004: Required document - signed application form</p><ul><li>field: documents.application_form.present</li><li>op: exists</li><li>observed: document exists with id="application_form" ✓</li><li>status: ok</li></ul><p>R005: Required document - itemised budget</p><ul><li>field: documents.budget.present</li><li>op: exists</li><li>observed: document exists with id="budget" ✓</li><li>status: ok</li></ul><p>R006: Required document - registration certificate (registry extract)</p><ul><li>field: documents.registration_cert.present</li><li>op: exists</li><li>observed: document exists with id="registration_cert" ✓</li><li>status: ok</li></ul><p>R007: Required document - most recent financial statement</p><ul><li>field: documents.finance_statement.present</li><li>op: exists</li><li>observed: document exists with id="finance_statement" ✓</li><li>status: ok</li></ul><p>R008: Applications are accepted until 2026-10-01 inclusive</p><ul><li>field: application_form.submission_date</li><li>op: le</li><li>value: "2026-10-01"</li><li>observed: 2026-09-12 &lt;= 2026-10-01 ✓</li><li>status: ok</li></ul><p>R009: Application form must be signed by the legal representative</p><ul><li>field: application_form.signature_present</li><li>op: eq</li><li>value: true</li><li>observed: true = true ✓</li><li>status: ok</li></ul><p>R010: Total requested on the application form must be identical to the budget total</p><ul><li>op: consistent</li><li>fields: application_form.requested_total_eur, budget.totals.total</li><li>observed: 89200 vs 84200 - NOT EQUAL</li><li>status: violation</li></ul><p>This is a major discrepancy between what was requested on the form versus what's in the budget. The application shows 89200 EUR but the detailed budget totals only 84200 EUR. I need to flag this as a critical inconsistency since the totals don't match.</p><p>For the financial statement, it correctly covers FY2025 as required. Checking my work: R001 through R009 all pass their checks, but R010 is a clear violation with the budget mismatch, and R011 passes. The inconsistency in the budget totals is the only issue I've found so far.</p><p>Looking at the extracted data, the budget total of 84200 doesn't match the requested amount of 89200—a significant discrepancy that explains the violation.</p></details></div><div class="attempt-meta">19.997 · 3202 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_unregistered</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 3<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 3,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;3&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;months_registered&quot;,
+        &quot;quote&quot;: &quot;3&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[1].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;document present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;kind=form&quot;,
+        &quot;quote&quot;: &quot;document id=application_form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;document present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;kind=table&quot;,
+        &quot;quote&quot;: &quot;document id=budget&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;document present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;kind=certificate&quot;,
+        &quot;quote&quot;: &quot;document id=registration_cert&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;document present&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;kind=statement&quot;,
+        &quot;quote&quot;: &quot;document id=finance_statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;requested_total_eur == budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;84200 == 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;reject&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me analyze the application packet against each rule in the ruleset.</p><p><strong>CANONICAL FIELDS to extract:</strong></p><ul><li>application_form.months_registered: 3</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9</li><li>documents.application_form.present: need to check - document id="application_form" exists with kind="form", so true</li><li>documents.budget.present: document id="budget" exists with kind="table", so true</li><li>documents.registration_cert.present: document id="registration_cert" exists with kind="certificate", so true</li><li>documents.finance_statement.present: document id="finance_statement" exists with kind="statement", so true</li><li>application_form.submission_date: "2026-09-12"</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: "FY2025"</li></ul><p><strong>RULES CHECK:</strong></p><p><strong>R001 (critical, eligibility):</strong> Applicant organisation must be registered for at least 12 months</p><ul><li>field: application_form.months_registered</li><li>op: ge, value: 12</li><li>Observed: 3</li><li>Status: violation (3 is not &gt;= 12)</li><li>Evidence: application_form, months_registered = 3</li></ul><p><strong>R002 (major, budget):</strong> Total requested budget must not exceed 100000 EUR</p><ul><li>field: budget.totals.total</li><li>op: le, value: 100000</li><li>Observed: 84200</li><li>Status: ok (84200 &lt;= 100000)</li></ul><p><strong>R003 (major, budget):</strong> Equipment line must not exceed 40 percent</p><ul><li>field: budget.row.equipment.share_pct</li><li>op: le, value: 40</li><li>Observed: 29.9</li></ul><ul><li>Status: ok (29.9 &lt;= 40)</li></ul><p><strong>R004 (critical, required_documents):</strong> Signed application form required</p><ul><li>field: documents.application_form.present</li><li>op: exists</li><li>Observed: true (document exists)</li><li>Status: ok</li></ul><p><strong>R005 (critical, required_documents):</strong> Itemised budget required</p><ul><li>field: documents.budget.present</li><li>op: exists</li><li>Observed: true (document exists)</li><li>Status: ok</li></ul><p><strong>R006 (critical, required_documents):</strong> Registration certificate required</p><ul><li>field: documents.registration_cert.present</li><li>op: exists</li><li>Observed: true (document exists)</li><li>Status: ok</li></ul><p><strong>R007 (critical, required_documents):</strong> Most recent financial statement required</p><ul><li>field: documents.finance_statement.present</li><li>op: exists</li><li>Observed: true (document exists)</li><li>Status: ok</li></ul><p><strong>R008 (major, deadlines):</strong> Applications accepted until 2026-10-01</p><ul><li>field: application_form.submission_date</li><li>op: le, value: "2026-10-01"</li><li>Observed: "2026-09-12"</li><li>Status: ok (2026-09-12 &lt;= 2026-10-01)</li></ul><p><strong>R009 (critical, formal):</strong> Application form must be signed by legal representative</p><ul><li>field: application_form.signature_present</li><li>op: eq, value: true</li><li>Observed: true</li><li>Status: ok</li></ul><p><strong>R010 (major, consistency):</strong> Total on form must match budget total</p><ul><li>op: consistent</li><li>fields: [application_form.requested_total_eur, budget.totals.total]</li><li>Observed: requested_total_eur = 84200, budget.totals.total = 84200</li><li>Status: ok (values match)</li></ul><p><strong>R011 (minor, reporting):</strong> Financial statement must cover FY2025</p><ul><li>field: finance_statement.period</li><li>op: eq, value: "FY2025"</li><li>Observed: "FY2025"</li><li>Status: ok</li></ul><p><strong>DISPOSITION:</strong><br>R001 is a critical violation that warrants rejection since the organization hasn't met the minimum registration requirement of 12 months. The application fails on this fundamental eligibility criterion.</p></details></div><div class="attempt-meta">18.156 · 3146 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_unsigned</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: false<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: false,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;months_registered = 26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget.totals.total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;budget.totals.total = 84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget.row.equipment.share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;budget.row.equipment.share_pct = 29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[1].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;document with id &#x27;application_form&#x27; is present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=\&quot;application_form\&quot;&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;document with id &#x27;budget&#x27; is present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=\&quot;budget\&quot;&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;document with id &#x27;registration_cert&#x27; is present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=\&quot;registration_cert\&quot;&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;document with id &#x27;finance_statement&#x27; is present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;document&quot;,
+        &quot;quote&quot;: &quot;document id=\&quot;finance_statement\&quot;&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;application_form.submission_date = 2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;application_form.signature_present = true&quot;,
+      &quot;observed&quot;: &quot;application_form.signature_present = false&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.signature_present&quot;,
+        &quot;quote&quot;: &quot;false&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur identical to budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;both values equal 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;fields.requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period = FY2025&quot;,
+      &quot;observed&quot;: &quot;finance_statement.period = FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;reject&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me verify each rule against the application packet:</p><p><strong>R001</strong> - Applicant organisation must be registered for at least 12 months at submission</p><ul><li>Field: application_form.months_registered = 26</li><li>26 &gt;= 12 → OK</li></ul><p><strong>R002</strong> - Total requested budget must not exceed 100000 EUR</p><ul><li>Field: budget.totals.total = 84200</li><li>84200 &lt;= 100000 → OK</li></ul><p><strong>R003</strong> - Equipment line must not exceed 40 percent of the total budget</p><ul><li>Field: budget.row.equipment.share_pct = 29.9</li><li>29.9 &lt;= 40 → OK</li></ul><p><strong>R004</strong> - Required document - signed application form</p><ul><li>Field: documents.application_form.present - This is a form document, but there's no explicit "present" field. The document exists as "application_form". Looking at the packet, application_form is present (it's document id="application_form"). I need to determine if this counts as "present". The document exists, so I'll say OK.</li></ul><p><strong>R005</strong> - Required document - itemised budget</p><ul><li>Field: documents.budget.present - The budget document exists with document id="budget". So it's present. OK.</li></ul><p><strong>R006</strong> - Required document - registration certificate (registry extract)</p><ul><li>Field: documents.registration_cert.present - The registration_cert document exists. OK.</li></ul><p><strong>R007</strong> - Required document - most recent financial statement</p><ul><li>Field: documents.finance_statement.present - The finance_statement document exists. OK.</li></ul><p><strong>R008</strong> - Applications are accepted until 2026-10-01 inclusive</p><ul><li>Field: application_form.submission_date = '2026-09-12'</li><li>2026-09-12 &lt;= 2026-10-01 → OK</li></ul><p><strong>R009</strong> - Application form must be signed by the legal representative</p><ul><li>Field: application_form.signature_present = false</li><li>false == true → VIOLATION (critical)</li></ul><p><strong>R010</strong> - Total requested on the application form must be identical to the budget total</p><ul><li>Fields: application_form.requested_total_eur = 84200, budget.totals.total = 84200</li><li>84200 == 84200 → OK</li></ul><p><strong>R011</strong> - Financial statement must cover reporting period FY2025</p><ul><li>Field: finance_statement.period = FY2025</li><li>FY2025 == FY2025 → OK</li></ul><p>Now checking the canonical fields extraction. The application_form shows months_registered at 26, budget totals 84200, and equipment share_pct at 29.9. For documents, application_form, budget, registration_cert, and finance_statement are all present. The submission_date is 2026-09-12, but signature_present is false. The requested_total_eur matches the budget total at 84200, and finance_statement covers FY2025.</p><p>R009 triggers a critical violation since the application form lacks a required signature. This requires rejection per the disposition rules. All 11 rules must be reported in sequence with proper field mappings. Document presence is determined by their existence in the packet—application_form, budget, and registration_cert are all present as document IDs, confirming the required documentation requirements are met. I need to verify the remaining document fields. Looking at the registration_cert and finance_statement documents, I can see they have the required fields present. The finance_statement includes the period field set to "FY2025". All the document presence checks are satisfied, so there are no violations from the document requirements.</p></details></div><div class="attempt-meta">20.051 · 3140 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001__corr_wrong_period</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2024<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2024&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;months_registered = 26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;total = 84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;equipment share_pct = 29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[1].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;application_form document present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document id=application_form kind=form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;budget document present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document id=budget kind=table&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;registration_cert document present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document id=registration_cert kind=certificate&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;finance_statement document present in packet&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;root&quot;,
+        &quot;quote&quot;: &quot;document id=finance_statement kind=statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;submission_date = 2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present = true&quot;,
+      &quot;observed&quot;: &quot;signature_present = true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur == budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;both fields equal 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;fields.requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;violation&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period = FY2025&quot;,
+      &quot;observed&quot;: &quot;finance_statement.period = FY2024&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2024&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;needs_correction&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me verify each rule against the application packet:</p><p><strong>CANONICAL FIELDS extraction:</strong></p><ul><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9</li><li>documents.application_form.present: not explicitly stated, but the application_form document exists</li><li>documents.budget.present: not explicitly stated, but the budget document exists</li><li>documents.registration_cert.present: not explicitly stated, but the registration_cert document exists</li><li>documents.finance_statement.present: not explicitly stated, but the finance_statement document exists</li><li>application_form.submission_date: '2026-09-12'</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: FY2024</li></ul><p>Wait, I need to be careful about "present" fields. The rules check for "exists" operation on fields like documents.application_form.present. But looking at the packet, we have documents themselves (application_form, budget, registration_cert, finance_statement) as separate documents, but there's no explicit "present" field within them or a meta-document tracking document presence.</p><p>Actually, re-reading the rules:</p><ul><li>R004: documents.application_form.present - op: exists</li><li>R005: documents.budget.present - op: exists</li><li>R006: documents.registration_cert.present - op: exists</li><li>R007: documents.finance_statement.present - op: exists</li></ul><p>These are checking for existence of a "present" field under each document type. But the packet structure shows the documents themselves exist (application_form is a document, budget is a document, etc.). The question is whether the packet explicitly marks them as "present: true" or similar.</p><p>Looking at the packet more carefully, the documents are listed as separate documents with their own IDs. So documents.application_form.present would be checking if the application_form document is present - and it is. But the rules want a field called "present" to exist.</p><p>The packet contains the documents themselves but lacks explicit "present" flag fields within them. Since the documents exist, I need to determine whether a "present" field is required or if document existence alone satisfies the "exists" requirement for these rules.</p><p>Looking at the structure more carefully, the "documents" section appears to be a wrapper containing separate documents (application_form, budget, registration_cert, finance_statement). Each of these documents exists within that wrapper. The question is whether the rules expect a "present" boolean field or if the existence of the document itself constitutes presence.</p><p>Given the context of machine-readable rules that check for a "present" field, I'm interpreting this as a boolean flag indicating whether a document was included in the packet. Since the documents are present in the packet, I should infer that "present: true" for each one.</p><p>For the findings: the application_form has months_registered as 26 (≥12, passes R001), total requested is 84200 EUR (≤100000, passes R002), and equipment represents 29.9% of the budget (≤40%, passes R003). All required documents are present, the submission date of September 12, 2026 falls within the October 1 deadline (passes R008), and the signature is confirmed as present (passes R009).</p><p>The application form's requested amount matches the budget total exactly (84200 EUR, passes R010), though the financial statement covers FY2024 rather than the required FY2025 period (violates R011). Regarding document presence, each required document exists in the packet—the application form, budget, registration certificate, and financial statement are all present, so the presence checks pass for R004 through R007. Since the financial statement period mismatch is a minor violation, the disposition should be "needs_correction." Looking back at the rules, R002 through R007 all check for specific field existence, which means I need to verify whether these documents actually contain the required fields rather than just being present. .present" fields.</p><p>Given the packet structure with separate document sections, each document appears to be inherently "present" by virtue of being listed. I'm interpreting "documents.application_form.present" as checking for the existence of the application_form document itself, which clearly exists in the packet. This means R004 passes.</p><p>The documents exist and contain their respective fields, so I'm setting each "present" flag to true for consistency with the data structure provided.</p></details></div><div class="attempt-meta">23.032 · 3288 токенов · cache hit</div></div></details><details class="transcript-case" open><summary><strong>grant_00001</strong><span class="chat-status">OK · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary><p>You are a formal verification officer. You verify application packets against a canonical, versioned institutional ruleset. You behave like software: deterministic, grounded, no guessing.</p><p>Reply with ONE JSON object and nothing else, exactly this shape:<br>{<br>  "extracted": {"&lt;canonical field&gt;": &lt;value or null&gt;, ...},<br>  "findings": [<br>    {"rule_id": "&lt;id&gt;", "status": "violation|ok|not_applicable",<br>     "expected": &lt;what the rule requires&gt;, "observed": &lt;what the packet shows&gt;,<br>     "evidence": {"document": "&lt;doc id&gt;", "locator": "&lt;field/sheet/section&gt;", "quote": "&lt;short verbatim quote&gt;"}}<br>  ],<br>  "disposition": "accept|needs_correction|reject"<br>}</p><p>Hard requirements:</p><ul><li>Report EVERY rule of the ruleset exactly once, same rule_ids, in order.</li><li>Fill every canonical field listed in the task; use null when the packet does not state it. Never invent values.</li><li>"violation" REQUIRES non-null evidence (document id + locator or verbatim quote) that grounds it in the packet.</li><li>"evidence" is one object; for cross-document rules use an ARRAY of objects, one per document involved.</li><li>Use "not_applicable" only when the rule genuinely cannot apply; say why in "observed".</li><li>disposition: "reject" if any critical violation, "needs_correction" if any non-critical violation, "accept" otherwise.</li><li>Dates are ISO YYYY-MM-DD; money values are plain numbers without symbols or separators.</li><li>Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.</li></ul></details><div class="chat-message user"><div class="chat-role">user</div><p>RULESET seed-grant-2026.1 v2026.1 (Example Foundation):</p><ul><li>id: R001</li></ul><p>  severity: critical<br>  category: eligibility<br>  description: Applicant organisation must be registered for at least 12 months at<br>    submission<br>  machine:<br>    field: application_form.months_registered<br>    op: ge<br>    value: 12</p><ul><li>id: R002</li></ul><p>  severity: major<br>  category: budget<br>  description: Total requested budget must not exceed 100000 EUR<br>  machine:<br>    field: budget.totals.total<br>    op: le<br>    value: 100000</p><ul><li>id: R003</li></ul><p>  severity: major<br>  category: budget<br>  description: Equipment line must not exceed 40 percent of the total budget<br>  machine:<br>    field: budget.row.equipment.share_pct<br>    op: le<br>    value: 40</p><ul><li>id: R004</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - signed application form<br>  machine:<br>    field: documents.application_form.present<br>    op: exists</p><ul><li>id: R005</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - itemised budget<br>  machine:<br>    field: documents.budget.present<br>    op: exists</p><ul><li>id: R006</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - registration certificate (registry extract)<br>  machine:<br>    field: documents.registration_cert.present<br>    op: exists</p><ul><li>id: R007</li></ul><p>  severity: critical<br>  category: required_documents<br>  description: Required document - most recent financial statement<br>  machine:<br>    field: documents.finance_statement.present<br>    op: exists</p><ul><li>id: R008</li></ul><p>  severity: major<br>  category: deadlines<br>  description: Applications are accepted until 2026-10-01 inclusive<br>  machine:<br>    field: application_form.submission_date<br>    op: le<br>    value: '2026-10-01'</p><ul><li>id: R009</li></ul><p>  severity: critical<br>  category: formal<br>  description: Application form must be signed by the legal representative<br>  machine:<br>    field: application_form.signature_present<br>    op: eq<br>    value: true</p><ul><li>id: R010</li></ul><p>  severity: major<br>  category: consistency<br>  description: Total requested on the application form must be identical to the budget<br>    total<br>  machine:<br>    op: consistent<br>    fields:</p><ul><li>application_form.requested_total_eur</li><li>budget.totals.total</li><li>id: R011</li></ul><p>  severity: minor<br>  category: reporting<br>  description: Financial statement must cover reporting period FY2025<br>  machine:<br>    field: finance_statement.period<br>    op: eq<br>    value: FY2025</p><p>CANONICAL FIELDS to extract (fill each, null if absent):</p><ul><li>application_form.months_registered</li><li>budget.totals.total</li><li>budget.row.equipment.share_pct</li><li>documents.application_form.present</li><li>documents.budget.present</li><li>documents.registration_cert.present</li><li>documents.finance_statement.present</li><li>application_form.submission_date</li><li>application_form.signature_present</li><li>application_form.requested_total_eur</li><li>finance_statement.period</li></ul><p>APPLICATION PACKET:<br>&lt;document id="application_form" kind="form"&gt;<br>fields:<br>  applicant_name: Aurora Cultural Association<br>  applicant_country: PL<br>  months_registered: 26<br>  submission_date: '2026-09-12'<br>  legal_representative: Anna Kowalska<br>  signature_present: true<br>  requested_total_eur: 84200<br>&lt;/document&gt;</p><p>&lt;document id="budget" kind="table"&gt;<br>columns:</p><ul><li>category</li><li>amount_eur</li><li>share_pct</li></ul><p>rows:</p><ul><li>category: personnel</li></ul><p>  amount_eur: 38000<br>  share_pct: 45.1</p><ul><li>category: equipment</li></ul><p>  amount_eur: 25200<br>  share_pct: 29.9</p><ul><li>category: outreach</li></ul><p>  amount_eur: 12000<br>  share_pct: 14.3</p><ul><li>category: other</li></ul><p>  amount_eur: 9000<br>  share_pct: 10.7<br>totals:<br>  total: 84200<br>&lt;/document&gt;</p><p>&lt;document id="registration_cert" kind="certificate"&gt;<br>fields:<br>  registry_number: KRS 0000123456<br>  issued_on: '2026-08-30'<br>  valid_until: '2029-08-30'<br>&lt;/document&gt;</p><p>&lt;document id="finance_statement" kind="statement"&gt;<br>fields:<br>  period: FY2025<br>  revenue_eur: 210000<br>  spending_eur: 195000<br>&lt;/document&gt;</p><p>Verify every rule. Reply with the JSON object only.</p></div><div class="chat-message assistant"><div class="chat-role">assistant</div><pre class="md-code json-response"><code>{
+  &quot;extracted&quot;: {
+    &quot;application_form.months_registered&quot;: 26,
+    &quot;budget.totals.total&quot;: 84200,
+    &quot;budget.row.equipment.share_pct&quot;: 29.9,
+    &quot;documents.application_form.present&quot;: true,
+    &quot;documents.budget.present&quot;: true,
+    &quot;documents.registration_cert.present&quot;: true,
+    &quot;documents.finance_statement.present&quot;: true,
+    &quot;application_form.submission_date&quot;: &quot;2026-09-12&quot;,
+    &quot;application_form.signature_present&quot;: true,
+    &quot;application_form.requested_total_eur&quot;: 84200,
+    &quot;finance_statement.period&quot;: &quot;FY2025&quot;
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;R001&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;months_registered &gt;= 12&quot;,
+      &quot;observed&quot;: &quot;26&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.months_registered&quot;,
+        &quot;quote&quot;: &quot;26&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R002&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;budget total &lt;= 100000&quot;,
+      &quot;observed&quot;: &quot;84200&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;totals.total&quot;,
+        &quot;quote&quot;: &quot;84200&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R003&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;equipment share_pct &lt;= 40&quot;,
+      &quot;observed&quot;: &quot;29.9&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;rows[1].share_pct&quot;,
+        &quot;quote&quot;: &quot;29.9&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R004&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.application_form.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;form&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R005&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.budget.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;budget&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;table&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R006&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.registration_cert.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;registration_cert&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;certificate&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R007&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;documents.finance_statement.present exists&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;kind&quot;,
+        &quot;quote&quot;: &quot;statement&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R008&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;submission_date &lt;= 2026-10-01&quot;,
+      &quot;observed&quot;: &quot;2026-09-12&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.submission_date&quot;,
+        &quot;quote&quot;: &quot;2026-09-12&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R009&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;signature_present == true&quot;,
+      &quot;observed&quot;: &quot;true&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;application_form&quot;,
+        &quot;locator&quot;: &quot;fields.signature_present&quot;,
+        &quot;quote&quot;: &quot;true&quot;
+      }
+    },
+    {
+      &quot;rule_id&quot;: &quot;R010&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;application_form.requested_total_eur == budget.totals.total&quot;,
+      &quot;observed&quot;: &quot;84200 == 84200&quot;,
+      &quot;evidence&quot;: [
+        {
+          &quot;document&quot;: &quot;application_form&quot;,
+          &quot;locator&quot;: &quot;fields.requested_total_eur&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        },
+        {
+          &quot;document&quot;: &quot;budget&quot;,
+          &quot;locator&quot;: &quot;totals.total&quot;,
+          &quot;quote&quot;: &quot;84200&quot;
+        }
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;R011&quot;,
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;expected&quot;: &quot;finance_statement.period == FY2025&quot;,
+      &quot;observed&quot;: &quot;FY2025&quot;,
+      &quot;evidence&quot;: {
+        &quot;document&quot;: &quot;finance_statement&quot;,
+        &quot;locator&quot;: &quot;fields.period&quot;,
+        &quot;quote&quot;: &quot;FY2025&quot;
+      }
+    }
+  ],
+  &quot;disposition&quot;: &quot;accept&quot;
+}</code></pre><details class="thinking"><summary>Thinking · скрыто по умолчанию</summary><p>Let me carefully verify each rule against the application packet.</p><p>First, let me extract the canonical fields:</p><ol><li>application_form.months_registered: 26</li><li>budget.totals.total: 84200</li><li>budget.row.equipment.share_pct: 29.9 (from equipment row)</li><li>documents.application_form.present: need to check - the application form document exists, so this should be true</li><li>documents.budget.present: true (budget document exists)</li><li>documents.registration_cert.present: true (registration_cert document exists)</li><li>documents.finance_statement.present: true (finance_statement document exists)</li><li>application_form.submission_date: "2026-09-12"</li><li>application_form.signature_present: true</li><li>application_form.requested_total_eur: 84200</li><li>finance_statement.period: "FY2025"</li></ol><p>Now let me verify each rule:</p><p><strong>R001</strong>: Applicant organisation must be registered for at least 12 months at submission</p><ul><li>field: application_form.months_registered</li><li>op: ge (&gt;=)</li><li>value: 12</li><li>Observed: 26 &gt;= 12 ✓ PASS</li></ul><p><strong>R002</strong>: Total requested budget must not exceed 100000 EUR</p><ul><li>field: budget.totals.total</li><li>op: le (&lt;=)</li><li>value: 100000</li><li>Observed: 84200 &lt;= 100000 ✓ PASS</li></ul><p><strong>R003</strong>: Equipment line must not exceed 40 percent of the total budget</p><ul><li>field: budget.row.equipment.share_pct</li><li>op: le (&lt;=)</li><li>value: 40</li><li>Observed: 29.9 &lt;= 40 ✓ PASS</li></ul><p><strong>R004</strong>: Required document - signed application form</p><ul><li>field: documents.application_form.present</li><li>op: exists</li><li>Observed: application_form document is present ✓ PASS</li></ul><ul><li>field: documents.budget.present</li><li>op: exists</li><li>Observed: budget document is present ✓ PASS</li></ul><p><strong>R006</strong>: Required document - registration certificate (registry extract)</p><ul><li>field: documents.registration_cert.present</li><li>op: exists</li><li>Observed: registration_cert document is present ✓ PASS</li></ul><p><strong>R007</strong>: Required document - most recent financial statement</p><ul><li>field: documents.finance_statement.present</li><li>op: exists</li><li>Observed: finance_statement document is present ✓ PASS</li></ul><p><strong>R008</strong>: Applications are accepted until 2026-10-01 inclusive</p><ul><li>field: application_form.submission_date</li><li>op: le (&lt;=)</li><li>value: "2026-10-01"</li><li>Observed: "2026-09-12" &lt;= "2026-10-01" ✓ PASS</li></ul><p><strong>R009</strong>: Application form must be signed by the legal representative</p><ul><li>field: application_form.signature_present</li><li>op: eq</li><li>value: true</li><li>Observed: true = true ✓ PASS</li></ul><p><strong>R010</strong>: Total requested on the application form must be identical to the budget total</p><ul><li>op: consistent</li><li>fields:</li><li>application_form.requested_total_eur: 84200</li><li>budget.totals.total: 84200</li><li>Observed: 84200 = 84200 ✓ PASS</li></ul><p><strong>R011</strong>: Financial statement must cover reporting period FY2025</p><ul><li>field: finance_statement.period</li><li>op: eq</li><li>value: "FY2025"</li><li>Observed: "FY2025" = "FY2025" ✓ PASS</li></ul><p>All checks passed. The application satisfies every rule requirement.</p></details></div><div class="attempt-meta">17.078 · 3029 токенов · cache hit</div></div></details></div></section>
+<section class="panel report-preview"><h2>Отчёт</h2><h1>docbench report</h1><table class=md-table><thead><tr><th>model</th><th>benchmark</th><th>n_cases</th><th>case_pass_rate</th><th>finding_precision</th><th>finding_recall</th><th>critical_recall</th><th>false_accept_rate</th><th>false_reject_rate</th><th>extraction_f1</th><th>grounding_recall</th><th>cost_per_case_rub</th><th>latency_p50_s</th></tr></thead><tbody><tr><td>minimax-m2.7</td><td>conformance</td><td>10</td><td>0.9000</td><td>0.9250</td><td>1.0000</td><td>1.0000</td><td>0.0000</td><td>0.0000</td><td>0.9727</td><td>0.8750</td><td>0.2324</td><td>18.8</td></tr></tbody></table><p>_Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._</p><h2>minimax-m2.7 · conformance · 2026-08-20T10:50:21.428536+00:00</h2><h3>Reasoning</h3><ul><li>reason=not declared</li></ul><h3>Tokens and cost</h3><table class=md-table><thead><tr><th>input</th><th>output</th><th>total</th><th>cache read</th><th>cache write</th><th>reasoning</th><th>cost RUB</th></tr></thead><tbody><tr><td>14868</td><td>18715</td><td>33583</td><td>0</td><td>0</td><td>0</td><td>2.323532</td></tr></tbody></table><ul><li>✅ <code>grant_00001__corr_equipment_heavy</code> _(set_field: set budget.row.equipment.share_pct = 55.5)_ — disp needs_correction vs needs_correction</li><li>✅ <code>grant_00001__corr_late_submission</code> _(shift_date: shifted application_form.submission_date: 2026-09-12 -&gt; 2026-10-27)_ — disp needs_correction vs needs_correction</li><li>✅ <code>grant_00001__corr_missing_budget</code> _(remove_document: removed required document 'budget' (Itemised budget))_ — disp reject vs reject</li><li>❌ <code>grant_00001__corr_missing_registration</code> _(remove_document: removed required document 'registration_cert' (Registry extract))_ — disp reject vs reject</li><li>✅ <code>grant_00001__corr_over_budget</code> _(scale_number: scaled ['budget.row.equipment.amount_eur', 'budget.row.other.amount_eur', 'budget.row.outreach.amount_eur', 'budget.row.personnel.amount_eur', 'budget.totals.total'] by 1.6)_ — disp needs_correction vs needs_correction</li><li>✅ <code>grant_00001__corr_sum_mismatch</code> _(set_field: set application_form.requested_total_eur = 89200)_ — disp needs_correction vs needs_correction</li><li>✅ <code>grant_00001__corr_unregistered</code> _(set_field: set application_form.months_registered = 3)_ — disp reject vs reject</li><li>✅ <code>grant_00001__corr_unsigned</code> _(drop_signature: signature dropped (application_form.signature_present=false))_ — disp reject vs reject</li><li>✅ <code>grant_00001__corr_wrong_period</code> _(set_field: set finance_statement.period = 'FY2024')_ — disp needs_correction vs needs_correction</li><li>✅ <code>grant_00001</code> — disp accept vs accept</li></ul></section>
 <section class=panel><h2>Детали и ресурсы</h2><pre>{
   &quot;n_cases&quot;: 10,
   &quot;n_scored&quot;: 10,

@@ -368,6 +368,70 @@ def retry_failed_run(
     return merged
 
 
+def reprice_saved_results(runs_dir: Path, *, models: set[str] | None = None) -> dict[str, Any]:
+    """Fill missing per-case costs from the pinned catalog without rerunning APIs.
+
+    This is intentionally offline: usage already persisted in a run is the
+    billing input, while the model catalog supplies the frozen token rates.
+    Scores, answers, timestamps and transcripts are left untouched.
+    """
+    changed: list[str] = []
+    skipped: list[str] = []
+    # os.walk(..., followlinks=True) is intentional: campaign indexes use
+    # symlinked model directories to keep one canonical result per run.
+    result_paths = [Path(root) / name
+                    for root, _dirs, files in os.walk(runs_dir, followlinks=True)
+                    for name in files if name == "results.json"]
+    for result_path in sorted(result_paths):
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            spec = resolve_model(str(result.get("model")), allow_missing_key=True)
+        except (OSError, json.JSONDecodeError, KeyError, RuntimeError):
+            skipped.append(str(result_path))
+            continue
+        if models and spec.key not in models:
+            continue
+        if spec.price_in is None or spec.price_out is None:
+            skipped.append(str(result_path))
+            continue
+        touched = False
+        for case in result.get("cases", []):
+            usage = case.get("usage") or {}
+            if not usage:
+                continue
+            cache_read = int(usage.get("cache_read_input_tokens") or 0)
+            cache_write = int(usage.get("cache_write_input_tokens") or 0)
+            input_total = int(usage.get("input_tokens") or 0)
+            uncached = usage.get("uncached_input_tokens")
+            if uncached is None:
+                uncached = max(input_total - cache_read - cache_write, 0)
+            cost = (int(uncached) * spec.price_in
+                    + cache_read * (spec.price_cache_read if spec.price_cache_read is not None else spec.price_in)
+                    + cache_write * (spec.price_cache_write if spec.price_cache_write is not None else spec.price_in)
+                    + int(usage.get("output_tokens") or 0) * spec.price_out) / 1e6
+            case["cost_rub"] = round(cost, 6) if spec.price_currency == "RUB" else case.get("cost_rub")
+            if spec.price_currency == "USD":
+                case["cost_usd"] = round(cost, 9)
+            case["cost_is_estimate"] = True
+            touched = True
+        if not touched:
+            continue
+        result["summary"] = _aggregate(result.get("cases", []))
+        result["price_source"] = spec.price_source
+        result["price_currency"] = spec.price_currency
+        result["pricing_snapshot"] = spec.pricing_snapshot
+        result["pricing_recalculated"] = True
+        result["pricing_recalculation_note"] = (
+            "cost recomputed offline from persisted usage and the pinned catalog; no API rerun"
+        )
+        result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        report_path = result_path.with_name("report.md")
+        if report_path.is_file():
+            report_path.write_text(render_markdown_report([result]), encoding="utf-8")
+        changed.append(str(result_path))
+    return {"changed": changed, "skipped": skipped}
+
+
 def _write_transcript(out_dir: Path, transcript: dict[str, Any], *, private: bool) -> Path:
     """Write a run transcript, encrypting it when any case is marked private.
 
