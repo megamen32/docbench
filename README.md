@@ -1,6 +1,6 @@
 # DocBench — Russian document benchmark
 
-[Public leaderboard](https://megamen32.github.io/docbench/)
+[Public leaderboard](https://megamen32.github.io/docbench/index.html)
 
 > A small, auditable benchmark for comparing models on Russian document
 verification and policy-rule extraction — with answers, tokens, latency and
