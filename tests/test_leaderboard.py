@@ -104,8 +104,12 @@ def test_run_card_renders_safe_markdown_and_collapsed_thinking():
     assert "<strong>bold</strong>" in rendered
     assert "<div class=md-table-wrap><table class=md-table>" in rendered
     status = render_markdown("- ✅ case passed")
-    assert 'class="md-status-row"' in status
-    assert status.index("case passed") < status.index("✅")
+    assert "case passed" in status
+    assert "✅" not in status
+    rich = render_markdown("_italic_ __bold__ ~~strike~~")
+    assert "<em>italic</em>" in rich
+    assert "<strong>bold</strong>" in rich
+    assert "<del>strike</del>" in rich
     assert "&lt;script&gt;" in rendered
     visible, thinking = _render_message("<think>private reasoning</think>**final**")
     assert "<strong>final</strong>" in visible
@@ -121,6 +125,8 @@ def test_transcript_chat_is_opt_in_and_cases_start_collapsed():
     rendered = _render_transcript_chat(transcript, [{"case_id": "case-1", "ok": True}])
     assert '<details class="transcript-case">' in rendered
     assert '<details class="transcript-case" open>' not in rendered
+    assert "case-status-icon" in rendered
+    assert "✅" in rendered
 
 
 def test_reprice_saved_results_uses_pinned_catalog_rates(tmp_path):
