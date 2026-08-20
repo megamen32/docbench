@@ -103,9 +103,12 @@ def test_run_card_renders_safe_markdown_and_collapsed_thinking():
     assert "<h1>Title</h1>" in rendered
     assert "<strong>bold</strong>" in rendered
     assert "<div class=md-table-wrap><table class=md-table>" in rendered
-    status = render_markdown("- ✅ case passed")
-    assert "case passed" in status
-    assert "✅" not in status
+    status = render_markdown("- ✅ `grant_00001__corr_missing_registration` _(remove_document: removed 'registration_cert')_ — reject")
+    assert "grant_00001__corr_missing_registration" in status
+    assert "✅" in status
+    assert "<code>grant_00001__corr_missing_registration</code>" in status
+    assert "<em>(remove_document: removed 'registration_cert')</em>" in status
+    assert "md-status-icon" in status
     rich = render_markdown("_italic_ __bold__ ~~strike~~")
     assert "<em>italic</em>" in rich
     assert "<strong>bold</strong>" in rich
