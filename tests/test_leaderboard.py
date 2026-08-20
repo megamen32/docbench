@@ -1,6 +1,6 @@
 import json
 
-from docbench.leaderboard import _render_message, publish_pages, render_markdown, write_leaderboard
+from docbench.leaderboard import _render_message, _render_transcript_chat, publish_pages, render_markdown, write_leaderboard
 from docbench.run import reprice_saved_results
 
 
@@ -108,6 +108,16 @@ def test_run_card_renders_safe_markdown_and_collapsed_thinking():
     assert "<strong>final</strong>" in visible
     assert "private reasoning" in thinking
     assert "<details" in thinking
+
+
+def test_transcript_chat_is_opt_in_and_cases_start_collapsed():
+    transcript = {"cases": [{"case_id": "case-1", "attempts": [{
+        "attempt": 1, "messages": [{"role": "user", "content": "hello"}],
+        "response_text": "world", "usage": {"total_tokens": 2},
+    }]}]}
+    rendered = _render_transcript_chat(transcript, [{"case_id": "case-1", "ok": True}])
+    assert '<details class="transcript-case">' in rendered
+    assert '<details class="transcript-case" open>' not in rendered
 
 
 def test_reprice_saved_results_uses_pinned_catalog_rates(tmp_path):
