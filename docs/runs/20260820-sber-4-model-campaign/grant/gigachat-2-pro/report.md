@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gigachat-2-pro | conformance | 10 | 0.6000 | 0.9500 | 0.9250 | 1.0000 | 0.0000 | 0.0000 | 0.9909 | 0.8000 | — | 14.6 |
+| gigachat-2-pro | conformance | 10 | 0.6000 | 0.9500 | 0.9250 | 1.0000 | 0.0000 | 0.0000 | 0.9909 | 0.8000 | 0.8370 | 14.6 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -16,7 +16,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 
 | input | output | total | cache read | cache write | reasoning | cost RUB |
 |---:|---:|---:|---:|---:|---:|---:|
-| 5480 | 11261 | 16741 | 0 | 0 | 0 | — |
+| 5480 | 11261 | 16741 | 0 | 0 | 0 | 8.3705 |
 
 - ✅ `grant_00001__corr_equipment_heavy` _(set_field: set budget.row.equipment.share_pct = 55.5)_ — disp needs_correction vs needs_correction
 - ❌ `grant_00001__corr_late_submission` _(shift_date: shifted application_form.submission_date: 2026-09-12 -> 2026-10-27)_ — disp reject vs needs_correction

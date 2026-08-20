@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gigachat-2-pro | rule_extraction | 12 | 0.0000 | 0.6000 | 0.5879 | — | 0.0000 | 0.0000 | — | — | — | 3.9840 |
+| gigachat-2-pro | rule_extraction | 12 | 0.0000 | 0.6000 | 0.5879 | — | 0.0000 | 0.0000 | — | — | 0.3003 | 3.9840 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -16,7 +16,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 
 | input | output | total | cache read | cache write | reasoning | cost RUB |
 |---:|---:|---:|---:|---:|---:|---:|
-| 2989 | 4218 | 7207 | 0 | 0 | 0 | — |
+| 2989 | 4218 | 7207 | 0 | 0 | 0 | 3.6035 |
 
 - ❌ `policy_cultural_grant` — disp None vs None
 - ❌ `policy_education_license` — disp None vs None

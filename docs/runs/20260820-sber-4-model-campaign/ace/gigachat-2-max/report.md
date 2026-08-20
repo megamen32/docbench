@@ -2,7 +2,7 @@
 
 | model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gigachat-2-max | conformance | 30 | 0.7000 | — | — | — | 0.1000 | 0.2000 | — | — | — | 4.1115 |
+| gigachat-2-max | conformance | 30 | 0.7000 | — | — | — | 0.1000 | 0.2000 | — | — | 1.0714 | 4.1115 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 
@@ -16,7 +16,7 @@ _Note: the pinned supplement has no separate cache rate; cache tokens are counte
 
 | input | output | total | cache read | cache write | reasoning | cost RUB |
 |---:|---:|---:|---:|---:|---:|---:|
-| 40805 | 8645 | 49450 | 0 | 0 | 0 | — |
+| 40805 | 8645 | 49450 | 0 | 0 | 0 | 32.1425 |
 
 - ✅ `ace_0000` — disp reject vs needs_correction
 - ✅ `ace_0001` — disp accept vs accept
