@@ -44,11 +44,11 @@ def test_leaderboard_generates_clickable_cards_and_marks_legacy(tmp_path):
 
     text = index.read_text()
     assert result["runs"] == 3
-    assert "Weighted pass rate" in text
+    assert "Взвешенное полное совпадение" in text
     assert "42 / 52" in text
     assert "data-href" in text
     assert "legacy / no" in text
-    assert "Cost, RUB" in text
+    assert "Стоимость, ₽" in text
     assert "1.50 ₽" in text
     assert "0.15 ₽" in text
     assert "100" in text

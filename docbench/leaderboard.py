@@ -13,11 +13,17 @@ from typing import Any
 
 
 STANDARD_SUITES = {
-    "cases/seed-grant": ("Grant conformance", 10),
-    "cases/seed-policy": ("Policy rule extraction", 12),
-    "cases/ace-test": ("ACE conformance", 30),
+    "cases/seed-grant": ("Проверка грантовых заявок", 10),
+    "cases/seed-policy": ("Извлечение правил из политики", 12),
+    "cases/ace-test": ("Проверка договоров ACE", 30),
 }
 STANDARD_CASE_COUNT = sum(expected for _, expected in STANDARD_SUITES.values())
+BENCHMARK_LABELS = {
+    "conformance": "проверка соответствия",
+    "rule_extraction": "извлечение правил",
+    "iri_review": "проверка заявки",
+}
+ROLE_LABELS = {"system": "Системная инструкция", "user": "Пользователь", "assistant": "Модель"}
 
 
 def _relative_cases_path(value: str) -> str:
@@ -164,6 +170,34 @@ def render_markdown(value: str) -> str:
     return "".join(out)
 
 
+def _localize_report_markdown(value: str) -> str:
+    """Translate generated report chrome while preserving model data verbatim."""
+    replacements = {
+        "# docbench report": "# Отчёт DocBench",
+        "### Reasoning": "### Размышления",
+        "### Tokens and cost": "### Токены и стоимость",
+        "| model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |": "| модель | набор | кейсы | полное совпадение | точность правил | полнота правил | полнота критичных | ложный приём | ложный отказ | F1 извлечения | полнота подтверждений | ₽ / кейс | p50 задержки |",
+        "| input | output | total | cache read | cache write | reasoning | cost RUB |": "| вход | выход | всего | чтение кэша | запись кэша | размышления | стоимость, ₽ |",
+        "*Pass rate is strict case-level exactness; F1 is a partial-overlap diagnostic.*": "*Полное совпадение — строгая оценка кейса; F1 показывает частичное совпадение правил.*",
+        "_Note:": "_Примечание:",
+        "reason=": "причина=",
+        " — disp ": " — решение ",
+        " vs ": " против ",
+        "err: ": "ошибка: ",
+        "parse: ": "разбор: ",
+        "response: ": "ответ: ",
+        "no provider reasoning field requested": "поле размышлений провайдера не запрашивалось",
+        "not declared": "не заявлено",
+        "matters": "учитывается",
+    }
+    localized = value
+    for source, target in replacements.items():
+        localized = localized.replace(source, target)
+    for source, target in BENCHMARK_LABELS.items():
+        localized = localized.replace(f" · {source} · ", f" · {target} · ")
+    return localized
+
+
 def _render_message(value: str) -> tuple[str, str]:
     """Return visible message HTML and collapsed thinking HTML."""
     def format_part(part: str) -> str:
@@ -193,7 +227,7 @@ def _render_message(value: str) -> tuple[str, str]:
     visible.append(text[pos:])
     visible_html = format_part("\n\n".join(part for part in visible if part.strip()))
     thinking_html = "".join(
-        '<details class="thinking"><summary>Thinking · скрыто по умолчанию</summary>'
+        '<details class="thinking"><summary>Размышления · скрыто по умолчанию</summary>'
         + format_part(part) + "</details>" for part in thinking if part
     )
     return visible_html, thinking_html
@@ -207,7 +241,7 @@ def _render_transcript_chat(transcript: dict[str, Any], result_cases: list[dict[
     for case in transcript.get("cases", []):
         case_id = str(case.get("case_id", "unknown"))
         result = result_by_id.get(case_id, {})
-        status = "OK" if result.get("ok") else ("ошибка" if result else "без оценки")
+        status = "полное совпадение" if result.get("ok") else ("ошибка" if result else "без оценки")
         status_icon = "✅" if result.get("ok") else ("❌" if result else "•")
         attempts = case.get("attempts") or []
         inner = [f'<details class="transcript-case"><summary><strong>{html.escape(case_id)}</strong><span class="chat-status"><span class="case-status-icon" aria-label="{html.escape(status)}">{status_icon}</span> {html.escape(status)} · {len(attempts)} попыт.</span></summary>']
@@ -218,18 +252,18 @@ def _render_transcript_chat(transcript: dict[str, Any], result_cases: list[dict[
                 content = str(message.get("content", ""))
                 visible, thinking = _render_message(content)
                 if role == "system":
-                    inner.append('<details class="chat-message system"><summary>System prompt · скрыто по умолчанию</summary>' + visible + thinking + "</details>")
+                    inner.append('<details class="chat-message system"><summary>Системная инструкция · скрыто по умолчанию</summary>' + visible + thinking + "</details>")
                 else:
-                    inner.append(f'<div class="chat-message {html.escape(role)}"><div class="chat-role">{html.escape(role)}</div>{visible}{thinking}</div>')
+                    inner.append(f'<div class="chat-message {html.escape(role)}"><div class="chat-role">{html.escape(ROLE_LABELS.get(role, role))}</div>{visible}{thinking}</div>')
             response = attempt.get("response_text")
             if response is not None:
                 visible, thinking = _render_message(str(response))
-                inner.append('<div class="chat-message assistant"><div class="chat-role">assistant</div>' + (visible or '<p class="muted">Пустой финальный ответ</p>') + thinking + "</div>")
+                inner.append('<div class="chat-message assistant"><div class="chat-role">Модель</div>' + (visible or '<p class="muted">Пустой финальный ответ</p>') + thinking + "</div>")
             usage = attempt.get("usage") or {}
             inner.append('<div class="attempt-meta">%s · %s токенов · %s</div>' % (
                 html.escape(str(attempt.get("latency_s") or "—")),
                 html.escape(str(usage.get("total_tokens") or "—")),
-                "cache hit" if attempt.get("cache_hit") else "API"))
+                "кэш" if attempt.get("cache_hit") else "API"))
             inner.append("</div>")
         inner.append("</details>")
         blocks.append("".join(inner))
@@ -257,14 +291,14 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
     refusals = [str(case.get("case_id")) for case in row.get("cases", [])
                 if case.get("response_kind") == "refusal"]
     response_contract = (
-        "<p>Model refusal (instead of the required JSON): "
+        "<p>Модель отказалась вернуть требуемый JSON: "
         + ", ".join(html.escape(case_id) for case_id in refusals) + "</p>"
         if refusals else ""
     )
     transcript_link = (
-        f'<a class=button href="{html.escape(_href(card_path, transcript))}">transcript.json ↗</a>'
+        f'<a class=button href="{html.escape(_href(card_path, transcript))}">Транскрипт · transcript.json ↗</a>'
         if transcript.is_file() else
-        '<span class="missing">legacy run: transcript was not retained</span>'
+        '<span class="missing">Старый прогон: транскрипт не сохранён</span>'
     )
     errors = int(summary.get("n_errors") or 0)
     status_label = "Готово" if errors == 0 else f"{errors} ошибок"
@@ -276,7 +310,7 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
             transcript_data = {}
     chat_html = _render_transcript_chat(transcript_data, row.get("cases", []))
     report_html = (
-        render_markdown(report.read_text(encoding="utf-8"))
+        render_markdown(_localize_report_markdown(report.read_text(encoding="utf-8")))
         if report.is_file() else '<p class="muted">Отчёт отсутствует.</p>'
     )
     card_path.write_text(f"""<!doctype html>
@@ -290,15 +324,15 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
  .run-columns{{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,420px);gap:18px;align-items:start}}.run-aside{{position:sticky;top:18px}}.run-aside .panel{{margin-top:0}}@media(max-width:900px){{.run-columns{{grid-template-columns:1fr}}.run-aside{{position:static}}}}
  .md-table-wrap{{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}}.md-table-wrap .md-table{{min-width:max-content;max-width:none}}.md-status-icon{{display:inline-block;font-size:1.05em;line-height:1}}
 </style>
-<body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · run detail</span></div>
-<section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'provider'))} · {html.escape(str(row.get('benchmark') or 'benchmark'))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Pass rate</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_rub(summary.get('total_cost_rub'))}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
-<div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">report.md ↗</a></div>
+<body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
+<section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'провайдер'))} · {html.escape(BENCHMARK_LABELS.get(str(row.get('benchmark') or ''), str(row.get('benchmark') or 'набор')))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Полное совпадение</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_rub(summary.get('total_cost_rub'))}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
+<div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">Результаты · results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">Отчёт · report.md ↗</a></div>
 {response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
 <section class="panel report-preview"><h2>Отчёт</h2>{report_html}</section>
 <section class=panel><h2>Детали и ресурсы</h2><pre>{html.escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre></section>
 <section class=panel><h2>Метаданные запуска</h2><pre>{html.escape(json.dumps(meta, ensure_ascii=False, indent=2))}</pre></section>
-</div><aside class=run-aside><section class="panel transcript-panel"><details class="transcript-optin"><summary><span>Полный транскрипт</span><span class="transcript-optin-note">Показать чат</span></summary><p class=muted>Сообщения отображаются как чат; системные инструкции и thinking можно раскрывать отдельно.</p>{chat_html}</details></section></aside></div>
+</div><aside class=run-aside><section class="panel transcript-panel"><details class="transcript-optin"><summary><span>Полный транскрипт</span><span class="transcript-optin-note">Показать чат</span></summary><p class=muted>Сообщения отображаются как чат; системные инструкции и размышления можно раскрывать отдельно.</p>{chat_html}</details></section></aside></div>
 </main></body></html>
 """, encoding="utf-8")
 
@@ -339,9 +373,9 @@ def _all_or_missing(values: list[Any]) -> Any:
 
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Кейсы</th><th>Pass rate</th><th>Ошибки</th><th>F1</th>"
-        "<th>Стоимость (Cost, RUB)</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
-        "<th>Кэш</th><th>Reasoning</th><th>p50</th><th>Время</th>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Кейсы</th><th>Полное совпадение</th><th>Ошибки</th><th>F1</th>"
+        "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
+        "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th>"
         "<th>Транскрипт</th></tr></thead><tbody>"
     ]
     for row in sorted(rows, key=lambda x: (x["summary"].get("case_pass_rate") or -1), reverse=True):
@@ -359,7 +393,7 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
             "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
                 html.escape(_href(output, card)), html.escape(str(row.get("model", "")).lower()), errors,
                 html.escape(str(row.get("model", ""))), summary.get("n_cases", "—"),
-                _percent(summary.get("case_pass_rate")), status, errors or "OK",
+                _percent(summary.get("case_pass_rate")), status, "ошибок нет" if errors == 0 else f"{errors} ошибок",
                 _percent(summary.get("finding_f1") or summary.get("extraction_f1")),
                 _rub(summary.get("total_cost_rub")), _rub(summary.get("cost_per_case_rub")),
                 _count(_tokens(row, "input_tokens")), _count(_tokens(row, "output_tokens")),
@@ -376,9 +410,9 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th>Weighted pass rate</th><th>Статус</th>"
-        "<th>Стоимость (Cost, RUB)</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
-        "<th>Кэш</th><th>Reasoning</th><th>p50</th><th>Время</th>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th>Взвешенное полное совпадение</th><th>Статус</th>"
+        "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
+        "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th>"
         "</tr></thead><tbody>"
     ]
     aggregates = []
@@ -428,7 +462,7 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
     model_count = len({str(row.get("model", "")) for row in standard})
     total_cases = sum(int(row["summary"].get("n_cases") or 0) for row in standard)
     total_errors = sum(int(row["summary"].get("n_errors") or 0) for row in standard)
-    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все стандартные suite</h2></div></div>", _overall_table(standard), "</section>"]
+    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все стандартные наборы</h2></div></div>", _overall_table(standard), "</section>"]
     for key, (name, expected) in STANDARD_SUITES.items():
         sections.extend([f'<section class="section suite-section" data-suite="{html.escape(key)}"><div class=section-heading><div><div class=eyebrow>{expected} кейсов</div><h2>{html.escape(name)}</h2></div><span class=suite-count>{len(groups[key])} моделей</span></div>', _table(groups[key], output), "</section>"])
     output.write_text(f"""<!doctype html>
@@ -437,12 +471,12 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
 :root{{--bg:#0b1020;--panel:#131b31;--panel2:#192341;--text:#f6f8ff;--muted:#9aa7c3;--line:#2b3858;--accent:#79a8ff;--accent2:#a78bfa;--good:#57d6a0;--bad:#ff7d92;--warn:#ffd27a}}
 *{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 8% -4%,#253c7b 0,transparent 34rem),radial-gradient(circle at 94% 0%,#30215e 0,transparent 28rem),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif}}main{{max-width:1440px;margin:0 auto;padding:28px 28px 80px}}.topbar{{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}}.brand{{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.02em}}.brand-mark{{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 30px #7da7ff66;position:relative}}.brand-mark:after{{content:"";position:absolute;inset:7px;border:2px solid #fff;border-radius:5px;opacity:.9}}.top-meta{{color:var(--muted);font-size:12px}}.hero{{display:flex;justify-content:space-between;gap:28px;align-items:flex-end;margin-bottom:30px}}.eyebrow{{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-weight:750}}h1{{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.075em;margin:11px 0 17px;max-width:900px}}.hero-copy{{color:var(--muted);font-size:16px;max-width:680px;margin:0}}.hero-copy strong{{color:var(--text)}}.hero-mark{{font-size:11px;color:#c8d4ef;background:#162544;border:1px solid var(--line);padding:9px 12px;border-radius:999px;white-space:nowrap}}.stats{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:30px 0 38px}}.stat{{background:linear-gradient(145deg,#1d2b4b,#121a2e);border:1px solid var(--line);border-radius:17px;padding:18px 19px;box-shadow:0 18px 50px #05081555}}.stat small{{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}}.stat strong{{display:block;font-size:1.7rem;letter-spacing:-.045em}}.stat .hint{{color:var(--muted);font-size:12px;margin-top:4px}}.toolbar{{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:30px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#111a2eaa;backdrop-filter:blur(12px)}}.toolbar label{{color:var(--muted);font-size:12px;font-weight:650}}input,select{{appearance:none;border:1px solid var(--line);border-radius:10px;background:#0e172b;color:var(--text);padding:10px 12px;font:inherit;min-height:40px}}input{{min-width:250px}}input:focus,select:focus{{outline:2px solid #7da7ff66;outline-offset:1px}}.section{{margin-top:34px}}.section-heading{{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 14px}}h2{{font-size:1.55rem;letter-spacing:-.04em;margin:5px 0 0}}.suite-count{{color:var(--muted);font-size:12px;background:#141f37;border:1px solid var(--line);padding:6px 9px;border-radius:999px}}.table-shell{{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#10182b;box-shadow:0 18px 50px #05081544}}table{{border-collapse:collapse;width:100%;min-width:1120px}}th,td{{padding:13px 14px;text-align:left;border-bottom:1px solid #25324d;white-space:nowrap}}th{{color:#8493b2;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:#141e35;position:sticky;top:0;z-index:1}}tbody tr:last-child td{{border-bottom:0}}.run-row{{cursor:pointer;transition:background .18s,transform .18s}}.run-row:hover,.run-row:focus{{background:#192847;outline:none}}.run-row:hover{{box-shadow:inset 3px 0 0 var(--accent)}}.model-cell{{display:flex;align-items:center;gap:9px;min-width:215px}}.model-dot{{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 13px #7da7ffaa;flex:none}}.model-name{{font-weight:700;color:#edf2ff}}.rate{{font-size:15px;color:#e5edff}}.badge-ok,.badge-error,.badge-warn{{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:750}}.badge-ok{{background:#12372f;color:var(--good)}}.badge-error{{background:#3c1a2a;color:var(--bad)}}.badge-warn{{background:#3c2d18;color:var(--warn)}}.note{{color:var(--muted);font-size:12px;margin-top:12px}}.empty{{display:none;padding:28px;color:var(--muted);text-align:center}}.footer{{margin-top:54px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:18px}}@media(max-width:800px){{main{{padding:20px 14px 56px}}.hero{{display:block}}.hero-mark{{display:inline-block;margin-top:20px}}.stats{{grid-template-columns:repeat(2,minmax(0,1fr))}}.topbar{{margin-bottom:38px}}}}@media(max-width:480px){{.stats{{gap:8px}}.stat{{padding:14px}}.stat strong{{font-size:1.35rem}}input{{min-width:0;width:100%}}.toolbar label{{width:100%}}.footer{{display:block}}}}
 </style>
-<body><main><header class=topbar><div class=brand><span class=brand-mark></span><span>DocBench</span></div><div class=top-meta>Russian document benchmark · {html.escape(datetime.now().strftime('%d.%m.%Y %H:%M'))}</div></header>
-<section class=hero><div><div class=eyebrow>Benchmark intelligence</div><h1>Рейтинг моделей<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>Сравнение качества, скорости, стоимости и полноты ответов. <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>seed datasets · auditable runs</span></section>
-<section class=stats><div class=stat><small>Моделей</small><strong>{model_count}</strong><div class=hint>в текущем срезе</div></div><div class=stat><small>Прогонов</small><strong>{len(standard)}</strong><div class=hint>по всем suite</div></div><div class=stat><small>Кейсов</small><strong>{total_cases:,}</strong><div class=hint>{total_errors} с ошибкой</div></div><div class=stat><small>Полные транскрипты</small><strong>{sum(1 for row in standard if (Path(row['_path']).with_name('transcript.json')).is_file())}/{len(standard)}</strong><div class=hint>сохранены рядом</div></div></section>
-<div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Suite</label><select id=suite-filter><option value=all>Все suite</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in STANDARD_SUITES.items())}</select><span class=note id=visible-count></span></div>
+<body><main><header class=topbar><div class=brand><span class=brand-mark></span><span>DocBench</span></div><div class=top-meta>Русский бенчмарк документов · {html.escape(datetime.now().strftime('%d.%m.%Y %H:%M'))}</div></header>
+<section class=hero><div><div class=eyebrow>Аналитика бенчмарка</div><h1>Рейтинг моделей<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>Сравнение качества, скорости, стоимости и полноты ответов. <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>фиксированные датасеты · проверяемые прогоны</span></section>
+<section class=stats><div class=stat><small>Моделей</small><strong>{model_count}</strong><div class=hint>в текущем срезе</div></div><div class=stat><small>Прогонов</small><strong>{len(standard)}</strong><div class=hint>по всем наборам</div></div><div class=stat><small>Кейсов</small><strong>{total_cases:,}</strong><div class=hint>{total_errors} с ошибкой</div></div><div class=stat><small>Полные транскрипты</small><strong>{sum(1 for row in standard if (Path(row['_path']).with_name('transcript.json')).is_file())}/{len(standard)}</strong><div class=hint>сохранены рядом</div></div></section>
+<div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Набор</label><select id=suite-filter><option value=all>Все наборы</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in STANDARD_SUITES.items())}</select><span class=note id=visible-count></span></div>
 {''.join(sections)}
-<footer class=footer><span>Generated {html.escape(datetime.now().isoformat(timespec='seconds'))}</span><span>Standard rank requires all {STANDARD_CASE_COUNT} cases · prices in RUB</span></footer>
+<footer class=footer><span>Сформировано {html.escape(datetime.now().isoformat(timespec='seconds'))}</span><span>Полный рейтинг требует все {STANDARD_CASE_COUNT} кейса · цены в рублях</span></footer>
 </main><script>
 const rows=[...document.querySelectorAll('.run-row')], filter=document.querySelector('#model-filter'), suite=document.querySelector('#suite-filter'), count=document.querySelector('#visible-count');
 function applyFilter(){{const q=(filter.value||'').toLowerCase().trim(), s=suite.value;let shown=0;document.querySelectorAll('.suite-section').forEach(section=>{{const suiteOk=s==='all'||section.dataset.suite===s;let sectionShown=0;section.querySelectorAll('.run-row').forEach(row=>{{const ok=suiteOk&&(!q||row.dataset.model.includes(q));row.style.display=ok?'':'none';if(ok){{shown++;sectionShown++}}}});section.style.display=sectionShown?'':'none'}});count.textContent=shown+' строк'}}
