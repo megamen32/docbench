@@ -2,6 +2,8 @@
 # Keys resolve from ./.env, then ~/.config/docbench/env (chmod 600), with real
 # process environment overriding both. Prices below are per 1M tokens; do not
 # fetch prices during a run.
+# Price freeze: models-supplement commit 01f9c5c, generated 2026-08-13.
+# Source: https://github.com/megamen32/models-supplement/raw/refs/heads/main/supplement.json
 #
 # Benchmark metadata contract:
 #   effort_levels  map label -> request_extra merged into the request body
@@ -22,7 +24,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 6.4738206
         price_out_per_m: 43.158804
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: false
         effort_levels:
@@ -35,7 +37,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 14.0266113
         price_out_per_m: 91.7124585
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: false
         effort_levels:
@@ -54,7 +56,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 10.789701
         price_out_per_m: 64.738206
-        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        price_source: supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -67,7 +69,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 10.789701
         price_out_per_m: 64.738206
-        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        price_source: supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -80,7 +82,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 10.789701
         price_out_per_m: 64.738206
-        price_source: pinned routerai supplement snapshot (openai/gpt-5.6-luna-pro base)
+        price_source: supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -93,7 +95,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 107.89701
         price_out_per_m: 647.38206
-        price_source: pinned OpenAI GPT-5.6 Terra price via routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c (OpenAI GPT-5.6 Terra)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -106,7 +108,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 539.48505
         price_out_per_m: 3236.9103
-        price_source: pinned OpenAI GPT-5.6 Sol price via routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c (OpenAI GPT-5.6 Sol)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -120,7 +122,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 80.9227575
         price_out_per_m: 485.536545
-        price_source: pinned OpenAI GPT-5.4 Mini pricing snapshot
+        price_source: supplement freeze 01f9c5c (OpenAI GPT-5.4 Mini)
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
@@ -134,7 +136,7 @@ providers:
         price_currency: RUB
         # The live route advertises no price; keep cost honest until a
         # provider price is published instead of inventing one.
-        price_source: runtime route; price not exposed
+        price_source: supplement freeze 01f9c5c; no Spark price entry
         reasoning: true
         reasoning_note: capability present; DocBench requests thinking:false by default
         effort_levels:
@@ -152,7 +154,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 25.8952824
         price_out_per_m: 103.5811296
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: false
         effort_levels:
@@ -163,7 +165,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 25.8952824
         price_out_per_m: 103.5811296
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: false
         effort_levels:
@@ -174,7 +176,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 23.7373422
         price_out_per_m: 97.107309
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: false
         effort_levels:
@@ -185,7 +187,7 @@ providers:
         price_currency: RUB
         price_in_per_m: 24.8163123
         price_out_per_m: 103.5811296
-        price_source: pinned routerai supplement snapshot
+        price_source: supplement freeze 01f9c5c
         pricing_snapshot: docbench/pricing_snapshot.json
         reasoning: true
         effort_levels:
