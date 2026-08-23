@@ -1,0 +1,3 @@
+# Ephemeral agent-session state; reusable tools and task contracts are tracked.
+shared-session/
+**/*.lock
