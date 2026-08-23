@@ -49,7 +49,7 @@ class OpenAICompatRunner:
         for attempt in range(self.max_retries):
             try:
                 return self._call(messages, temperature, max_tokens, cache_key, extra_body)
-            except _Retryable as e:
+            except (_Retryable, requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
                 last_err = e
                 time.sleep(min(2 ** attempt * 2.0, 45.0))
         raise RuntimeError(f"{self.model_key}: request failed after {self.max_retries} retries") from last_err

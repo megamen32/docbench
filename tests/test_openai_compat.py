@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import requests
+
 from docbench.models.openai_compat import OpenAICompatRunner
 from docbench.config import resolve_model
 
@@ -28,6 +30,31 @@ def test_runner_does_not_persist_closed_think_block(monkeypatch):
     )
 
     assert completion.text == "FINAL"
+
+
+def test_runner_retries_transient_transport_failure(monkeypatch):
+    spec = SimpleNamespace(
+        key="test", alias="test", base_url="https://example.invalid/v1", api_key="test",
+        price_currency="USD", price_in=None, price_out=None,
+        price_cache_read=None, price_cache_write=None,
+    )
+    responses = [requests.ConnectionError("temporary network failure"), _Response()]
+
+    def post(*_args, **_kwargs):
+        response = responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return response
+
+    monkeypatch.setattr("docbench.models.openai_compat.requests.post", post)
+    monkeypatch.setattr("docbench.models.openai_compat.time.sleep", lambda _seconds: None)
+
+    completion = OpenAICompatRunner(spec, max_retries=2).complete(
+        [{"role": "user", "content": "test"}], max_tokens=8
+    )
+
+    assert completion.text == "FINAL"
+    assert responses == []
 
 
 def test_omniroute_defaults_to_explicit_thinking_disable(monkeypatch):
