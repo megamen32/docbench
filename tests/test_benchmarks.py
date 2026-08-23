@@ -15,6 +15,44 @@ from docbench.run import rescore_saved_results
 REPO = Path(__file__).resolve().parent.parent
 
 
+def test_complete_cache_cold_run_blocks_duplicate_online_call(monkeypatch, tmp_path):
+    import docbench.run as R
+
+    existing = tmp_path / "existing" / "grant" / "test-model"
+    existing.mkdir(parents=True)
+    (existing / "results.json").write_text(json.dumps({
+        "model": "test-model",
+        "benchmark": "conformance",
+        "cases_path": "datasets/russian/grant/cases",
+        "locale": "ru",
+        "dataset_version": "russian-grant-v1",
+        "cache_mode": "bypass",
+        "n_cases": 10,
+        "summary": {"n_errors": 0},
+    }), encoding="utf-8")
+    monkeypatch.setattr(R, "RUNS_DIR", tmp_path)
+
+    assert R._find_complete_online_run(
+        model="test-model", benchmark="conformance",
+        cases_path=REPO / "datasets/russian/grant/cases", locale="ru",
+        dataset_version="russian-grant-v1", expected_cases=10,
+    ) == existing
+
+
+def test_repeat_label_requires_explicit_repeat_authorization(tmp_path):
+    import docbench.run as R
+
+    try:
+        R.run_benchmark(
+            "conformance", "not-reached", tmp_path / "missing.yaml",
+            allow_repeat=True,
+        )
+    except ValueError as exc:
+        assert str(exc) == "repeat_label is required when allow_repeat=True"
+    else:
+        raise AssertionError("missing repeat label must be rejected before provider setup")
+
+
 def _perfect_reply(bench, case, gold):
     findings = [
         {"rule_id": f.rule_id, "status": f.status,

@@ -42,6 +42,32 @@ def _path_label(path: Path) -> str:
         return str(path.resolve())
 
 
+def _find_complete_online_run(
+    *, model: str, benchmark: str, cases_path: Path, locale: str,
+    dataset_version: str | None, expected_cases: int,
+) -> Path | None:
+    """Return an equivalent, complete cache-cold run without contacting a provider."""
+    wanted_cases = _path_label(cases_path)
+    for result_path in RUNS_DIR.rglob("results.json"):
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        summary = result.get("summary") or {}
+        if (
+            result.get("model") == model
+            and result.get("benchmark") == benchmark
+            and result.get("cases_path") == wanted_cases
+            and result.get("locale", "en") == locale
+            and result.get("dataset_version") == dataset_version
+            and result.get("cache_mode") == "bypass"
+            and result.get("n_cases") == expected_cases
+            and summary.get("n_errors") == 0
+        ):
+            return result_path.parent
+    return None
+
+
 def _file_manifest(paths: list[Path]) -> dict[str, Any]:
     """Return a deterministic content manifest for the inputs used by a run."""
     files = [
@@ -156,6 +182,8 @@ def run_benchmark(
     case_ids: set[str] | None = None,
     use_cache: bool | None = None,
     locale: str = "en",
+    allow_repeat: bool = False,
+    repeat_label: str | None = None,
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
@@ -164,6 +192,10 @@ def run_benchmark(
     # An online benchmark is an observation of a provider, not a cache replay.
     # Offline reproduction deliberately remains cache-backed.
     use_cache = offline if use_cache is None else use_cache
+    if allow_repeat and not repeat_label:
+        raise ValueError("repeat_label is required when allow_repeat=True")
+    if repeat_label and not allow_repeat:
+        raise ValueError("repeat_label requires allow_repeat=True")
     spec = resolve_model(model_key, allow_missing_key=offline)
     extra_body = spec.effort_extra(effort)
     effort_label = effort or spec.effort_default or "provider-default"
@@ -183,6 +215,16 @@ def run_benchmark(
         pairs = [(path, case) for path, case in pairs if case.id in case_ids]
     if limit:
         pairs = pairs[:limit]
+    if not offline and not allow_repeat and case_ids is None and limit is None:
+        duplicate = _find_complete_online_run(
+            model=model_key, benchmark=bench_key, cases_path=Path(cases_path), locale=locale,
+            dataset_version=dataset_version, expected_cases=len(pairs),
+        )
+        if duplicate:
+            raise RuntimeError(
+                "refusing duplicate online benchmark; complete cache-cold run exists at "
+                f"{duplicate}. Pass --allow-repeat only to measure variance."
+            )
     has_private = any(case.private for _, case in pairs)
     ruleset_paths: list[Path] = []
     rulesets: dict[str, Any] = {}
@@ -317,6 +359,7 @@ def run_benchmark(
         "provider_label": spec.provider_label,
         "effort": effort_label,
         "request_extra": extra_body,
+        "repeat_label": repeat_label,
         "cache_mode": "read_write" if use_cache else "bypass",
         "local_cache_hits": sum(1 for row in per_case if row.get("cache_hit")),
         "provider_endpoint": runner.base_url,

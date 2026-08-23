@@ -328,7 +328,7 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
 </style>
 <body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
 <section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'провайдер'))} · {html.escape(BENCHMARK_LABELS.get(str(row.get('benchmark') or ''), str(row.get('benchmark') or 'набор')))}</div><h1>{html.escape(_display_model(row))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами, provenance и сохранённым транскриптом. Режим: {html.escape(_execution_mode(row))}.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Строгая метрика</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_cost(row)}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small title="F1 правил = 100% и точность severity = 100% в каждом кейсе">Идеальные кейсы</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1 правил</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_cost(row)}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
 <div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">Результаты · results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">Отчёт · report.md ↗</a></div>
 {response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
 <section class="panel report-preview"><h2>Отчёт</h2>{report_html}</section>
@@ -401,7 +401,7 @@ def _all_or_missing(values: list[Any]) -> Any:
 
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Конфигурация</th><th>Кейсы</th><th>Строгая метрика</th><th>Ошибки</th><th>F1</th>"
+        "<div class=table-shell><table><thead><tr><th>Конфигурация</th><th>Кейсы</th><th title=\"F1 правил = 100% и точность severity = 100% в каждом кейсе\">Идеальные кейсы</th><th>Ошибки</th><th>F1 правил</th>"
         "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
         "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th><th>Режим</th>"
         "<th>Транскрипт</th></tr></thead><tbody>"

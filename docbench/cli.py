@@ -39,6 +39,10 @@ def main(argv: list[str] | None = None) -> int:
                        help="pinned USD/RUB rate; requires --fx-date")
     p_run.add_argument("--fx-date", default=None,
                        help="date for --usd-rub (YYYY-MM-DD)")
+    p_run.add_argument("--allow-repeat", action="store_true",
+                       help="permit a new provider call despite an equivalent complete cache-cold run")
+    p_run.add_argument("--repeat-label", default=None,
+                       help="required label for an intentional repeat, e.g. variance-2-of-3")
 
     p_campaign = sub.add_parser(
         "campaign", help="run selected models consistently across the standard document suites")
@@ -122,6 +126,8 @@ def main(argv: list[str] | None = None) -> int:
             max_tokens=args.max_tokens, effort=args.effort, fx_snapshot=fx_snapshot,
             gold_path=Path(args.gold) if args.gold else None,
             locale=args.locale, dataset_version=args.dataset_version,
+            allow_repeat=args.allow_repeat,
+            repeat_label=args.repeat_label,
         )
         print(json.dumps(res["summary"], ensure_ascii=False, indent=2))
         print("results:", res["out_dir"])
