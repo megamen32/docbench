@@ -14,6 +14,10 @@ __pycache__/
 .secrets/
 var-download*.log
 
+# Superseded local English exploratory runs. They lack the Russian dataset and
+# reproducibility contract used by the published supplementary leaderboard.
+x/
+
 # Local Graphify index/cache; useful on this machine but generated and not a
 # benchmark artifact to publish.
 graphify-out/

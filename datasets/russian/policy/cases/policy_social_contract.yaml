@@ -1,0 +1,18 @@
+id: policy_social_contract
+benchmark: rule_extraction
+notes: "Русский seed-кейс: социальный контракт, перечень регионов и согласие."
+canonical_fields:
+  - household.region
+  - household.monthly_income_per_person_rub
+  - documents.personal_data_consent.present
+  - applicant.employment_status
+policy_document: |
+  СОЦИАЛЬНЫЙ КОНТРАКТ. Участвовать могут домохозяйства из Москвы или Московской
+  области с доходом на человека не выше 25 000 рублей в месяц. Требуется
+  согласие на обработку персональных данных. Заявитель должен иметь статус
+  «unemployed» или «job_seeker».
+expected_rules:
+  - {id: S001, description: Регион входит в установленный перечень, severity: critical, category: eligibility, condition: {field: household.region, op: in, value: ["Москва", "Московская область"]}}
+  - {id: S002, description: Доход на человека не превышает 25000 рублей, severity: critical, category: eligibility, condition: {field: household.monthly_income_per_person_rub, op: le, value: 25000}}
+  - {id: S003, description: Обязательно согласие на обработку персональных данных, severity: critical, category: required_documents, condition: {field: documents.personal_data_consent.present, op: exists}}
+  - {id: S004, description: Статус заявителя допустим для контракта, severity: major, category: eligibility, condition: {field: applicant.employment_status, op: in, value: [unemployed, job_seeker]}}

@@ -1,0 +1,9 @@
+id: ace-0011
+version: ace1
+institution: ACE (Fujitsu)
+rules:
+- id: evidence_2
+  description: Подлежит страхованию Продавцом на сумму 110% стоимости контракта от
+    всех рисков и военных рисков.
+  severity: major
+  category: contract_clause

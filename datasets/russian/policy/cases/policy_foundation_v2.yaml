@@ -1,0 +1,64 @@
+id: policy_foundation_v2
+benchmark: rule_extraction
+notes: "Русский seed-кейс: исключение по треку и срок подачи; каноничен только основной трек."
+canonical_fields:
+  - org_v2.months_registered
+  - org_v2.total_requested
+  - documents.audit_report.present
+  - org_v2.submission_date
+  - org_v2.declared_headcount
+  - annual_report.headcount
+  - annual_report.ifrs
+policy_document: |
+  ФОНД «НОРДСТАР» — ПРИЁМ ЗАЯВОК НА ОСНОВНОЙ ГРАНТОВЫЙ ТРЕК, версия 2.4
+
+  Допуск. Заявитель основного трека должен быть зарегистрирован не менее
+  24 месяцев. Исключение: организация младше 24 месяцев может подать заявку
+  только на трек «Акселератор»; этот документ регулирует исключительно
+  основной трек.
+
+  Лимит запроса. Сумма, запрашиваемая по гранту основного трека, не может
+  превышать 250 000 евро.
+
+  Аудит. К заявке необходимо приложить независимое аудиторское заключение за
+  последний завершённый финансовый год. Пакеты без заключения отклоняются.
+
+  Срок. Приём заявок на цикл 2027 года завершается 31 марта 2027 года
+  включительно.
+
+  Согласованность численности. Число сотрудников в заявке должно совпадать с
+  численностью в годовом отчёте.
+
+  Стандарт отчётности. Годовой отчёт должен быть подготовлен по МСФО.
+  Отчёт не по МСФО считается только формальным недостатком.
+expected_rules:
+  - id: N001
+    description: Заявитель основного трека зарегистрирован не менее 24 месяцев
+    severity: critical
+    category: eligibility
+    condition: {field: org_v2.months_registered, op: ge, value: 24}
+  - id: N002
+    description: Запрошенная сумма по основному треку не превышает 250000 евро
+    severity: major
+    category: budget
+    condition: {field: org_v2.total_requested, op: le, value: 250000}
+  - id: N003
+    description: Обязательно независимое аудиторское заключение за последний финансовый год
+    severity: critical
+    category: required_documents
+    condition: {field: documents.audit_report.present, op: exists}
+  - id: N004
+    description: Приём заявок завершается 2027-03-31 включительно
+    severity: major
+    category: deadlines
+    condition: {field: org_v2.submission_date, op: le, value: "2027-03-31"}
+  - id: N005
+    description: Заявленная численность сотрудников совпадает с годовым отчётом
+    severity: major
+    category: consistency
+    condition: {op: consistent, fields: [org_v2.declared_headcount, annual_report.headcount]}
+  - id: N006
+    description: Годовой отчёт подготовлен по МСФО
+    severity: minor
+    category: reporting
+    condition: {field: annual_report.ifrs, op: eq, value: true}

@@ -1,0 +1,18 @@
+id: policy_education_license
+benchmark: rule_extraction
+notes: Русский seed-кейс для образовательной программы.
+canonical_fields:
+  - documents.education_license.present
+  - curriculum.total_hours
+  - staff.qualified_teachers_pct
+  - programme.delivery_format
+policy_document: |
+  ПРОГРАММА ДОПОЛНИТЕЛЬНОГО ОБРАЗОВАНИЯ. Организация предоставляет действующую
+  лицензию на образовательную деятельность. Объём программы составляет не менее
+  72 часов. Не менее 80% преподавателей имеют профильную квалификацию. Формат
+  реализации допускается только «очно» или «смешанно».
+expected_rules:
+  - {id: E001, description: Обязательна лицензия на образовательную деятельность, severity: critical, category: required_documents, condition: {field: documents.education_license.present, op: exists}}
+  - {id: E002, description: Объём программы не менее 72 часов, severity: major, category: curriculum, condition: {field: curriculum.total_hours, op: ge, value: 72}}
+  - {id: E003, description: Не менее 80 процентов преподавателей квалифицированы, severity: major, category: staffing, condition: {field: staff.qualified_teachers_pct, op: ge, value: 80}}
+  - {id: E004, description: Формат реализации входит в допустимый перечень, severity: minor, category: formal, condition: {field: programme.delivery_format, op: in, value: ["очно", "смешанно"]}}

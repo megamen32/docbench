@@ -155,9 +155,12 @@ def run_benchmark(
     gold_path: Path | None = None,
     case_ids: set[str] | None = None,
     use_cache: bool = True,
+    locale: str = "en",
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
+    if locale not in {"en", "ru"}:
+        raise ValueError(f"unsupported prompt locale {locale!r}")
     spec = resolve_model(model_key, allow_missing_key=offline)
     extra_body = spec.effort_extra(effort)
     effort_label = effort or spec.effort_default or "provider-default"
@@ -210,11 +213,11 @@ def run_benchmark(
                 raise ValueError(f"case {case.id}: no ruleset id")
             if rid not in rulesets:
                 raise KeyError(f"case {case.id}: ruleset {rid!r} not found in rulesets/")
-            bench = BENCHMARKS[bench_key](rulesets[rid])
+            bench = BENCHMARKS[bench_key](rulesets[rid], locale=locale)
         elif bench_key == "iri_review":
             bench = BENCHMARKS[bench_key](gold_path=gold_path)
         else:
-            bench = BENCHMARKS[bench_key]()
+            bench = BENCHMARKS[bench_key](locale=locale)
         gold = bench.gold_for(case)
         msgs = bench.messages(case, gold)
         t0 = time.monotonic()
@@ -301,6 +304,7 @@ def run_benchmark(
         "finished_at": finished_at.isoformat(),
         "wall_time_s": round(time.monotonic() - run_started_monotonic, 3),
         "benchmark": bench_key,
+        "locale": locale,
         "model": spec.key,
         "model_alias": spec.alias,
         "provider": spec.provider,
@@ -338,6 +342,7 @@ def run_benchmark(
         "schema_version": 1,
         "run": {
             "benchmark": bench_key,
+            "locale": locale,
             "model": spec.key,
             "model_alias": spec.alias,
             "provider": spec.provider,
@@ -382,7 +387,7 @@ def retry_failed_run(
             offline=offline, out_dir=Path(temp), max_tokens=max_tokens,
             effort=effort, dataset_version=original.get("dataset_version"),
             fx_snapshot=original.get("fx_snapshot"), gold_path=gold_path,
-            case_ids=failed_ids, use_cache=False,
+            case_ids=failed_ids, use_cache=False, locale=original.get("locale", "en"),
         )
         retry_transcript = json.loads((Path(temp) / "transcript.json").read_text(encoding="utf-8"))
 

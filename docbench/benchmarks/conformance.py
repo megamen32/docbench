@@ -36,12 +36,41 @@ Hard requirements:
 - Emit strictly valid JSON: no trailing commas, no comments, double quotes everywhere.
 """
 
+SYSTEM_RU = """Вы — специалист по формальной проверке. Вы проверяете пакет заявки
+по каноническому версионированному институциональному набору правил. Работайте как
+программа: детерминированно, с опорой на документы, без догадок.
+
+Верните РОВНО один JSON-объект и ничего больше, строго следующего вида:
+{
+  "extracted": {"<каноническое поле>": <значение или null>, ...},
+  "findings": [
+    {"rule_id": "<id>", "status": "violation|ok|not_applicable",
+     "expected": <требование правила>, "observed": <содержание пакета>,
+     "evidence": {"document": "<id документа>", "locator": "<поле/лист/раздел>", "quote": "<короткая дословная цитата>"}}
+  ],
+  "disposition": "accept|needs_correction|reject"
+}
+
+Обязательные требования:
+- Укажите КАЖДОЕ правило набора ровно один раз, с теми же rule_id и в том же порядке.
+- Заполните каждое указанное в задании каноническое поле; если пакет его не содержит, используйте null. Не придумывайте значения.
+- Для "violation" обязательно укажите непустое evidence, связывающее вывод с пакетом (id документа и locator либо дословная цитата).
+- "evidence" — один объект; для междокументных правил используйте МАССИВ объектов, по одному на каждый документ.
+- "not_applicable" допустим только если правило действительно неприменимо; объясните причину в "observed".
+- disposition: "reject" при любом critical violation, "needs_correction" при любом некритическом violation, иначе "accept".
+- Даты — ISO YYYY-MM-DD; денежные значения — простые числа без символов и разделителей.
+- Верните строго валидный JSON: без висячих запятых, комментариев, только двойные кавычки.
+"""
+
 
 class ConformanceBenchmark(Benchmark):
     name = "conformance"
 
-    def __init__(self, ruleset: Ruleset):
+    def __init__(self, ruleset: Ruleset, locale: str = "en"):
+        if locale not in {"en", "ru"}:
+            raise ValueError(f"unsupported prompt locale {locale!r}")
         self.ruleset = ruleset
+        self.locale = locale
         self.canonical_fields = self._canonical_fields(ruleset)
 
     @staticmethod
@@ -72,15 +101,17 @@ class ConformanceBenchmark(Benchmark):
               "machine": r.condition.model_dump(exclude_none=True) if r.condition else None}
              for r in self.ruleset.rules],
             allow_unicode=True, sort_keys=False)
+        russian = self.locale == "ru"
         user = (
-            f"RULESET {self.ruleset.id} v{self.ruleset.version} ({self.ruleset.institution}):\n"
+            f"{'НАБОР ПРАВИЛ' if russian else 'RULESET'} {self.ruleset.id} v{self.ruleset.version} ({self.ruleset.institution}):\n"
             f"{rules_blob}\n"
-            f"CANONICAL FIELDS to extract (fill each, null if absent):\n"
+            f"{'КАНОНИЧЕСКИЕ ПОЛЯ ДЛЯ ИЗВЛЕЧЕНИЯ (заполните каждое, null если отсутствует):' if russian else 'CANONICAL FIELDS to extract (fill each, null if absent):'}\n"
             + "\n".join(f"- {f}" for f in self.canonical_fields)
-            + "\n\nAPPLICATION PACKET:\n" + render_docs(case)
-            + '\n\nVerify every rule. Reply with the JSON object only.'
+            + ("\n\nПАКЕТ ЗАЯВКИ:\n" if russian else "\n\nAPPLICATION PACKET:\n") + render_docs(case)
+            + ('\n\nПроверьте каждое правило. Ответьте только JSON-объектом.' if russian
+               else '\n\nVerify every rule. Reply with the JSON object only.')
         )
-        return [{"role": "system", "content": SYSTEM},
+        return [{"role": "system", "content": SYSTEM_RU if russian else SYSTEM},
                 {"role": "user", "content": user}]
 
     def parse(self, text: str, case: Case) -> tuple[Any, str | None]:

@@ -1,0 +1,18 @@
+id: policy_microloan
+benchmark: rule_extraction
+notes: Русский seed-кейс для льготного микрозайма.
+canonical_fields:
+  - company.annual_revenue_rub
+  - company.overdue_debt
+  - company.russian_ownership_pct
+  - loan.requested_rub
+policy_document: |
+  ЛЬГОТНЫЙ МИКРОЗАЁМ ДЛЯ МСП. Годовая выручка компании не превышает
+  120 000 000 рублей. Просроченная задолженность отсутствует. Не менее 51%
+  долей принадлежит российским владельцам. Сумма займа не превышает 10 000 000
+  рублей.
+expected_rules:
+  - {id: L001, description: Выручка не превышает 120000000 рублей, severity: major, category: eligibility, condition: {field: company.annual_revenue_rub, op: le, value: 120000000}}
+  - {id: L002, description: Просроченная задолженность отсутствует, severity: critical, category: eligibility, condition: {field: company.overdue_debt, op: eq, value: false}}
+  - {id: L003, description: Российское владение не менее 51 процента, severity: critical, category: eligibility, condition: {field: company.russian_ownership_pct, op: ge, value: 51}}
+  - {id: L004, description: Сумма займа не превышает 10000000 рублей, severity: major, category: budget, condition: {field: loan.requested_rub, op: le, value: 10000000}}

@@ -31,6 +31,10 @@ def main(argv: list[str] | None = None) -> int:
     p_run.add_argument("--effort", default=None,
                        help="reasoning effort label from docbench/models.yaml "
                             "(e.g. thinking / no_thinking); default from catalog")
+    p_run.add_argument("--locale", choices=["en", "ru"], default="en",
+                       help="language of benchmark instructions; case data is unchanged")
+    p_run.add_argument("--dataset-version", default=None,
+                       help="explicit dataset version recorded in results.json")
     p_run.add_argument("--usd-rub", type=float, default=None,
                        help="pinned USD/RUB rate; requires --fx-date")
     p_run.add_argument("--fx-date", default=None,
@@ -117,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
             out_dir=Path(args.out) if args.out else None,
             max_tokens=args.max_tokens, effort=args.effort, fx_snapshot=fx_snapshot,
             gold_path=Path(args.gold) if args.gold else None,
+            locale=args.locale, dataset_version=args.dataset_version,
         )
         print(json.dumps(res["summary"], ensure_ascii=False, indent=2))
         print("results:", res["out_dir"])

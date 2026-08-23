@@ -1,0 +1,59 @@
+id: seed-grant-2026.1
+version: "2026.1"
+institution: Пример Фонда
+rules:
+  - id: R001
+    description: Организация-заявитель должна быть зарегистрирована не менее 12 месяцев на дату подачи заявки
+    severity: critical
+    category: eligibility
+    condition: {field: application_form.months_registered, op: ge, value: 12}
+  - id: R002
+    description: Общая запрашиваемая сумма бюджета не должна превышать 100 000 евро
+    severity: major
+    category: budget
+    condition: {field: budget.totals.total, op: le, value: 100000}
+  - id: R003
+    description: Доля статьи «Оборудование» не должна превышать 40 процентов общего бюджета
+    severity: major
+    category: budget
+    condition: {field: budget.row.equipment.share_pct, op: le, value: 40}
+  - id: R004
+    description: Обязательный документ — подписанная форма заявки
+    severity: critical
+    category: required_documents
+    condition: {field: documents.application_form.present, op: exists}
+  - id: R005
+    description: Обязательный документ — детализированная смета
+    severity: critical
+    category: required_documents
+    condition: {field: documents.budget.present, op: exists}
+  - id: R006
+    description: Обязательный документ — выписка из реестра (регистрационное свидетельство)
+    severity: critical
+    category: required_documents
+    condition: {field: documents.registration_cert.present, op: exists}
+  - id: R007
+    description: Обязательный документ — финансовый отчёт за последний отчётный период
+    severity: critical
+    category: required_documents
+    condition: {field: documents.finance_statement.present, op: exists}
+  - id: R008
+    description: Приём заявок осуществляется до 1 октября 2026 года включительно
+    severity: major
+    category: deadlines
+    condition: {field: application_form.submission_date, op: le, value: "2026-10-01"}
+  - id: R009
+    description: Форма заявки должна быть подписана уполномоченным лицом организации
+    severity: critical
+    category: formal
+    condition: {field: application_form.signature_present, op: eq, value: true}
+  - id: R010
+    description: Запрашиваемая сумма в форме заявки должна совпадать с итогом сметы
+    severity: major
+    category: consistency
+    condition: {op: consistent, fields: [application_form.requested_total_eur, budget.totals.total]}
+  - id: R011
+    description: Финансовый отчёт должен охватывать отчётный период 2025 финансового года (FY2025)
+    severity: minor
+    category: reporting
+    condition: {field: finance_statement.period, op: eq, value: "FY2025"}

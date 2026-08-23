@@ -80,6 +80,19 @@ def test_rule_extraction_parse_and_score(tmp_path):
     assert scores["f1"] == 1.0 and scores["ok"] is True
 
 
+def test_russian_locale_emits_russian_prompt_contract(valid_case, ruleset):
+    conformance = ConformanceBenchmark(ruleset, locale="ru")
+    conformance_messages = conformance.messages(valid_case, conformance.gold_for(valid_case))
+    assert conformance_messages[0]["content"].startswith("Вы —")
+    assert "НАБОР ПРАВИЛ" in conformance_messages[1]["content"]
+
+    policy_case = load_case(REPO / "cases" / "seed-policy" / "policy_foundation_v2.yaml")
+    extraction = RuleExtractionBenchmark(locale="ru")
+    extraction_messages = extraction.messages(policy_case, extraction.gold_for(policy_case))
+    assert extraction_messages[0]["content"].startswith("Вы —")
+    assert "РЕЕСТР КАНОНИЧЕСКИХ ПОЛЕЙ" in extraction_messages[1]["content"]
+
+
 def test_rescore_saved_rule_run_uses_current_presence_normalization(tmp_path):
     cases = tmp_path / "cases"
     cases.mkdir()

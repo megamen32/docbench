@@ -1,0 +1,18 @@
+id: policy_cultural_grant
+benchmark: rule_extraction
+notes: "Русский seed-кейс: культурный грант с софинансированием."
+canonical_fields:
+  - team.project_lead_age
+  - budget.co_financing_pct
+  - documents.venue_consent.present
+  - application.requested_rub
+policy_document: |
+  КУЛЬТУРНЫЙ ГРАНТ «ГОРОДСКАЯ СЦЕНА». Руководитель проекта должен быть
+  совершеннолетним. Не менее 20% бюджета обеспечивает заявитель за счёт
+  софинансирования. Для очных мероприятий требуется согласие площадки.
+  Запрашиваемый грант не превышает 1 500 000 рублей.
+expected_rules:
+  - {id: C001, description: Руководитель проекта совершеннолетний, severity: critical, category: eligibility, condition: {field: team.project_lead_age, op: ge, value: 18}}
+  - {id: C002, description: Софинансирование не менее 20 процентов, severity: major, category: budget, condition: {field: budget.co_financing_pct, op: ge, value: 20}}
+  - {id: C003, description: Обязательно согласие площадки, severity: major, category: required_documents, condition: {field: documents.venue_consent.present, op: exists}}
+  - {id: C004, description: Запрошенный грант не превышает 1500000 рублей, severity: major, category: budget, condition: {field: application.requested_rub, op: le, value: 1500000}}

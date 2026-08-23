@@ -29,23 +29,53 @@ Allowed operators: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, befor
 - Severity: critical = automatic rejection / hard eligibility; major = must fix; minor = formal or cosmetic.
 """
 
+SYSTEM_RU = """Вы — система формализации политик. Вы превращаете институциональные
+документы политики в машиночитаемый набор правил. Извлекайте только то, что прямо
+сказано в документе; не добавляйте правила из общих знаний.
+
+Верните РОВНО один JSON-объект и ничего больше, строго следующего вида:
+{
+  "ruleset_id": "<slug>",
+  "rules": [
+    {"description": "<однострочное изложение правила>",
+     "severity": "critical|major|minor",
+     "category": "<короткая метка>",
+     "condition": {"field": "<канонический путь поля>", "op": "<оператор>", "value": <значение или null>}
+  ]
+}
+
+Допустимые операторы: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.
+- Для field используйте ТОЛЬКО реестр канонических полей из задания.
+- value — граница из политики: число, ISO-дата, строка или список для in/not_in.
+- Для требования "одно и то же значение должно быть в N местах" используйте op=consistent и "fields": [...].
+- Severity: critical = автоматический отказ / жёсткое требование допуска; major = нужно исправить; minor = формальное или косметическое требование.
+"""
+
 
 class RuleExtractionBenchmark(Benchmark):
     name = "rule_extraction"
+
+    def __init__(self, locale: str = "en"):
+        if locale not in {"en", "ru"}:
+            raise ValueError(f"unsupported prompt locale {locale!r}")
+        self.locale = locale
 
     def gold_for(self, case: Case) -> Any:
         return {"rules": case.expected_rules or []}
 
     def messages(self, case: Case, gold: Any) -> list[dict[str, str]]:
         registry = "\n".join(f"- {f}" for f in (case.canonical_fields or []))
+        russian = self.locale == "ru"
         user = (
-            "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n"
-            f"{registry}\n\n"
-            "POLICY DOCUMENT:\n"
-            f"{case.policy_document or '<empty>'}\n\n"
-            "Extract the complete ruleset. Reply with the JSON object only."
+            ("РЕЕСТР КАНОНИЧЕСКИХ ПОЛЕЙ (используйте в condition только эти пути):\n"
+             if russian else "CANONICAL FIELD REGISTRY (use only these paths in conditions):\n")
+            + f"{registry}\n\n"
+            + ("ДОКУМЕНТ ПОЛИТИКИ:\n" if russian else "POLICY DOCUMENT:\n")
+            + f"{case.policy_document or '<empty>'}\n\n"
+            + ("Извлеките полный набор правил. Ответьте только JSON-объектом."
+               if russian else "Extract the complete ruleset. Reply with the JSON object only.")
         )
-        return [{"role": "system", "content": SYSTEM},
+        return [{"role": "system", "content": SYSTEM_RU if russian else SYSTEM},
                 {"role": "user", "content": user}]
 
     def parse(self, text: str, case: Case) -> tuple[Any, str | None]:

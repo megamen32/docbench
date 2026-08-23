@@ -1,0 +1,18 @@
+id: policy_medical_procurement
+benchmark: rule_extraction
+notes: Русский seed-кейс для закупки медицинского изделия.
+canonical_fields:
+  - documents.medical_registration.present
+  - product.expiry_months
+  - documents.cold_chain_protocol.present
+  - product.origin_country
+policy_document: |
+  ЗАКУПКА МЕДИЦИНСКИХ ИЗДЕЛИЙ. Для товара обязательно регистрационное
+  удостоверение. На дату поставки остаточный срок годности составляет не менее
+  12 месяцев. Для изделий, требующих холодовой цепи, обязателен протокол её
+  соблюдения. Страной происхождения может быть Россия или государство ЕАЭС.
+expected_rules:
+  - {id: MD001, description: Обязательно регистрационное удостоверение изделия, severity: critical, category: required_documents, condition: {field: documents.medical_registration.present, op: exists}}
+  - {id: MD002, description: Остаточный срок годности не менее 12 месяцев, severity: major, category: quality, condition: {field: product.expiry_months, op: ge, value: 12}}
+  - {id: MD003, description: Обязателен протокол холодовой цепи, severity: critical, category: required_documents, condition: {field: documents.cold_chain_protocol.present, op: exists}}
+  - {id: MD004, description: Страна происхождения входит в допустимый перечень, severity: major, category: origin, condition: {field: product.origin_country, op: in, value: ["Россия", "ЕАЭС"]}}

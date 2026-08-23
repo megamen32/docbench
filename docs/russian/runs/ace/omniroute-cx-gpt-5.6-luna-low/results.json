@@ -1,0 +1,1317 @@
+{
+  "ts": "2026-08-23T17:53:24.900735+00:00",
+  "started_at": "2026-08-23T17:47:51.323793+00:00",
+  "finished_at": "2026-08-23T17:53:24.900735+00:00",
+  "wall_time_s": 333.578,
+  "benchmark": "conformance",
+  "locale": "ru",
+  "model": "omniroute-cx-gpt-5.6-luna-low",
+  "model_alias": "cx/gpt-5.6-luna-low",
+  "provider": "omniroute",
+  "provider_label": "OmniRoute (OpenAI-compatible)",
+  "effort": "no_thinking",
+  "request_extra": {
+    "thinking": false
+  },
+  "cache_mode": "read_write",
+  "quantization": null,
+  "quantization_note": "providers do not expose served quantization via API; pin provider+model+date and see served_models",
+  "served_models": [
+    "gpt-5.6-luna-low"
+  ],
+  "price_source": "supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)",
+  "price_currency": "RUB",
+  "pricing_snapshot": "docbench/pricing_snapshot.json",
+  "fx_snapshot": null,
+  "reasoning": true,
+  "reasoning_note": "capability present; DocBench requests thinking:false by default",
+  "artifacts": {
+    "transcript": "transcript.json"
+  },
+  "cases_path": "datasets/russian/ace/cases",
+  "gold_scope": null,
+  "private": false,
+  "dataset_version": "russian-ace-v1",
+  "scoring_version": "rules-prf-v2-presence-normalization",
+  "reproducibility": {
+    "schema_version": 1,
+    "code": {
+      "git_revision": "c8e40701b9e5df652f8c3fae121e1ffd6452cd48"
+    },
+    "inputs": {
+      "cases": {
+        "sha256": "9bb45e8cd142e5761157ad936a3083e7da9c2daf3298570959ff4afde9f1f101",
+        "files": [
+          {
+            "path": "datasets/russian/ace/cases/ace_0000_ru.yaml",
+            "sha256": "0982547f61e97813d2c1516b4e04de2f60a6ffc16c67e3c99b23a44dff3d3fe7"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0001_ru.yaml",
+            "sha256": "c04f53cf28b0368cf49593c2563c889392da6cc125f3cf942b7f5eba894f73f7"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0002_ru.yaml",
+            "sha256": "97408d626b4ce554148c71f0f248ed86ff4af926d79e52e2418caf0d3ec961c8"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0003_ru.yaml",
+            "sha256": "e33fe9070ed72702109c2b3594f5992b2da42e8088bdd6d60d7e7f25606dcd7d"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0004_ru.yaml",
+            "sha256": "9bb7ef6716267b1c43914d6614e6d561b81bb56306bc35926caa060c238350b1"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0005_ru.yaml",
+            "sha256": "4929c0967a1b6687461bd340f5d9a411cacd50c64f80ce7d3d047eb4a127b386"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0006_ru.yaml",
+            "sha256": "a8bd28a4f09421e20fb8ee44d6d7db3506d44debe239986371499a126cfb562f"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0007_ru.yaml",
+            "sha256": "d901e4a2cc139b5e17b9d6f25e51109531db3fa847513e9b254bccca4cd54352"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0008_ru.yaml",
+            "sha256": "d049661c5178ff45e6deb3b3be676d8ab5260b55a10da45e1f7076e2c7aa1b33"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0009_ru.yaml",
+            "sha256": "d0479564cb88581294fb479f77a222e00a91d2bb305c9a47bb5150e28c55e60c"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0010_ru.yaml",
+            "sha256": "06ce80d6010055ca43ad121915a77aac72fa3cb3813600a7b615c6aa675b307d"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0011_ru.yaml",
+            "sha256": "5a0a9b637f83771d7733b14c656074dff997bc4d5f056530fe3774ab2433afe1"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0012_ru.yaml",
+            "sha256": "d4f788aea82fd890959d77ad28fc5eb6dd151a93cdd375329162c97e13cbb10b"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0013_ru.yaml",
+            "sha256": "c62b34bbd8fddff2297ef0b0e36da869a670d117520dc21249af05f8ada2918a"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0014_ru.yaml",
+            "sha256": "ce305ab68b4850339054520284f3bd4be5249064e50bc4d2d98d86cf096d698e"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0015_ru.yaml",
+            "sha256": "6a7ca67a37404e610d717a3284f2c1ba21fbb384d92ebc42819423e4257927d9"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0016_ru.yaml",
+            "sha256": "d2cf51be90422fe0e4437dc6fb5f79f59f12666d012a7c72d3395b68f687f7af"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0017_ru.yaml",
+            "sha256": "5d1d2e766288a29871d8e1ecdfad0d45c8b0a9ade18182d9f5366953216eb254"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0018_ru.yaml",
+            "sha256": "64cefd69b0f2e3f2760965f9afd001650801907ab7daa96085bc7db4c05a363d"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0019_ru.yaml",
+            "sha256": "4fdc304c3a251a2a675080e5e33e68a5adbbc02a3dd939a8a3f4a4cca1ddefef"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0020_ru.yaml",
+            "sha256": "e917d0bc0565e5e0828d72439fc8ec32f34101e7f17c2a3240fd6f56b5eb45f3"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0021_ru.yaml",
+            "sha256": "7cad9f3634990398eace31772d8f8447e98284da28a49ec0ed24d3d3e8d5106f"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0022_ru.yaml",
+            "sha256": "f61e88ec6bae8d7a6ae26e455c916a64bbf476ba656359c4efb2b32ae432cdb8"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0023_ru.yaml",
+            "sha256": "73b40c31f66862c49a0a1af728b16e76f97432930bd685c33d297a08a39623c1"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0024_ru.yaml",
+            "sha256": "062765148a61573562e9b7914493b4a13a7362af82999fcb642ce17c56d1fcb8"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0025_ru.yaml",
+            "sha256": "8db8e712c0121ffea5bbd2c7f1bd1ec212531037ce9bdd0b96f1fff658732642"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0026_ru.yaml",
+            "sha256": "4e35c19e22f079e19214926580217b7e982c2ef6807453e1f31bf5c2970896e5"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0027_ru.yaml",
+            "sha256": "7fbb1a0fbe62bdbcc95066c52a32d41d79e7f1c4ffa942fdbd1930d5fabe16c5"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0028_ru.yaml",
+            "sha256": "bae5a2eb4e361d2e5edce1a905dce918b26c45f2e2df9a00d7feb8ebf7272660"
+          },
+          {
+            "path": "datasets/russian/ace/cases/ace_0029_ru.yaml",
+            "sha256": "610b017e841face49d454c68d84c46337e0b9c89daf82770faa6b16ed3200082"
+          }
+        ]
+      },
+      "rulesets": {
+        "sha256": "4496a1275ff6bb8140cef4f9c96e63eaf464ddc4c0caa91ba273e4d19efb5c4c",
+        "files": [
+          {
+            "path": "datasets/russian/rulesets/ace-0000_ru.yaml",
+            "sha256": "e1a2983d938a86f09aa66bd42ed1dab8faae2f86218d5edccff77caa5144253c"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0001_ru.yaml",
+            "sha256": "a9ee8c95d9a073060ffe4f7f9ea08f28ada42da76ebbea74575b05a8d125eb23"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0002_ru.yaml",
+            "sha256": "8bc8950f940715ed9c6a7330cac07612e72d07733e94c84b99882c8e40f4d4de"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0003_ru.yaml",
+            "sha256": "c9404ead89a0ae2a0330f11971111ba72d9d506a4114375ac54f856447108397"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0004_ru.yaml",
+            "sha256": "b9cef2444e17c9de94bbffdb84c8f862f276bf9bbaf87358bd60c752da73015e"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0005_ru.yaml",
+            "sha256": "df509539770e4fc74465aa53ef4e450b02635e8982509e511be9c573f9337500"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0006_ru.yaml",
+            "sha256": "a430a671d05a25a087ae154fa6989fde510b70267fd2726eae0f2e42cfa78dac"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0007_ru.yaml",
+            "sha256": "8ea1d81955b6541c48aafdfd84d0599a2fa2c31553baaf537ce85276d447408e"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0008_ru.yaml",
+            "sha256": "50e7377031e897e54f6ff0a5b936181936b9c95e3279ad4d04f684afc9a1a80f"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0009_ru.yaml",
+            "sha256": "1de60610597dc9b2e95d48ae346a57d528502555ec422989225f80c9d8728da3"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0010_ru.yaml",
+            "sha256": "889ccb46bb9617ce6c1d2c7878f8bf6308000a1614c259a89781e048699cd145"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0011_ru.yaml",
+            "sha256": "6a813b69ba7ce3b7a4c76af7cc68d405b9a707465979fbb479ca371b601f11f1"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0012_ru.yaml",
+            "sha256": "15a40a841525b66d22c6394e49317768b3f54166e48c04d2c5b070e462612635"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0013_ru.yaml",
+            "sha256": "9053f2a0a8ae870a1f21f1db4382e82a0c38dadd63c6d85afd23e8ce61bf2acd"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0014_ru.yaml",
+            "sha256": "fdc48fc7b70bfdab5af7b33d014c3f597ef50e325845c0064d037d0dd86fb1c0"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0015_ru.yaml",
+            "sha256": "77740520a92c256815069d1f4e8af5402d7f8b4173986b689740b5daf13aa0fd"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0016_ru.yaml",
+            "sha256": "ae96ea3080882104fe81107ce627643d95068cf0430a2cff996b124a496d4bfd"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0017_ru.yaml",
+            "sha256": "692f889b11f43469d8b6868cc840ee61ec3b5830a9a7928505a46bd7abecc4f2"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0018_ru.yaml",
+            "sha256": "e2734e27036b81d077929090dbc4ccb5b8e744ed688e2649b1f18ff3554f5c2d"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0019_ru.yaml",
+            "sha256": "b99c5d3493104e5bebdfeada3389ce9567d7d685873d5404e8efa9e1c4fe75a6"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0020_ru.yaml",
+            "sha256": "94baa1356452baeddb5b36f84f34212662c507ddc24d9792625ae7fa8bd3ed0e"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0021_ru.yaml",
+            "sha256": "0a264b651968325536d8a525d567b8d4d48867779e5979bce15e4f9479e80b6c"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0022_ru.yaml",
+            "sha256": "9bde04a4c9eb128ce6766b8d7b349d381b14d4c1d4a05364127aa3e9eb175466"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0023_ru.yaml",
+            "sha256": "2ce1c5e3c56b8ef7e5c89e0895b1780c1550a2add180cb73f794f24637984a56"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0024_ru.yaml",
+            "sha256": "97dc1b2529e79a42e086688c3c0d36b0e267115089d136d21138c7387cfb1608"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0025_ru.yaml",
+            "sha256": "edc1e202eb6c18b2828e85cdca9b1efc841cd506702a1c7d80532af9b63ecc80"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0026_ru.yaml",
+            "sha256": "ba7c43158bae301da010cea3346f0b4d9afce14967dc4ca7e5726f8ff1a5670c"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0027_ru.yaml",
+            "sha256": "76fb29157e57edf67b8453a716a19a09eb648851bbcdfa93b04c1ac4ab07b7e3"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0028_ru.yaml",
+            "sha256": "57498b61861f465c778b569b148ac47c43b6a75ab39b60f16a3589d02558a665"
+          },
+          {
+            "path": "datasets/russian/rulesets/ace-0029_ru.yaml",
+            "sha256": "bc6cf1bc1c1a3273bd6c2ad368eb3c4f5bc1de338b178873c52c558056eeaa2e"
+          }
+        ]
+      },
+      "gold": null
+    }
+  },
+  "n_cases": 30,
+  "summary": {
+    "n_cases": 30,
+    "n_scored": 30,
+    "n_errors": 0,
+    "case_pass_rate": 0.6667,
+    "finding_precision": null,
+    "finding_recall": null,
+    "finding_f1": null,
+    "critical_recall": null,
+    "grounding_precision": null,
+    "grounding_recall": null,
+    "extraction_f1": null,
+    "false_accept_rate": 0.1667,
+    "false_reject_rate": 0.1667,
+    "cost_per_case_rub": 0.056334,
+    "cost_is_estimate": true,
+    "latency_p50_s": 9.434,
+    "total_cost_rub": 1.690024,
+    "tokens": {
+      "input_tokens": 65853,
+      "output_tokens": 15130,
+      "total_tokens": 80983,
+      "cache_read_input_tokens": 1792,
+      "cache_write_input_tokens": 0,
+      "cache_input_tokens": 1792,
+      "reasoning_tokens": 4313
+    }
+  },
+  "cases": [
+    {
+      "case_id": "ace_0000",
+      "source": "datasets/russian/ace/cases/ace_0000_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": true,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.072917,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 15.15,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2252,
+        "output_tokens": 751,
+        "total_tokens": 3003,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2252,
+        "reasoning_tokens": 62,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0001",
+      "source": "datasets/russian/ace/cases/ace_0001_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.053549,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 12.634,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1657,
+        "output_tokens": 551,
+        "total_tokens": 2208,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1657,
+        "reasoning_tokens": 189,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0002",
+      "source": "datasets/russian/ace/cases/ace_0002_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": true,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.073553,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.488,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 4891,
+        "output_tokens": 321,
+        "total_tokens": 5212,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 4891,
+        "reasoning_tokens": 67,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0003",
+      "source": "datasets/russian/ace/cases/ace_0003_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.042695,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.759,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1659,
+        "output_tokens": 383,
+        "total_tokens": 2042,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1659,
+        "reasoning_tokens": 70,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0004",
+      "source": "datasets/russian/ace/cases/ace_0004_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.039738,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 9.423,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1619,
+        "output_tokens": 344,
+        "total_tokens": 1963,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1619,
+        "reasoning_tokens": 73,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0005",
+      "source": "datasets/russian/ace/cases/ace_0005_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.074039,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 11.96,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 4132,
+        "output_tokens": 455,
+        "total_tokens": 4587,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 4132,
+        "reasoning_tokens": 79,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0006",
+      "source": "datasets/russian/ace/cases/ace_0006_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "reject",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.062634,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 12.812,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2037,
+        "output_tokens": 628,
+        "total_tokens": 2665,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2037,
+        "reasoning_tokens": 272,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0007",
+      "source": "datasets/russian/ace/cases/ace_0007_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.039674,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 9.303,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1433,
+        "output_tokens": 374,
+        "total_tokens": 1807,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1433,
+        "reasoning_tokens": 70,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0008",
+      "source": "datasets/russian/ace/cases/ace_0008_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.046514,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 7.849,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2199,
+        "output_tokens": 352,
+        "total_tokens": 2551,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2199,
+        "reasoning_tokens": 74,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0009",
+      "source": "datasets/russian/ace/cases/ace_0009_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.031301,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 6.573,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1155,
+        "output_tokens": 291,
+        "total_tokens": 1446,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1155,
+        "reasoning_tokens": 58,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0010",
+      "source": "datasets/russian/ace/cases/ace_0010_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": true,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.046083,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 9.348,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1961,
+        "output_tokens": 385,
+        "total_tokens": 2346,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1961,
+        "reasoning_tokens": 119,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0011",
+      "source": "datasets/russian/ace/cases/ace_0011_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": true,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "accept",
+      "cost_rub": 0.029575,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 6.473,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1007,
+        "output_tokens": 289,
+        "total_tokens": 1296,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1007,
+        "reasoning_tokens": 133,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0012",
+      "source": "datasets/russian/ace/cases/ace_0012_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.040062,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 7.989,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1547,
+        "output_tokens": 361,
+        "total_tokens": 1908,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1547,
+        "reasoning_tokens": 86,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0013",
+      "source": "datasets/russian/ace/cases/ace_0013_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": true,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "accept",
+      "cost_rub": 0.051143,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.425,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2556,
+        "output_tokens": 364,
+        "total_tokens": 2920,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2556,
+        "reasoning_tokens": 103,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0014",
+      "source": "datasets/russian/ace/cases/ace_0014_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": true,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.051499,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 11.058,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1599,
+        "output_tokens": 529,
+        "total_tokens": 2128,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1599,
+        "reasoning_tokens": 68,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0015",
+      "source": "datasets/russian/ace/cases/ace_0015_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.063077,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 14.002,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1796,
+        "output_tokens": 675,
+        "total_tokens": 2471,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1796,
+        "reasoning_tokens": 116,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0016",
+      "source": "datasets/russian/ace/cases/ace_0016_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.091551,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 14.503,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 4903,
+        "output_tokens": 597,
+        "total_tokens": 5500,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 4903,
+        "reasoning_tokens": 110,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0017",
+      "source": "datasets/russian/ace/cases/ace_0017_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.048834,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 10.879,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1364,
+        "output_tokens": 527,
+        "total_tokens": 1891,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1364,
+        "reasoning_tokens": 264,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0018",
+      "source": "datasets/russian/ace/cases/ace_0018_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.078225,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 19.362,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1418,
+        "output_tokens": 972,
+        "total_tokens": 2390,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1418,
+        "reasoning_tokens": 398,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0019",
+      "source": "datasets/russian/ace/cases/ace_0019_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.040666,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.194,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1459,
+        "output_tokens": 385,
+        "total_tokens": 1844,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1459,
+        "reasoning_tokens": 99,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0020",
+      "source": "datasets/russian/ace/cases/ace_0020_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.065893,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 11.755,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2729,
+        "output_tokens": 563,
+        "total_tokens": 3292,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2729,
+        "reasoning_tokens": 111,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0021",
+      "source": "datasets/russian/ace/cases/ace_0021_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.058513,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 11.445,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2255,
+        "output_tokens": 528,
+        "total_tokens": 2783,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2255,
+        "reasoning_tokens": 85,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0022",
+      "source": "datasets/russian/ace/cases/ace_0022_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "reject",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.060617,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 13.552,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1598,
+        "output_tokens": 670,
+        "total_tokens": 2268,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1598,
+        "reasoning_tokens": 228,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0023",
+      "source": "datasets/russian/ace/cases/ace_0023_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": true,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "accept",
+      "cost_rub": 0.039382,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.803,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1208,
+        "output_tokens": 407,
+        "total_tokens": 1615,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1208,
+        "reasoning_tokens": 190,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0024",
+      "source": "datasets/russian/ace/cases/ace_0024_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": true,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.044292,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 8.566,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1771,
+        "output_tokens": 389,
+        "total_tokens": 2160,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1771,
+        "reasoning_tokens": 66,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0025",
+      "source": "datasets/russian/ace/cases/ace_0025_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "accept",
+      "gold_disposition": "accept",
+      "cost_rub": 0.050161,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 9.445,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2201,
+        "output_tokens": 408,
+        "total_tokens": 2609,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2201,
+        "reasoning_tokens": 63,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0026",
+      "source": "datasets/russian/ace/cases/ace_0026_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.095856,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 17.591,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 3556,
+        "output_tokens": 888,
+        "total_tokens": 4444,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 3556,
+        "reasoning_tokens": 489,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0027",
+      "source": "datasets/russian/ace/cases/ace_0027_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": true,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "accept",
+      "cost_rub": 0.070252,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 13.886,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 2479,
+        "output_tokens": 672,
+        "total_tokens": 3151,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 2479,
+        "reasoning_tokens": 143,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0028",
+      "source": "datasets/russian/ace/cases/ace_0028_ru.yaml",
+      "generated_by": null,
+      "ok": true,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": false,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "needs_correction",
+      "cost_rub": 0.031981,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 6.622,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 294,
+        "total_tokens": 1494,
+        "cache_read_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 0,
+        "uncached_input_tokens": 1200,
+        "reasoning_tokens": 80,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    },
+    {
+      "case_id": "ace_0029",
+      "source": "datasets/russian/ace/cases/ace_0029_ru.yaml",
+      "generated_by": null,
+      "ok": false,
+      "finding_precision": null,
+      "finding_recall": null,
+      "finding_f1": null,
+      "critical_recall": null,
+      "grounding_precision": null,
+      "grounding_recall": null,
+      "extraction_f1": null,
+      "false_accept": false,
+      "false_reject": true,
+      "pred_disposition": "needs_correction",
+      "gold_disposition": "accept",
+      "cost_rub": 0.095748,
+      "cost_usd": null,
+      "cost_is_estimate": true,
+      "latency_s": 9.108,
+      "cache_hit": false,
+      "usage": {
+        "input_tokens": 4212,
+        "output_tokens": 777,
+        "total_tokens": 4989,
+        "cache_read_input_tokens": 1792,
+        "cache_write_input_tokens": 0,
+        "cache_input_tokens": 1792,
+        "uncached_input_tokens": 2420,
+        "reasoning_tokens": 348,
+        "served_model": "gpt-5.6-luna-low"
+      }
+    }
+  ],
+  "out_dir": "var/runs/russian-20260823/ace/omniroute-cx-gpt-5.6-luna-low"
+}
