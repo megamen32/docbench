@@ -1314,7 +1314,7 @@
       }
     }
   ],
-  "out_dir": "/home/roomhacker/docbench/var/runs/russian-20260823/ace/omniroute-cx-gpt-5.6-luna-medium",
+  "out_dir": "omniroute-cx-gpt-5.6-luna-medium",
   "retry_history": [
     {
       "at": "2026-08-23T18:03:53.860571+00:00",

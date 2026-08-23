@@ -26,15 +26,15 @@ BENCHMARK_LABELS = {
 ROLE_LABELS = {"system": "Системная инструкция", "user": "Пользователь", "assistant": "Модель"}
 
 
-def _relative_cases_path(value: str) -> str:
+def _relative_cases_path(value: str, suites: dict[str, tuple[str, int]]) -> str:
     value = value.replace("\\", "/")
-    for suffix in STANDARD_SUITES:
+    for suffix in suites:
         if value.endswith(suffix):
             return suffix
     return value
 
 
-def _read_runs(runs_dir: Path) -> list[dict[str, Any]]:
+def _read_runs(runs_dir: Path, suites: dict[str, tuple[str, int]]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for path in sorted(runs_dir.glob("**/results.json")):
         try:
@@ -44,7 +44,7 @@ def _read_runs(runs_dir: Path) -> list[dict[str, Any]]:
         if not isinstance(data, dict) or not isinstance(data.get("summary"), dict):
             continue
         data["_path"] = path
-        data["_cases_key"] = _relative_cases_path(str(data.get("cases_path", "")))
+        data["_cases_key"] = _relative_cases_path(str(data.get("cases_path", "")), suites)
         rows.append(data)
     return rows
 
@@ -405,7 +405,8 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
     return "".join(parts) + "</tbody></table></div>"
 
 
-def _overall_table(rows: list[dict[str, Any]]) -> str:
+def _overall_table(rows: list[dict[str, Any]], suites: dict[str, tuple[str, int]]) -> str:
+    case_count = sum(expected for _, expected in suites.values())
     by_model: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
@@ -422,8 +423,8 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
         rate = (sum(suite_rates) / len(suite_rates)
                 if suite_rates and all(value is not None for value in suite_rates) else None)
         complete = (
-            covered == STANDARD_CASE_COUNT
-            and {r["_cases_key"] for r in model_rows} == set(STANDARD_SUITES)
+            covered == sum(expected for _, expected in suites.values())
+            and {r["_cases_key"] for r in model_rows} == set(suites)
             and all((r["summary"].get("n_errors") or 0) == 0 for r in model_rows)
         )
         total_cost = _all_or_missing([r["summary"].get("total_cost_rub") for r in model_rows])
@@ -444,7 +445,7 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     ):
         parts.append("<tr><td><strong>%s</strong></td><td>%s / %s</td><td><strong>%s</strong></td><td>%s</td><td>%s</td><td>%s</td>"
                      "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
-            html.escape(model), covered, STANDARD_CASE_COUNT, _percent(rate), "<span class=badge-ok>готово</span>" if complete else "<span class=badge-warn>частично</span>",
+            html.escape(model), covered, case_count, _percent(rate), "<span class=badge-ok>готово</span>" if complete else "<span class=badge-warn>частично</span>",
             _rub(total_cost), _rub(total_cost / covered if total_cost is not None and covered else None),
             _count(token_totals["input_tokens"]), _count(token_totals["output_tokens"]),
             _count(token_totals["cache_input_tokens"]), _count(token_totals["reasoning_tokens"]),
@@ -453,19 +454,26 @@ def _overall_table(rows: list[dict[str, Any]]) -> str:
     return "".join(parts) + "</tbody></table></div>"
 
 
-def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
+def write_leaderboard(
+    runs_dir: Path,
+    output: Path,
+    *,
+    suites: dict[str, tuple[str, int]] | None = None,
+) -> dict[str, Any]:
     """Generate a local HTML index and one clickable card per saved run."""
+    suites = suites or STANDARD_SUITES
+    case_count = sum(expected for _, expected in suites.values())
     output.parent.mkdir(parents=True, exist_ok=True)
-    rows = _read_runs(runs_dir)
-    standard = _newest_per_model_suite([r for r in rows if r["_cases_key"] in STANDARD_SUITES])
+    rows = _read_runs(runs_dir, suites)
+    standard = _newest_per_model_suite([r for r in rows if r["_cases_key"] in suites])
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in standard:
         groups[row["_cases_key"]].append(row)
     model_count = len({str(row.get("model", "")) for row in standard})
     total_cases = sum(int(row["summary"].get("n_cases") or 0) for row in standard)
     total_errors = sum(int(row["summary"].get("n_errors") or 0) for row in standard)
-    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все стандартные наборы</h2></div></div>", _overall_table(standard), "</section>"]
-    for key, (name, expected) in STANDARD_SUITES.items():
+    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все наборы текущего среза</h2></div></div>", _overall_table(standard, suites), "</section>"]
+    for key, (name, expected) in suites.items():
         sections.extend([f'<section class="section suite-section" data-suite="{html.escape(key)}"><div class=section-heading><div><div class=eyebrow>{expected} кейсов</div><h2>{html.escape(name)}</h2></div><span class=suite-count>{len(groups[key])} моделей</span></div>', _table(groups[key], output), "</section>"])
     output.write_text(f"""<!doctype html>
 <html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DocBench · рейтинг моделей</title>
@@ -476,9 +484,9 @@ def write_leaderboard(runs_dir: Path, output: Path) -> dict[str, Any]:
 <body><main><header class=topbar><div class=brand><span class=brand-mark></span><span>DocBench</span></div><div class=top-meta>Русский бенчмарк документов · {html.escape(datetime.now().strftime('%d.%m.%Y %H:%M'))}</div></header>
 <section class=hero><div><div class=eyebrow>Аналитика бенчмарка</div><h1>Рейтинг моделей<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>Сравнение качества, скорости, стоимости и полноты ответов. <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>фиксированные датасеты · проверяемые прогоны</span></section>
 <section class=stats><div class=stat><small>Моделей</small><strong>{model_count}</strong><div class=hint>в текущем срезе</div></div><div class=stat><small>Прогонов</small><strong>{len(standard)}</strong><div class=hint>по всем наборам</div></div><div class=stat><small>Кейсов</small><strong>{total_cases:,}</strong><div class=hint>{total_errors} с ошибкой</div></div><div class=stat><small>Полные транскрипты</small><strong>{sum(1 for row in standard if (Path(row['_path']).with_name('transcript.json')).is_file())}/{len(standard)}</strong><div class=hint>сохранены рядом</div></div></section>
-<div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Набор</label><select id=suite-filter><option value=all>Все наборы</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in STANDARD_SUITES.items())}</select><span class=note id=visible-count></span></div>
+<div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Набор</label><select id=suite-filter><option value=all>Все наборы</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in suites.items())}</select><span class=note id=visible-count></span></div>
 {''.join(sections)}
-<footer class=footer><span>Сформировано {html.escape(datetime.now().isoformat(timespec='seconds'))}</span><span>Полный рейтинг требует все {STANDARD_CASE_COUNT} кейса · цены в рублях</span></footer>
+<footer class=footer><span>Сформировано {html.escape(datetime.now().isoformat(timespec='seconds'))}</span><span>Полный рейтинг требует все {case_count} кейса · цены в рублях</span></footer>
 </main><script>
 const rows=[...document.querySelectorAll('.run-row')], filter=document.querySelector('#model-filter'), suite=document.querySelector('#suite-filter'), count=document.querySelector('#visible-count');
 function applyFilter(){{const q=(filter.value||'').toLowerCase().trim(), s=suite.value;let shown=0;document.querySelectorAll('.suite-section').forEach(section=>{{const suiteOk=s==='all'||section.dataset.suite===s;let sectionShown=0;section.querySelectorAll('.run-row').forEach(row=>{{const ok=suiteOk&&(!q||row.dataset.model.includes(q));row.style.display=ok?'':'none';if(ok){{shown++;sectionShown++}}}});section.style.display=sectionShown?'':'none'}});count.textContent=shown+' строк'}}
@@ -489,7 +497,12 @@ filter.addEventListener('input',applyFilter);suite.addEventListener('change',app
     return {"runs": len(rows), "out": str(output)}
 
 
-def publish_pages(campaign_dir: Path, output: Path) -> dict[str, Any]:
+def publish_pages(
+    campaign_dir: Path,
+    output: Path,
+    *,
+    suites: dict[str, tuple[str, int]] | None = None,
+) -> dict[str, Any]:
     """Copy one finished campaign and render a self-contained GitHub Pages site."""
     campaign_dir = campaign_dir.resolve()
     if not campaign_dir.is_dir():
@@ -500,7 +513,7 @@ def publish_pages(campaign_dir: Path, output: Path) -> dict[str, Any]:
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(campaign_dir, target)
     _sanitize_public_results(target)
-    result = write_leaderboard(output / "runs", output / "index.html")
+    result = write_leaderboard(output / "runs", output / "index.html", suites=suites)
     (output / ".nojekyll").touch()
     return {**result, "campaign": str(target)}
 
@@ -531,6 +544,7 @@ def _public_path(value: str) -> str:
     if not path.is_absolute():
         return value
     parts = path.parts
-    if "cases" in parts:
-        return Path(*parts[parts.index("cases"):]).as_posix()
+    roots = [parts.index(root) for root in ("cases", "datasets") if root in parts]
+    if roots:
+        return Path(*parts[min(roots):]).as_posix()
     return path.name

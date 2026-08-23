@@ -137,6 +137,24 @@ def test_publish_pages_copies_campaign_and_renders_relative_artifacts(tmp_path):
     assert copied["cases_path"] == "cases/seed-grant"
 
 
+def test_publish_pages_accepts_a_separate_suite_contract(tmp_path):
+    campaign = tmp_path / "russian"
+    run = campaign / "grant" / "test-model"
+    run.mkdir(parents=True)
+    data = _result("test-model", "/private/work/datasets/russian/grant/cases", 10, 0.8)
+    (run / "results.json").write_text(json.dumps(data))
+    (run / "report.md").write_text("report")
+    (run / "transcript.json").write_text("{}")
+
+    pages = tmp_path / "docs"
+    suites = {"datasets/russian/grant/cases": ("Русские заявки", 10)}
+    publish_pages(campaign, pages, suites=suites)
+
+    index = (pages / "index.html").read_text()
+    assert "Русские заявки" in index
+    assert "10 / 10" in index
+
+
 def test_run_card_renders_safe_markdown_and_collapsed_thinking():
     rendered = render_markdown("# Title\n\n- **bold** and " + chr(96) + "code" + chr(96) + "\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n<script>alert(1)</script>")
     assert "<h1>Title</h1>" in rendered
