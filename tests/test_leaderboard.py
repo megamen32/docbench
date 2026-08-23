@@ -1,7 +1,44 @@
 import json
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 from docbench.leaderboard import _render_message, _render_transcript_chat, publish_pages, render_markdown, write_leaderboard
 from docbench.run import reprice_saved_results
+
+
+class _LocalAssetLinks(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.links: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        for name, value in attrs:
+            if name in {"href", "src"} and value:
+                self.links.append(value)
+
+
+def test_public_pages_local_assets_resolve():
+    """Every relative asset in the checked-in GitHub Pages output must exist."""
+    pages = Path(__file__).resolve().parents[1] / "docs"
+    missing: list[str] = []
+    for page in pages.rglob("*.html"):
+        parser = _LocalAssetLinks()
+        parser.feed(page.read_text(encoding="utf-8"))
+        for link in parser.links:
+            parsed = urlsplit(link)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            target = pages / parsed.path.lstrip("/") if parsed.path.startswith("/") else page.parent / parsed.path
+            target = target.resolve()
+            try:
+                target.relative_to(pages.resolve())
+            except ValueError:
+                missing.append(f"{page.relative_to(pages)} -> {link} (outside docs)")
+            else:
+                if not target.exists():
+                    missing.append(f"{page.relative_to(pages)} -> {unquote(link)}")
+    assert not missing, "Broken local Pages assets:\n" + "\n".join(missing)
 
 
 def _result(model: str, cases_path: str, n_cases: int, rate: float, *, priced: bool = True) -> dict:

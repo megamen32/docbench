@@ -1,6 +1,7 @@
 """Offline end-to-end: canned oracle-perfect reply flows through parse+score
 and through the full run orchestrator via a pre-seeded response cache."""
 import json
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -132,11 +133,18 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
                           "effort_extra": lambda self, effort=None: {}})()
     runner.__dict__.update(spec=spec, model_key="fake", alias="fake", base_url="http://x",
                            _api_key="k", timeout=1, max_retries=1, offline=True, cache_dir=cache)
+    case_file = tmp_path / "c.yaml"
+    import yaml
+    case_file.write_text(yaml.safe_dump(valid_case.model_dump(exclude_none=True),
+                                        allow_unicode=True, sort_keys=False), encoding="utf-8")
+    ruleset_dir = tmp_path / "rulesets"
+    ruleset_dir.mkdir()
+    shutil.copy(REPO / "rulesets" / "seed-grant-2026.1.yaml", ruleset_dir)
     cache.mkdir(parents=True, exist_ok=True)
-    msgs = bench.messages(valid_case, gold)
-    comp = R.OpenAICompatRunner.complete(runner, msgs) if False else None
-    # seed the cache the way the runner itself would
-    key = runner._cache_key(msgs, 0.0, 8192)
+    # Seed the serialized case's request, exactly as run_benchmark will load it.
+    run_case = load_case(case_file)
+    run_gold = bench.gold_for(run_case)
+    key = runner._cache_key(bench.messages(run_case, run_gold), 0.0, 8192)
     runner._cache_put(key, type("C", (), {"text": reply, "usage": {"prompt_tokens": 10, "completion_tokens": 10},
                                           "latency_s": 0.1, "cost_usd": 0.5,
                                           "cost_is_estimate": True, "model": "fake",
@@ -148,12 +156,8 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
     monkeypatch.setattr(R, "OpenAICompatRunner", lambda s, cache_dir=None, offline=False:
                         runner)
 
-    case_file = tmp_path / "c.yaml"
-    import yaml
-    case_file.write_text(yaml.safe_dump(valid_case.model_dump(exclude_none=True),
-                                        allow_unicode=True, sort_keys=False), encoding="utf-8")
     res = R.run_benchmark("conformance", "fake", case_file,
-                          ruleset_dir=REPO / "rulesets", out_dir=tmp_path / "out",
+                          ruleset_dir=ruleset_dir, out_dir=tmp_path / "out",
                           dataset_version="offline-canary-v1",
                           fx_snapshot={"usd_rub": 80.0, "date": "2026-08-18", "source": "explicit"})
     assert res["summary"]["case_pass_rate"] == 1.0
@@ -168,6 +172,19 @@ def test_full_offline_run_with_seeded_cache(tmp_path, valid_case, ruleset, monke
     transcript = json.loads((tmp_path / "out" / "transcript.json").read_text(encoding="utf-8"))
     assert res["artifacts"]["transcript"] == "transcript.json"
     assert transcript["cases"][0]["attempts"][0]["response_text"] == reply
+    manifest = res["reproducibility"]
+    assert manifest["schema_version"] == 1
+    assert len(manifest["code"]["git_revision"]) == 40
+    assert len(manifest["inputs"]["cases"]["sha256"]) == 64
+    assert manifest["inputs"]["rulesets"]["files"] == [{
+        "path": str(ruleset_dir / "seed-grant-2026.1.yaml"),
+        "sha256": __import__("hashlib").sha256(
+            (REPO / "rulesets" / "seed-grant-2026.1.yaml").read_bytes()
+        ).hexdigest(),
+    }]
+    attempt = transcript["cases"][0]["attempts"][0]
+    assert attempt["messages_sha256"] == R._canonical_sha256(attempt["messages"])
+    assert transcript["run"]["reproducibility"] == manifest
 
 
 def test_campaign_uses_one_cbr_snapshot_and_profile_versions(monkeypatch, tmp_path):

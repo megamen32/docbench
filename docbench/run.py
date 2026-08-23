@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import statistics
 import subprocess
@@ -14,7 +15,7 @@ from urllib.request import urlopen
 from xml.etree import ElementTree
 
 from .benchmarks import BENCHMARKS
-from .benchmarks.base import load_cases, ruleset_index
+from .benchmarks.base import load_cases, load_ruleset, ruleset_index
 from .config import REPO_ROOT, resolve_model
 from .metrics import RULES_SCORE_VERSION
 from .models.gigachat import GigaChatRunner
@@ -24,6 +25,41 @@ from .schemas import Prediction
 VAR_DIR = REPO_ROOT / "var"
 CACHE_DIR = VAR_DIR / "cache"
 RUNS_DIR = VAR_DIR / "runs"
+
+
+def _canonical_sha256(value: Any) -> str:
+    """Hash JSON data with a stable representation suitable for run manifests."""
+    return hashlib.sha256(
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def _path_label(path: Path) -> str:
+    """Keep manifests portable when a caller supplied an absolute input path."""
+    try:
+        return str(path.resolve().relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path.resolve())
+
+
+def _file_manifest(paths: list[Path]) -> dict[str, Any]:
+    """Return a deterministic content manifest for the inputs used by a run."""
+    files = [
+        {"path": _path_label(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+        for path in sorted(set(paths), key=_path_label)
+    ]
+    return {"sha256": _canonical_sha256(files), "files": files}
+
+
+def _code_revision() -> dict[str, str | None]:
+    """Identify the checked-out implementation without making git a runtime dependency."""
+    try:
+        revision = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        revision = None
+    return {"git_revision": revision}
 
 
 def _response_failure_kind(text: str | None) -> str | None:
@@ -142,6 +178,27 @@ def run_benchmark(
     if limit:
         pairs = pairs[:limit]
     has_private = any(case.private for _, case in pairs)
+    ruleset_paths: list[Path] = []
+    rulesets: dict[str, Any] = {}
+    if bench_key == "conformance":
+        active_ruleset_dir = Path(ruleset_dir) if ruleset_dir else REPO_ROOT / "rulesets"
+        rulesets = ruleset_index(active_ruleset_dir)
+        ruleset_paths_by_id = {
+            load_ruleset(path).id: path for path in sorted(active_ruleset_dir.glob("*.yaml"))
+        }
+        for _, case in pairs:
+            rid = ruleset_id or case.ruleset
+            if rid and rid in ruleset_paths_by_id:
+                ruleset_paths.append(ruleset_paths_by_id[rid])
+    reproducibility = {
+        "schema_version": 1,
+        "code": _code_revision(),
+        "inputs": {
+            "cases": _file_manifest([path for path, _ in pairs]),
+            "rulesets": _file_manifest(ruleset_paths),
+            "gold": _file_manifest([gold_path]) if gold_path else None,
+        },
+    }
 
     per_case: list[dict[str, Any]] = []
     transcript_cases: list[dict[str, Any]] = []
@@ -151,10 +208,9 @@ def run_benchmark(
             rid = ruleset_id or case.ruleset
             if not rid:
                 raise ValueError(f"case {case.id}: no ruleset id")
-            idx = ruleset_index(Path(ruleset_dir) if ruleset_dir else REPO_ROOT / "rulesets")
-            if rid not in idx:
+            if rid not in rulesets:
                 raise KeyError(f"case {case.id}: ruleset {rid!r} not found in rulesets/")
-            bench = BENCHMARKS[bench_key](idx[rid])
+            bench = BENCHMARKS[bench_key](rulesets[rid])
         elif bench_key == "iri_review":
             bench = BENCHMARKS[bench_key](gold_path=gold_path)
         else:
@@ -175,6 +231,7 @@ def run_benchmark(
                 attempts.append({
                     "attempt": attempt + 1,
                     "messages": msgs,
+                    "messages_sha256": _canonical_sha256(msgs),
                     "error": str(e)[:300],
                 })
                 per_case.append({"case_id": case.id, "ok": False, "error": str(e)[:300],
@@ -184,6 +241,7 @@ def run_benchmark(
             attempts.append({
                 "attempt": attempt + 1,
                 "messages": msgs,
+                "messages_sha256": _canonical_sha256(msgs),
                 # Completion.text is the final answer after chain-of-thought stripping.
                 "response_text": comp.text,
                 "usage": comp.usage,
@@ -267,6 +325,7 @@ def run_benchmark(
         "private": has_private,
         "dataset_version": dataset_version or f"{Path(cases_path).name}-v1",
         "scoring_version": RULES_SCORE_VERSION,
+        "reproducibility": reproducibility,
         "n_cases": len(per_case),
         "summary": summary,
         "cases": per_case,
@@ -283,6 +342,7 @@ def run_benchmark(
             "model_alias": spec.alias,
             "provider": spec.provider,
             "result": "results.json",
+            "reproducibility": reproducibility,
         },
         # Prompts and final answers are auditable. Private chain-of-thought and
         # unfiltered raw provider payloads are deliberately not retained.

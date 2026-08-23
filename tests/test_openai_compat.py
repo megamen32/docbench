@@ -33,7 +33,7 @@ def test_runner_does_not_persist_closed_think_block(monkeypatch):
 def test_omniroute_defaults_to_explicit_thinking_disable(monkeypatch):
     monkeypatch.setenv("DOCBENCH_OMNIROUTE_API_KEY", "test-key")
 
-    model = resolve_model("omniroute-routerai-gpt-5.4-mini")
+    model = resolve_model("omniroute-openai-gpt-5.4-mini")
 
     assert model.effort_default == "no_thinking"
     assert model.effort_extra(None) == {"thinking": False}
