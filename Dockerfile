@@ -2,8 +2,8 @@
 # The application dependency graph is locked in uv.lock. Two modes:
 #   offline: --network none, scores replayed deterministically from var/cache
 #   online:  provider egress only; keys come from the environment, never baked in
-FROM ghcr.io/astral-sh/uv:0.10.8 AS uv
-FROM python:3.10-slim
+FROM ghcr.io/astral-sh/uv:0.10.8@sha256:88234bc9e09c2b2f6d176a3daf411419eb0370d450a08129257410de9cfafd2a AS uv
+FROM python:3.10-slim@sha256:a78e4529630cfe8c5199cafd6e0c28ee1579a13f86274396d8b6b2d80367aa3a
 
 ENV PYTHONHASHSEED=0 \
     PIP_NO_CACHE_DIR=1 \

@@ -5,7 +5,7 @@ from typing import Any, Optional
 
 from .schemas import Disposition, Finding, Prediction, Rule, Severity
 
-RULES_SCORE_VERSION = "rules-prf-v2-presence-normalization"
+RULES_SCORE_VERSION = "rules-prf-v3-evidence-location"
 
 
 def _viol(findings: list[Finding]) -> dict[str, Finding]:
@@ -23,15 +23,20 @@ def findings_prf(gold: list[Finding], pred: list[Finding]) -> dict[str, float]:
 
 
 def grounded_prf(gold: list[Finding], pred: list[Finding]) -> dict[str, float]:
-    """A true positive counts as grounded only if the predicted evidence points
-    at the same document as the gold evidence (when gold declares one)."""
+    """A true positive is grounded only when every declared gold location
+    component (document, locator, quote) is reproduced by the prediction."""
     g, p = _viol(gold), _viol(pred)
     grounded = 0
     for rid in set(g) & set(p):
         ge, pe = g[rid].evidence, p[rid].evidence
-        if pe is None or not (pe.document or pe.locator or pe.quote):
+        if pe is None:
             continue
-        if ge is None or ge.document is None or pe.document == ge.document:
+        if ge is None:
+            grounded += 1
+            continue
+        if ((ge.document is None or pe.document == ge.document)
+                and (ge.locator is None or pe.locator == ge.locator)
+                and (ge.quote is None or pe.quote == ge.quote)):
             grounded += 1
     denom_g = len(g)
     denom_p = len(p)

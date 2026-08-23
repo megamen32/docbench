@@ -277,9 +277,11 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
     summary = row["summary"]
     meta = {
         key: row.get(key)
-        for key in ("ts", "model", "model_alias", "provider", "provider_label", "benchmark",
+        for key in ("ts", "model", "model_alias", "provider", "provider_label", "provider_endpoint", "benchmark",
                     "cases_path", "effort", "request_extra", "served_models", "reasoning",
-                    "reasoning_note", "price_source")
+                    "reasoning_note", "price_source", "price_currency", "pricing_snapshot", "cache_mode",
+                    "local_cache_hits", "dataset_version", "scoring_version", "locale", "reproducibility",
+                    "retry_history")
     }
     metrics = {
         key: summary.get(key)
@@ -325,8 +327,8 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
  .md-table-wrap{{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}}.md-table-wrap .md-table{{min-width:max-content;max-width:none}}.md-status-icon{{display:inline-block;font-size:1.05em;line-height:1}}
 </style>
 <body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
-<section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'провайдер'))} · {html.escape(BENCHMARK_LABELS.get(str(row.get('benchmark') or ''), str(row.get('benchmark') or 'набор')))}</div><h1>{html.escape(str(row.get('model', 'unknown')))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Полное совпадение</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_rub(summary.get('total_cost_rub'))}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
+<section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'провайдер'))} · {html.escape(BENCHMARK_LABELS.get(str(row.get('benchmark') or ''), str(row.get('benchmark') or 'набор')))}</div><h1>{html.escape(_display_model(row))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами, provenance и сохранённым транскриптом. Режим: {html.escape(_execution_mode(row))}.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Строгая метрика</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_cost(row)}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
 <div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">Результаты · results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">Отчёт · report.md ↗</a></div>
 {response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
 <section class="panel report-preview"><h2>Отчёт</h2>{report_html}</section>
@@ -347,6 +349,32 @@ def _percent(value: Any) -> str:
 
 def _rub(value: Any) -> str:
     return "—" if value is None else f"{float(value):.2f} ₽"
+
+
+def _cost(row: dict[str, Any]) -> str:
+    value = row["summary"].get("total_cost_rub")
+    return ("≈ " if row["summary"].get("cost_is_estimate") else "") + _rub(value)
+
+
+def _display_model(row: dict[str, Any]) -> str:
+    model = str(row.get("model", ""))
+    match = re.match(r"(.+luna)-(low|medium|high)$", model)
+    return f"{match.group(1)} · профиль {match.group(2)}" if match else model
+
+
+def _execution_mode(row: dict[str, Any]) -> str:
+    hits = int(row.get("local_cache_hits") or sum(bool(c.get("cache_hit")) for c in row.get("cases", [])))
+    count = int(row.get("n_cases") or len(row.get("cases", [])) or 0)
+    if hits and count and hits == count:
+        mode = "локальный replay"
+    elif hits:
+        mode = f"смешанно ({hits} cache)"
+    elif row.get("cache_mode") == "bypass":
+        mode = "fresh API"
+    else:
+        mode = "API; legacy cache-mode"
+    retries = len(row.get("retry_history") or [])
+    return f"{mode}; retry {retries}" if retries else mode
 
 
 def _count(value: Any) -> str:
@@ -373,9 +401,9 @@ def _all_or_missing(values: list[Any]) -> Any:
 
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Кейсы</th><th>Полное совпадение</th><th>Ошибки</th><th>F1</th>"
+        "<div class=table-shell><table><thead><tr><th>Конфигурация</th><th>Кейсы</th><th>Строгая метрика</th><th>Ошибки</th><th>F1</th>"
         "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
-        "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th>"
+        "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th><th>Режим</th>"
         "<th>Транскрипт</th></tr></thead><tbody>"
     ]
     for row in sorted(rows, key=lambda x: (x["summary"].get("case_pass_rate") or -1), reverse=True):
@@ -390,15 +418,15 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
             "<tr class=run-row data-href=\"%s\" data-model=\"%s\" data-errors=\"%s\" tabindex=\"0\" role=\"link\"><td>"
             "<div class=model-cell><span class=model-dot></span><span class=model-name>%s</span></div></td><td>%s</td>"
             "<td><strong class=rate>%s</strong></td><td><span class=badge-%s>%s</span></td><td>%s</td>"
-            "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+            "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
                 html.escape(_href(output, card)), html.escape(str(row.get("model", "")).lower()), errors,
-                html.escape(str(row.get("model", ""))), summary.get("n_cases", "—"),
+                html.escape(_display_model(row)), summary.get("n_cases", "—"),
                 _percent(summary.get("case_pass_rate")), status, "ошибок нет" if errors == 0 else f"{errors} ошибок",
                 _percent(summary.get("finding_f1") or summary.get("extraction_f1")),
-                _rub(summary.get("total_cost_rub")), _rub(summary.get("cost_per_case_rub")),
+                _cost(row), _rub(summary.get("cost_per_case_rub")),
                 _count(_tokens(row, "input_tokens")), _count(_tokens(row, "output_tokens")),
                 _count(_tokens(row, "cache_input_tokens")), _count(_tokens(row, "reasoning_tokens")),
-                _seconds(summary.get("latency_p50_s")), _seconds(_wall_time(row)),
+                _seconds(summary.get("latency_p50_s")), _seconds(_wall_time(row)), _execution_mode(row),
                 "есть" if transcript.is_file() else "<!-- legacy / no -->нет",
             )
         )
@@ -459,6 +487,8 @@ def write_leaderboard(
     output: Path,
     *,
     suites: dict[str, tuple[str, int]] | None = None,
+    aggregate: bool = False,
+    scope_note: str | None = None,
 ) -> dict[str, Any]:
     """Generate a local HTML index and one clickable card per saved run."""
     suites = suites or STANDARD_SUITES
@@ -472,7 +502,7 @@ def write_leaderboard(
     model_count = len({str(row.get("model", "")) for row in standard})
     total_cases = sum(int(row["summary"].get("n_cases") or 0) for row in standard)
     total_errors = sum(int(row["summary"].get("n_errors") or 0) for row in standard)
-    sections = ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все наборы текущего среза</h2></div></div>", _overall_table(standard, suites), "</section>"]
+    sections = ([] if not aggregate else ["<section class=section><div class=section-heading><div><div class=eyebrow>Сводный рейтинг</div><h2>Все наборы текущего среза</h2></div></div>", _overall_table(standard, suites), "</section>"])
     for key, (name, expected) in suites.items():
         sections.extend([f'<section class="section suite-section" data-suite="{html.escape(key)}"><div class=section-heading><div><div class=eyebrow>{expected} кейсов</div><h2>{html.escape(name)}</h2></div><span class=suite-count>{len(groups[key])} моделей</span></div>', _table(groups[key], output), "</section>"])
     output.write_text(f"""<!doctype html>
@@ -482,7 +512,7 @@ def write_leaderboard(
 *{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 8% -4%,#253c7b 0,transparent 34rem),radial-gradient(circle at 94% 0%,#30215e 0,transparent 28rem),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif}}main{{max-width:1440px;margin:0 auto;padding:28px 28px 80px}}.topbar{{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}}.brand{{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.02em}}.brand-mark{{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 30px #7da7ff66;position:relative}}.brand-mark:after{{content:"";position:absolute;inset:7px;border:2px solid #fff;border-radius:5px;opacity:.9}}.top-meta{{color:var(--muted);font-size:12px}}.hero{{display:flex;justify-content:space-between;gap:28px;align-items:flex-end;margin-bottom:30px}}.eyebrow{{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-weight:750}}h1{{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.075em;margin:11px 0 17px;max-width:900px}}.hero-copy{{color:var(--muted);font-size:16px;max-width:680px;margin:0}}.hero-copy strong{{color:var(--text)}}.hero-mark{{font-size:11px;color:#c8d4ef;background:#162544;border:1px solid var(--line);padding:9px 12px;border-radius:999px;white-space:nowrap}}.stats{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:30px 0 38px}}.stat{{background:linear-gradient(145deg,#1d2b4b,#121a2e);border:1px solid var(--line);border-radius:17px;padding:18px 19px;box-shadow:0 18px 50px #05081555}}.stat small{{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}}.stat strong{{display:block;font-size:1.7rem;letter-spacing:-.045em}}.stat .hint{{color:var(--muted);font-size:12px;margin-top:4px}}.toolbar{{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:30px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#111a2eaa;backdrop-filter:blur(12px)}}.toolbar label{{color:var(--muted);font-size:12px;font-weight:650}}input,select{{appearance:none;border:1px solid var(--line);border-radius:10px;background:#0e172b;color:var(--text);padding:10px 12px;font:inherit;min-height:40px}}input{{min-width:250px}}input:focus,select:focus{{outline:2px solid #7da7ff66;outline-offset:1px}}.section{{margin-top:34px}}.section-heading{{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 14px}}h2{{font-size:1.55rem;letter-spacing:-.04em;margin:5px 0 0}}.suite-count{{color:var(--muted);font-size:12px;background:#141f37;border:1px solid var(--line);padding:6px 9px;border-radius:999px}}.table-shell{{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#10182b;box-shadow:0 18px 50px #05081544}}table{{border-collapse:collapse;width:100%;min-width:1120px}}th,td{{padding:13px 14px;text-align:left;border-bottom:1px solid #25324d;white-space:nowrap}}th{{color:#8493b2;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:#141e35;position:sticky;top:0;z-index:1}}tbody tr:last-child td{{border-bottom:0}}.run-row{{cursor:pointer;transition:background .18s,transform .18s}}.run-row:hover,.run-row:focus{{background:#192847;outline:none}}.run-row:hover{{box-shadow:inset 3px 0 0 var(--accent)}}.model-cell{{display:flex;align-items:center;gap:9px;min-width:215px}}.model-dot{{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 13px #7da7ffaa;flex:none}}.model-name{{font-weight:700;color:#edf2ff}}.rate{{font-size:15px;color:#e5edff}}.badge-ok,.badge-error,.badge-warn{{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:750}}.badge-ok{{background:#12372f;color:var(--good)}}.badge-error{{background:#3c1a2a;color:var(--bad)}}.badge-warn{{background:#3c2d18;color:var(--warn)}}.note{{color:var(--muted);font-size:12px;margin-top:12px}}.empty{{display:none;padding:28px;color:var(--muted);text-align:center}}.footer{{margin-top:54px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:18px}}@media(max-width:800px){{main{{padding:20px 14px 56px}}.hero{{display:block}}.hero-mark{{display:inline-block;margin-top:20px}}.stats{{grid-template-columns:repeat(2,minmax(0,1fr))}}.topbar{{margin-bottom:38px}}}}@media(max-width:480px){{.stats{{gap:8px}}.stat{{padding:14px}}.stat strong{{font-size:1.35rem}}input{{min-width:0;width:100%}}.toolbar label{{width:100%}}.footer{{display:block}}}}
 </style>
 <body><main><header class=topbar><div class=brand><span class=brand-mark></span><span>DocBench</span></div><div class=top-meta>Русский бенчмарк документов · {html.escape(datetime.now().strftime('%d.%m.%Y %H:%M'))}</div></header>
-<section class=hero><div><div class=eyebrow>Аналитика бенчмарка</div><h1>Рейтинг моделей<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>Сравнение качества, скорости, стоимости и полноты ответов. <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>фиксированные датасеты · проверяемые прогоны</span></section>
+<section class=hero><div><div class=eyebrow>Аналитика бенчмарка</div><h1>{'Результаты прогонов' if not aggregate else 'Рейтинг моделей'}<br><span style="color:var(--accent)">для документов</span></h1><p class=hero-copy>{html.escape(scope_note) if scope_note else 'Сравнение качества, скорости, стоимости и полноты ответов.'} <strong>Кликните по строке</strong>, чтобы открыть полный транскрипт и детали прогона.</p></div><span class=hero-mark>фиксированные датасеты · проверяемые прогоны</span></section>
 <section class=stats><div class=stat><small>Моделей</small><strong>{model_count}</strong><div class=hint>в текущем срезе</div></div><div class=stat><small>Прогонов</small><strong>{len(standard)}</strong><div class=hint>по всем наборам</div></div><div class=stat><small>Кейсов</small><strong>{total_cases:,}</strong><div class=hint>{total_errors} с ошибкой</div></div><div class=stat><small>Полные транскрипты</small><strong>{sum(1 for row in standard if (Path(row['_path']).with_name('transcript.json')).is_file())}/{len(standard)}</strong><div class=hint>сохранены рядом</div></div></section>
 <div class=toolbar><label for=model-filter>Фильтр</label><input id=model-filter type=search placeholder="Найти модель…"><label for=suite-filter>Набор</label><select id=suite-filter><option value=all>Все наборы</option>{''.join(f'<option value="{html.escape(key)}">{html.escape(name)}</option>' for key,(name,_) in suites.items())}</select><span class=note id=visible-count></span></div>
 {''.join(sections)}
@@ -502,6 +532,8 @@ def publish_pages(
     output: Path,
     *,
     suites: dict[str, tuple[str, int]] | None = None,
+    aggregate: bool = False,
+    scope_note: str | None = None,
 ) -> dict[str, Any]:
     """Copy one finished campaign and render a self-contained GitHub Pages site."""
     campaign_dir = campaign_dir.resolve()
@@ -513,7 +545,10 @@ def publish_pages(
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(campaign_dir, target)
     _sanitize_public_results(target)
-    result = write_leaderboard(output / "runs", output / "index.html", suites=suites)
+    result = write_leaderboard(
+        output / "runs", output / "index.html", suites=suites,
+        aggregate=aggregate, scope_note=scope_note,
+    )
     (output / ".nojekyll").touch()
     return {**result, "campaign": str(target)}
 

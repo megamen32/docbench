@@ -10,8 +10,8 @@
  .md-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.md-table-wrap .md-table{min-width:max-content;max-width:none}.md-status-icon{display:inline-block;font-size:1.05em;line-height:1}
 </style>
 <body><main><div class=top><a class=back href="../../../../index.html">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
-<section class=hero><div><div class=eyebrow>OmniRoute (OpenAI-compatible) · проверка соответствия</div><h1>omniroute-cx-gpt-5.6-luna-low</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status">Готово</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Полное совпадение</small><strong>100.0%</strong></div><div class=metric><small>F1</small><strong>100.0%</strong></div><div class=metric><small>Стоимость</small><strong>0.96 ₽</strong></div><div class=metric><small>Время</small><strong>249.5 s</strong></div></section>
+<section class=hero><div><div class=eyebrow>OmniRoute (OpenAI-compatible) · проверка соответствия</div><h1>omniroute-cx-gpt-5.6-luna · профиль low</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами, provenance и сохранённым транскриптом. Режим: API; legacy cache-mode.</p></div><div class="status">Готово</div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Строгая метрика</small><strong>100.0%</strong></div><div class=metric><small>F1</small><strong>100.0%</strong></div><div class=metric><small>Стоимость</small><strong>≈ 0.96 ₽</strong></div><div class=metric><small>Время</small><strong>249.5 s</strong></div></section>
 <div class=actions><a class=button href="transcript.json">Транскрипт · transcript.json ↗</a><a class=button href="results.json">Результаты · results.json ↗</a><a class=button href="report.md">Отчёт · report.md ↗</a></div>
 
 <section class="panel report-preview"><h2>Отчёт</h2><h1>Отчёт DocBench</h1><div class=md-table-wrap><table class=md-table><thead><tr><th>модель</th><th>набор</th><th>кейсы</th><th>полное совпадение</th><th>точность правил</th><th>полнота правил</th><th>полнота критичных</th><th>ложный приём</th><th>ложный отказ</th><th>F1 извлечения</th><th>полнота подтверждений</th><th>₽ / кейс</th><th>p50 задержки</th></tr></thead><tbody><tr><td>omniroute-cx-gpt-5.6-luna-low</td><td>conformance</td><td>10</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>0.0000</td><td>0.0000</td><td>0.9909</td><td>0.8250</td><td>0.0964</td><td>24.5</td></tr></tbody></table></div><p><em>Примечание: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate.</em></p><h2>omniroute-cx-gpt-5.6-luna-low · проверка соответствия · 2026-08-23T17:45:40.754025+00:00</h2><h3>Размышления</h3><ul><li>причина=capability present; DocBench requests thinking:false by default</li></ul><h3>Токены и стоимость</h3><div class=md-table-wrap><table class=md-table><thead><tr><th>вход</th><th>выход</th><th>всего</th><th>чтение кэша</th><th>запись кэша</th><th>размышления</th><th>стоимость, ₽</th></tr></thead><tbody><tr><td>15337</td><td>12331</td><td>27668</td><td>0</td><td>0</td><td>1496</td><td>0.963768</td></tr></tbody></table></div><ul><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_equipment_heavy</code> <em>(set_field: set budget.row.equipment.share_pct = 55.5)</em> — решение needs_correction против needs_correction</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_late_submission</code> <em>(shift_date: сдвиг application_form.submission_date: 2026-09-12 -&gt; 2026-10-27)</em> — решение needs_correction против needs_correction</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_missing_budget</code> <em>(remove_document: удалён обязательный документ 'budget' (Детализированная смета))</em> — решение reject против reject</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_missing_registration</code> <em>(remove_document: удалён обязательный документ 'registration_cert' (Выписка из реестра))</em> — решение reject против reject</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_over_budget</code> <em>(scale_number: scaled ['budget.row.equipment.amount_eur', 'budget.row.other.amount_eur', 'budget.row.outreach.amount_eur', 'budget.row.personnel.amount_eur', 'budget.totals.total'] by 1.6)</em> — решение needs_correction против needs_correction</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_sum_mismatch</code> <em>(set_field: set application_form.requested_total_eur = 89200)</em> — решение needs_correction против needs_correction</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_unregistered</code> <em>(set_field: set application_form.months_registered = 3)</em> — решение reject против reject</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_unsigned</code> <em>(drop_signature: подпись удалена (application_form.signature_present=false))</em> — решение reject против reject</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001__corr_wrong_period</code> <em>(set_field: set finance_statement.period = 'FY2024')</em> — решение needs_correction против needs_correction</li><li class="md-status-row"><span class="md-status-icon">✅</span> <code>grant_00001</code> — решение accept против accept</li></ul></section>
@@ -45,6 +45,7 @@
   &quot;model_alias&quot;: &quot;cx/gpt-5.6-luna-low&quot;,
   &quot;provider&quot;: &quot;omniroute&quot;,
   &quot;provider_label&quot;: &quot;OmniRoute (OpenAI-compatible)&quot;,
+  &quot;provider_endpoint&quot;: null,
   &quot;benchmark&quot;: &quot;conformance&quot;,
   &quot;cases_path&quot;: &quot;datasets/russian/grant/cases&quot;,
   &quot;effort&quot;: &quot;no_thinking&quot;,
@@ -56,7 +57,78 @@
   ],
   &quot;reasoning&quot;: true,
   &quot;reasoning_note&quot;: &quot;capability present; DocBench requests thinking:false by default&quot;,
-  &quot;price_source&quot;: &quot;supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)&quot;
+  &quot;price_source&quot;: &quot;supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)&quot;,
+  &quot;price_currency&quot;: &quot;RUB&quot;,
+  &quot;pricing_snapshot&quot;: &quot;docbench/pricing_snapshot.json&quot;,
+  &quot;cache_mode&quot;: &quot;read_write&quot;,
+  &quot;local_cache_hits&quot;: null,
+  &quot;dataset_version&quot;: &quot;russian-grant-v1&quot;,
+  &quot;scoring_version&quot;: &quot;rules-prf-v2-presence-normalization&quot;,
+  &quot;locale&quot;: &quot;ru&quot;,
+  &quot;reproducibility&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;code&quot;: {
+      &quot;git_revision&quot;: &quot;c8e40701b9e5df652f8c3fae121e1ffd6452cd48&quot;
+    },
+    &quot;inputs&quot;: {
+      &quot;cases&quot;: {
+        &quot;sha256&quot;: &quot;c76817b9fd8bb7689aade3537c8e0d7a123825fe473b8ec329190b1af99cfaf9&quot;,
+        &quot;files&quot;: [
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_equipment_heavy_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;6ab7fd1f454f865ea91bedf2a67ff52a76df82e26d781a89e394df3c4e43b1ba&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_late_submission_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;eaf0e9561ee43b817b3c1db3c43d01b876ae331a8c519967a87cfe229e806791&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_missing_budget_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;e5bcefaba34835f9ba31728c0afe278e0c9dd8b6063e8c320df23f2eefbf692d&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_missing_registration_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;ffaa25d96e9a03da6e03023e1a640363b14a4ab130f854814f92889c48f8686d&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_over_budget_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;c43be59bf7044e2190a9f2c2e57a054acbcffdff193a56c49c5f2965f8db513c&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_sum_mismatch_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;8114073acdb5b300a397f19602cffd86d0a6a9c332337ecbcb63f76807051a4a&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_unregistered_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;2e4fa4854b8a2788174926aafa6f742c1630e4a1b0b9b3aab09cff8567de11f7&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_unsigned_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;05c6f36287582ab5fad80d63626284ce79c38eb640c21496d4ea9889638943b6&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/grant_00001__corr_wrong_period_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;2bb9970d6d9919a23a03cf78cdc33b876296a05dbde4782c67feffebfe247959&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/grant/cases/valid_full_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;c0b6cdd7dbedc50007b4182c68919d9662b2189202a8242f1589e03c5678e907&quot;
+          }
+        ]
+      },
+      &quot;rulesets&quot;: {
+        &quot;sha256&quot;: &quot;c934bb95e9a89148e4d78024e237ba8078b5a03f5c2dbd8a098f3784c6a74f59&quot;,
+        &quot;files&quot;: [
+          {
+            &quot;path&quot;: &quot;datasets/russian/rulesets/seed-grant-2026.1_ru.yaml&quot;,
+            &quot;sha256&quot;: &quot;117307aa7b3647c544aaae8b08dc8049397e997c5097a2eb689a272c908d771e&quot;
+          }
+        ]
+      },
+      &quot;gold&quot;: null
+    }
+  },
+  &quot;retry_history&quot;: null
 }</pre></section>
 </div><aside class=run-aside><section class="panel transcript-panel"><details class="transcript-optin"><summary><span>Полный транскрипт</span><span class="transcript-optin-note">Показать чат</span></summary><p class=muted>Сообщения отображаются как чат; системные инструкции и размышления можно раскрывать отдельно.</p><p class="muted">Транскрипт не сохранён или недоступен для этого запуска.</p></details></section></aside></div>
 </main></body></html>

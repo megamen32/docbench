@@ -73,20 +73,27 @@ previous failure and the new provider response remain in `transcript.json`.
 | API latency | Sum and per-case request latency; it is not campaign wall-clock time. |
 | Cost | Provider-estimated or provider-reported token cost in rubles; USD prices are converted at the recorded CBR rate. |
 
+For ACE, the external dataset supplies a scenario-level disposition label only;
+its strict metric is therefore **accept/non-accept agreement**, not a finding or
+evidence audit. It must not be read as proof of detailed contract extraction.
+
 Therefore **`pass rate = 0` and `errors = 0` is possible**: the model answered
 valid JSON for every case, but none exactly matched the gold result. This is a
 score, not an infrastructure failure.
 
-The summary leaderboard uses an **unweighted mean across suites**: grant,
-Russian policy and ACE each contribute one third, regardless of their case
-counts (10, 12 and 30). The coverage column remains separate, so an incomplete
-campaign is not presented as a complete comparison. Suite tables retain the
-ordinary case-level pass rate.
+Only suites with the **same validated target metric** may be aggregated. A
+cross-suite aggregate is otherwise omitted: conformance disposition agreement
+and exact policy-ruleset extraction are not interchangeable. Single campaigns
+are exploratory measurements, not evidence for a small rank difference; publish
+independent repeats and uncertainty intervals before making that claim.
 
-Each new result records the selected provider/model, served-model id, reasoning
-mode, input/output/cached/reasoning tokens, request latency and cost. Price
-metadata states whether the value is an estimate. A model or provider that does
-not publish a price is shown as unknown — never as free.
+Each new result records the selected provider/model, endpoint, served-model id,
+reasoning mode, input/output/cached/reasoning tokens, request latency, response
+receipt hash, input/code manifests and cost. Online runs bypass the local
+response cache by default; cache replay is only for offline reproduction and is
+labelled in public output. Price metadata states whether the value is an
+estimate. A model or provider that does not publish a price is shown as unknown
+— never as free.
 
 The OmniRoute CX Terra/Sol routes use the pinned OpenAI GPT-5.6 catalog rates
 ($1.30/$7.80 and $6.50/$39.00 per 1M input/output tokens respectively), with

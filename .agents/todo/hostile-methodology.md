@@ -1,5 +1,16 @@
 # Hostile methodology review — Russian supplementary benchmark
 
+## Resolution status — 2026-08-23
+
+- Resolved in `fix hostile review`: public cross-suite ranking is removed; each
+  suite is displayed independently and the Russian page states that its single
+  runs have no uncertainty estimate.
+- Resolved in presentation: Luna rows are labelled as effort profiles, prices
+  as estimates, and ACE is described as disposition agreement rather than a
+  finding/evidence audit.
+- Still evidence boundaries, not defects fixed by code: independent gold review,
+  bilingual equivalence/leakage audit, and repeated fresh provider trials.
+
 Verdict: **RETHINK**. The artifacts support a small, reproducible single-provider
 supplementary campaign, not a defensible general leaderboard or an international/
 Russian-model comparison. Do not make the latter claims until the verified defects

@@ -10,8 +10,8 @@
  .md-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.md-table-wrap .md-table{min-width:max-content;max-width:none}.md-status-icon{display:inline-block;font-size:1.05em;line-height:1}
 </style>
 <body><main><div class=top><a class=back href="../../../../index.html">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
-<section class=hero><div><div class=eyebrow>OmniRoute (OpenAI-compatible) · извлечение правил</div><h1>omniroute-cx-gpt-5.6-luna-low</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами и сохранённым транскриптом.</p></div><div class="status">Готово</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Полное совпадение</small><strong>0.0%</strong></div><div class=metric><small>F1</small><strong>95.1%</strong></div><div class=metric><small>Стоимость</small><strong>0.44 ₽</strong></div><div class=metric><small>Время</small><strong>124.8 s</strong></div></section>
+<section class=hero><div><div class=eyebrow>OmniRoute (OpenAI-compatible) · извлечение правил</div><h1>omniroute-cx-gpt-5.6-luna · профиль low</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами, provenance и сохранённым транскриптом. Режим: API; legacy cache-mode.</p></div><div class="status">Готово</div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small>Строгая метрика</small><strong>0.0%</strong></div><div class=metric><small>F1</small><strong>95.1%</strong></div><div class=metric><small>Стоимость</small><strong>≈ 0.44 ₽</strong></div><div class=metric><small>Время</small><strong>124.8 s</strong></div></section>
 <div class=actions><a class=button href="transcript.json">Транскрипт · transcript.json ↗</a><a class=button href="results.json">Результаты · results.json ↗</a><a class=button href="report.md">Отчёт · report.md ↗</a></div>
 
 <section class="panel report-preview"><h2>Отчёт</h2><h1>Отчёт DocBench</h1><div class=md-table-wrap><table class=md-table><thead><tr><th>модель</th><th>набор</th><th>кейсы</th><th>полное совпадение</th><th>точность правил</th><th>полнота правил</th><th>полнота критичных</th><th>ложный приём</th><th>ложный отказ</th><th>F1 извлечения</th><th>полнота подтверждений</th><th>₽ / кейс</th><th>p50 задержки</th></tr></thead><tbody><tr><td>omniroute-cx-gpt-5.6-luna-low</td><td>rule_extraction</td><td>12</td><td>0.0000</td><td>0.9508</td><td>0.9508</td><td>—</td><td>0.0000</td><td>0.0000</td><td>—</td><td>—</td><td>0.0363</td><td>9.1295</td></tr></tbody></table></div><p><em>Примечание: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate.</em></p><h2>omniroute-cx-gpt-5.6-luna-low · извлечение правил · 2026-08-23T17:47:50.988449+00:00</h2><h3>Размышления</h3><ul><li>причина=capability present; DocBench requests thinking:false by default</li></ul><h3>Токены и стоимость</h3><div class=md-table-wrap><table class=md-table><thead><tr><th>вход</th><th>выход</th><th>всего</th><th>чтение кэша</th><th>запись кэша</th><th>размышления</th><th>стоимость, ₽</th></tr></thead><tbody><tr><td>6205</td><td>5695</td><td>11900</td><td>0</td><td>0</td><td>1051</td><td>0.435634</td></tr></tbody></table></div><ul><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_cultural_grant</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_education_license</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_energy_efficiency</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_foundation_v2</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_grant_2026</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_housing_repair</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_medical_procurement</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_microloan</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_municipal_subsidy</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_procurement_supplier</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_research_competition</code> — решение None против None</li><li class="md-status-row"><span class="md-status-icon">❌</span> <code>policy_social_contract</code> — решение None против None</li></ul></section>
@@ -45,6 +45,7 @@
   &quot;model_alias&quot;: &quot;cx/gpt-5.6-luna-low&quot;,
   &quot;provider&quot;: &quot;omniroute&quot;,
   &quot;provider_label&quot;: &quot;OmniRoute (OpenAI-compatible)&quot;,
+  &quot;provider_endpoint&quot;: null,
   &quot;benchmark&quot;: &quot;rule_extraction&quot;,
   &quot;cases_path&quot;: &quot;datasets/russian/policy/cases&quot;,
   &quot;effort&quot;: &quot;no_thinking&quot;,
@@ -56,7 +57,81 @@
   ],
   &quot;reasoning&quot;: true,
   &quot;reasoning_note&quot;: &quot;capability present; DocBench requests thinking:false by default&quot;,
-  &quot;price_source&quot;: &quot;supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)&quot;
+  &quot;price_source&quot;: &quot;supplement freeze 01f9c5c (openai/gpt-5.6-luna-pro base)&quot;,
+  &quot;price_currency&quot;: &quot;RUB&quot;,
+  &quot;pricing_snapshot&quot;: &quot;docbench/pricing_snapshot.json&quot;,
+  &quot;cache_mode&quot;: &quot;read_write&quot;,
+  &quot;local_cache_hits&quot;: null,
+  &quot;dataset_version&quot;: &quot;russian-policy-v1&quot;,
+  &quot;scoring_version&quot;: &quot;rules-prf-v2-presence-normalization&quot;,
+  &quot;locale&quot;: &quot;ru&quot;,
+  &quot;reproducibility&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;code&quot;: {
+      &quot;git_revision&quot;: &quot;c8e40701b9e5df652f8c3fae121e1ffd6452cd48&quot;
+    },
+    &quot;inputs&quot;: {
+      &quot;cases&quot;: {
+        &quot;sha256&quot;: &quot;058e42003d71260d77516c96c87378060c528f5adc3921552b1b3f5ce889edcd&quot;,
+        &quot;files&quot;: [
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_cultural_grant.yaml&quot;,
+            &quot;sha256&quot;: &quot;69f48f9fcc126914b8cc9e6be82e5d5b4d7895b0d01fd63d7aa8f9a303635d1a&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_education_license.yaml&quot;,
+            &quot;sha256&quot;: &quot;771f23f423481e345e24696c133d40d6a5cde3b073269e6fa5c7d47685658be0&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_energy_efficiency.yaml&quot;,
+            &quot;sha256&quot;: &quot;719065ee85005e01855ecc51b5903bfcf6eb05bf4f95b6f493ccf8f2499c6492&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_foundation_v2.yaml&quot;,
+            &quot;sha256&quot;: &quot;f9ae18cbde051698cf7bf6e0031c1a435d95c6a63ec6fabc318765743347b35a&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_grant_2026.yaml&quot;,
+            &quot;sha256&quot;: &quot;af4a7b89ab12a061d5786a33bba49c672c197e88f69f163e7f9597aa0bc1a2f1&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_housing_repair.yaml&quot;,
+            &quot;sha256&quot;: &quot;a84f3dad1336c4dd733e00ea546fa5ad1e76c7040be1f776f8ee8573846e661a&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_medical_procurement.yaml&quot;,
+            &quot;sha256&quot;: &quot;69d0796e5d15e8ccd93ba5443bb7aa5520e1e89337e55935591eb43827a66735&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_microloan.yaml&quot;,
+            &quot;sha256&quot;: &quot;07000fbaf119e57d520ae3d86277c3f6979f62c9a647d67f3d232c84973f2e17&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_municipal_subsidy.yaml&quot;,
+            &quot;sha256&quot;: &quot;adc89460294a48ed1d3f20ac8f8f444e8abd599ebde3f0aa70e387f42d31518d&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_procurement_supplier.yaml&quot;,
+            &quot;sha256&quot;: &quot;cc76cfad99dfce599aa9b2f095b8dd76fa2a7d866e32417aa05969a8dbe92a85&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_research_competition.yaml&quot;,
+            &quot;sha256&quot;: &quot;13040f415fc4cf49748ac61de81baf5da31c9e8a922aa1664335e96575ad0bd3&quot;
+          },
+          {
+            &quot;path&quot;: &quot;datasets/russian/policy/cases/policy_social_contract.yaml&quot;,
+            &quot;sha256&quot;: &quot;5c2abff45bd6ea11c3f73c6a94b098709863858d1aaa7b936c4ae675c1d3e9d6&quot;
+          }
+        ]
+      },
+      &quot;rulesets&quot;: {
+        &quot;sha256&quot;: &quot;4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945&quot;,
+        &quot;files&quot;: []
+      },
+      &quot;gold&quot;: null
+    }
+  },
+  &quot;retry_history&quot;: null
 }</pre></section>
 </div><aside class=run-aside><section class="panel transcript-panel"><details class="transcript-optin"><summary><span>Полный транскрипт</span><span class="transcript-optin-note">Показать чат</span></summary><p class=muted>Сообщения отображаются как чат; системные инструкции и размышления можно раскрывать отдельно.</p><div class=transcript-chat><details class="transcript-case"><summary><strong>policy_cultural_grant</strong><span class="chat-status"><span class="case-status-icon" aria-label="ошибка">❌</span> ошибка · 1 попыт.</span></summary><div class="attempt"><div class="attempt-label">Попытка 1</div><details class="chat-message system"><summary>Системная инструкция · скрыто по умолчанию</summary><p>Вы — система формализации политик. Вы превращаете институциональные<br>документы политики в машиночитаемый набор правил. Извлекайте только то, что прямо<br>сказано в документе; не добавляйте правила из общих знаний.</p><p>Верните РОВНО один JSON-объект и ничего больше, строго следующего вида:<br>{<br>  "ruleset_id": "&lt;slug&gt;",<br>  "rules": [<br>    {"description": "&lt;однострочное изложение правила&gt;",<br>     "severity": "critical|major|minor",<br>     "category": "&lt;короткая метка&gt;",<br>     "condition": {"field": "&lt;канонический путь поля&gt;", "op": "&lt;оператор&gt;", "value": &lt;значение или null&gt;}<br>  ]<br>}</p><p>Допустимые операторы: eq, ne, lt, le, gt, ge, in, not_in, exists, not_exists, before, after, consistent.</p><ul><li>Для field используйте ТОЛЬКО реестр канонических полей из задания.</li><li>value — граница из политики: число, ISO-дата, строка или список для in/not_in.</li><li>Для требования "одно и то же значение должно быть в N местах" используйте op=consistent и "fields": [...].</li><li>Severity: critical = автоматический отказ / жёсткое требование допуска; major = нужно исправить; minor = формальное или косметическое требование.</li></ul></details><div class="chat-message user"><div class="chat-role">Пользователь</div><p>РЕЕСТР КАНОНИЧЕСКИХ ПОЛЕЙ (используйте в condition только эти пути):</p><ul><li>team.project_lead_age</li><li>budget.co_financing_pct</li><li>documents.venue_consent.present</li><li>application.requested_rub</li></ul><p>ДОКУМЕНТ ПОЛИТИКИ:<br>КУЛЬТУРНЫЙ ГРАНТ «ГОРОДСКАЯ СЦЕНА». Руководитель проекта должен быть<br>совершеннолетним. Не менее 20% бюджета обеспечивает заявитель за счёт<br>софинансирования. Для очных мероприятий требуется согласие площадки.<br>Запрашиваемый грант не превышает 1 500 000 рублей.</p><p>Извлеките полный набор правил. Ответьте только JSON-объектом.</p></div><div class="chat-message assistant"><div class="chat-role">Модель</div><pre class="md-code json-response"><code>{
   &quot;ruleset_id&quot;: &quot;gorodskaya-scena&quot;,

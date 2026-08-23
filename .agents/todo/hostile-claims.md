@@ -1,5 +1,14 @@
 # Hostile claim audit — 2026-08-23
 
+## Resolution status — 2026-08-23
+
+- Resolved: Pages were regenerated from the canonical renderer; every local
+  row now targets a generated `run.html` with sibling results/transcript files.
+- Resolved in scope: the Russian page no longer claims a cross-suite winner or
+  a statistical ranking from one run.
+- Still outside DocBench proof: historical post pricing/rank claims, legal
+  conclusions, and provider-invoice assertions require primary external sources.
+
 Scope: 20 August DocBench price/quality posts in
 `/home/roomhacker/.codex/attachments/41d4c2bb-93cc-46b9-9692-73840d962142/pasted-text.txt`,
 the linked live page `https://megamen32.github.io/docbench/index.html`, and

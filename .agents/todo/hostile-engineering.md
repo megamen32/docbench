@@ -1,5 +1,14 @@
 # Hostile engineering audit — 2026-08-23
 
+## Resolution status — 2026-08-23
+
+- Resolved: online runs bypass the local cache by default; public cards expose
+  cache/retry mode, endpoint, manifests and response-receipt hashes.
+- Resolved: Docker bases are pinned by digest; evidence location matching now
+  checks declared document, locator and quote components.
+- Still evidence boundaries, not retroactively repaired: old provider receipts,
+  independent repeated runs, and upstream ACE conversion provenance.
+
 Scope: current `main` at `b2150429cd2ed4f3f581a56bfa4022195661d54a`, against the
 attached critique's reproducibility/transparency standard. Read-only audit; no
 provider calls, Docker build, or public-site browser acceptance were performed.

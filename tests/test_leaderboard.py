@@ -81,10 +81,8 @@ def test_leaderboard_generates_clickable_cards_and_marks_legacy(tmp_path):
 
     text = index.read_text()
     assert result["runs"] == 3
-    assert "Среднее по наборам" in text
-    assert "83.3%" in text
-    assert "75.0%" not in text
-    assert "42 / 52" in text
+    assert "Среднее по наборам" not in text
+    assert "42 / 52" not in text
     assert "data-href" in text
     assert "legacy / no" in text
     assert "Стоимость, ₽" in text
@@ -148,7 +146,7 @@ def test_publish_pages_accepts_a_separate_suite_contract(tmp_path):
 
     pages = tmp_path / "docs"
     suites = {"datasets/russian/grant/cases": ("Русские заявки", 10)}
-    publish_pages(campaign, pages, suites=suites)
+    publish_pages(campaign, pages, suites=suites, aggregate=True)
 
     index = (pages / "index.html").read_text()
     assert "Русские заявки" in index

@@ -21,7 +21,17 @@ def publish(campaign_dir: Path, output: Path) -> dict:
     runs = output / "runs"
     if runs.exists():
         shutil.rmtree(runs)
-    return publish_pages(campaign_dir, output, suites=RUSSIAN_SUITES)
+    return publish_pages(
+        campaign_dir,
+        output,
+        suites=RUSSIAN_SUITES,
+        aggregate=False,
+        scope_note=(
+            "Три конфигурации одного семейства Luna; по одному cache-cold прогону на suite. "
+            "Метрики разных suite не агрегируются и не образуют общий рейтинг; "
+            "это исследовательский срез без оценки статистической неопределённости."
+        ),
+    )
 
 
 if __name__ == "__main__":

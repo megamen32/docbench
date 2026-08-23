@@ -154,13 +154,16 @@ def run_benchmark(
     fx_snapshot: dict[str, Any] | None = None,
     gold_path: Path | None = None,
     case_ids: set[str] | None = None,
-    use_cache: bool = True,
+    use_cache: bool | None = None,
     locale: str = "en",
 ) -> dict[str, Any]:
     if bench_key not in BENCHMARKS:
         raise KeyError(f"unknown benchmark {bench_key!r}; known: {sorted(BENCHMARKS)}")
     if locale not in {"en", "ru"}:
         raise ValueError(f"unsupported prompt locale {locale!r}")
+    # An online benchmark is an observation of a provider, not a cache replay.
+    # Offline reproduction deliberately remains cache-backed.
+    use_cache = offline if use_cache is None else use_cache
     spec = resolve_model(model_key, allow_missing_key=offline)
     extra_body = spec.effort_extra(effort)
     effort_label = effort or spec.effort_default or "provider-default"
@@ -251,6 +254,9 @@ def run_benchmark(
                 "served_model": comp.model,
                 "latency_s": comp.latency_s,
                 "cache_hit": comp.cache_hit,
+                "response_receipt_sha256": _canonical_sha256({
+                    "text": comp.text, "usage": comp.usage, "served_model": comp.model,
+                }),
             })
             cost_usd += getattr(comp, "cost_usd", None) or 0.0
             cost_rub_direct += getattr(comp, "cost_rub", None) or 0.0
@@ -312,6 +318,8 @@ def run_benchmark(
         "effort": effort_label,
         "request_extra": extra_body,
         "cache_mode": "read_write" if use_cache else "bypass",
+        "local_cache_hits": sum(1 for row in per_case if row.get("cache_hit")),
+        "provider_endpoint": runner.base_url,
         "quantization": spec.quantization,
         "quantization_note": ("providers do not expose served quantization via API; "
                               "pin provider+model+date and see served_models"),
