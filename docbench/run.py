@@ -560,7 +560,8 @@ def rescore_saved_results(runs_dir: Path) -> dict[str, Any]:
     changed: list[str] = []
     skipped: list[str] = []
     score_fields = {
-        "precision", "recall", "f1", "tp", "gold_rules", "pred_rules",
+        "precision", "recall", "f1", "tp", "rule_exact_precision", "rule_exact_recall",
+        "rule_exact_f1", "rule_exact_tp", "gold_rules", "pred_rules",
         "severity_accuracy", "unmatched_gold", "unmatched_pred", "ok",
         "pred_disposition", "gold_disposition", "false_accept", "false_reject",
         "finding_precision", "finding_recall", "finding_f1", "critical_recall",
@@ -739,6 +740,8 @@ def _aggregate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "finding_precision": mean("finding_precision"),
         "finding_recall": mean("finding_recall"),
         "finding_f1": mean("finding_f1"),
+        "rule_exact_f1": mean("rule_exact_f1"),
+        "severity_accuracy": mean("severity_accuracy"),
         "critical_recall": mean("critical_recall"),
         "grounding_precision": mean("grounding_precision"),
         "grounding_recall": mean("grounding_recall"),
@@ -766,8 +769,9 @@ def _payload_dump(payload: dict[str, Any]) -> dict[str, Any]:
 
 def render_markdown_report(results: list[dict[str, Any]]) -> str:
     lines = ["# docbench report", ""]
-    cols = ["model", "benchmark", "n_cases", "case_pass_rate", "finding_precision",
-            "finding_recall", "critical_recall", "false_accept_rate", "false_reject_rate",
+    cols = ["model", "benchmark", "n_cases", "case_pass_rate", "rule_exact_f1",
+            "finding_precision", "finding_recall", "severity_accuracy", "critical_recall",
+            "false_accept_rate", "false_reject_rate",
             "extraction_f1", "grounding_recall", "cost_per_case_rub", "latency_p50_s"]
     lines.append("| " + " | ".join(cols) + " |")
     lines.append("|" + "---|" * len(cols))

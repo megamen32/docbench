@@ -1,8 +1,8 @@
 # docbench report
 
-| model | benchmark | n_cases | case_pass_rate | finding_precision | finding_recall | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| omniroute-cx-gpt-5.6-luna-high | rule_extraction | 12 | 0.0000 | 0.8131 | 0.8131 | — | 0.0000 | 0.0000 | — | — | 0.0511 | 10.1 |
+| model | benchmark | n_cases | case_pass_rate | rule_exact_f1 | finding_precision | finding_recall | severity_accuracy | critical_recall | false_accept_rate | false_reject_rate | extraction_f1 | grounding_recall | cost_per_case_rub | latency_p50_s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| omniroute-cx-gpt-5.6-luna-high | rule_extraction | 12 | 0.0000 | 0.3840 | 0.8131 | 0.8131 | 0.5500 | — | 0.0000 | 0.0000 | — | — | 0.0511 | 10.1 |
 
 _Note: the pinned supplement has no separate cache rate; cache tokens are counted separately and charged once at the pinned input rate._
 

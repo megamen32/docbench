@@ -100,7 +100,7 @@ class RuleExtractionBenchmark(Benchmark):
 
     def score(self, pred: Any, gold: Any, case: Case) -> dict[str, Any]:
         s = M.rules_prf(gold["rules"], pred["rules"])
-        s["ok"] = s["f1"] == 1.0 and s["severity_accuracy"] == 1.0
+        s["ok"] = s["rule_exact_f1"] == 1.0
         s["pred_disposition"] = None
         s["gold_disposition"] = None
         s["false_accept"] = False

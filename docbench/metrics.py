@@ -5,7 +5,7 @@ from typing import Any, Optional
 
 from .schemas import Disposition, Finding, Prediction, Rule, Severity
 
-RULES_SCORE_VERSION = "rules-prf-v3-evidence-location"
+RULES_SCORE_VERSION = "rules-prf-v4-severity-exact"
 
 
 def _viol(findings: list[Finding]) -> dict[str, Finding]:
@@ -165,8 +165,17 @@ def rules_prf(gold: list[Rule], pred: list[Rule]) -> dict[str, Any]:
     recall = tp / len(g_by_t) if g_by_t else 1.0
     f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
     sev_ok = sum(1 for t in matched if g_by_t[t].severity == p_by_t[t].severity)
+    exact_gold = {(t, rule.severity) for t, rule in g_by_t.items()}
+    exact_pred = {(t, rule.severity) for t, rule in p_by_t.items()}
+    exact_tp = len(exact_gold & exact_pred)
+    exact_precision = exact_tp / len(exact_pred) if exact_pred else (1.0 if not exact_gold else 0.0)
+    exact_recall = exact_tp / len(exact_gold) if exact_gold else 1.0
+    exact_f1 = (2 * exact_precision * exact_recall / (exact_precision + exact_recall)
+                if exact_precision + exact_recall else 0.0)
     return {
         "precision": precision, "recall": recall, "f1": f1, "tp": tp,
+        "rule_exact_precision": exact_precision, "rule_exact_recall": exact_recall,
+        "rule_exact_f1": exact_f1, "rule_exact_tp": exact_tp,
         "gold_rules": len(g_by_t), "pred_rules": len(p_by_t),
         "severity_accuracy": sev_ok / tp if tp else 0.0,
         "unmatched_gold": sorted(str(t) for t in set(g_by_t) - matched),

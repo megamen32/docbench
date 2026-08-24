@@ -65,6 +65,22 @@ def test_rules_prf_exact_and_severity():
     m = M.rules_prf(gold, pred)
     assert m["f1"] == 1.0
     assert m["severity_accuracy"] == 1.0
+    assert m["rule_exact_f1"] == 1.0
+
+
+def test_rules_prf_exact_f1_penalizes_wrong_severity_without_hiding_structure():
+    gold = [_rule("G1", "f.age", "ge", 12, "critical"),
+            _rule("G2", "f.total", "le", 100, "major")]
+    pred = [_rule("P1", "f.age", "ge", 12, "major"),
+            _rule("P2", "f.total", "le", 100, "major")]
+
+    m = M.rules_prf(gold, pred)
+
+    assert m["f1"] == 1.0
+    assert m["severity_accuracy"] == 0.5
+    assert m["rule_exact_precision"] == 0.5
+    assert m["rule_exact_recall"] == 0.5
+    assert m["rule_exact_f1"] == 0.5
 
 
 def test_rules_prf_penalizes_invented():
