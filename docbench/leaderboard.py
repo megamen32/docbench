@@ -275,6 +275,8 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
     transcript = result_path.with_name("transcript.json")
     report = result_path.with_name("report.md")
     summary = row["summary"]
+    primary_score, primary_label, primary_help = _primary_score(row)
+    diagnostic_score, diagnostic_label, diagnostic_help = _diagnostic_score(row)
     meta = {
         key: row.get(key)
         for key in ("ts", "model", "model_alias", "provider", "provider_label", "provider_endpoint", "benchmark",
@@ -328,7 +330,7 @@ def _run_card(row: dict[str, Any], card_path: Path, leaderboard_path: Path) -> N
 </style>
 <body><main><div class=top><a class=back href="{html.escape(_href(card_path, leaderboard_path))}">← Вернуться к рейтингу</a><span class=eyebrow>DocBench · детали прогона</span></div>
 <section class=hero><div><div class=eyebrow>{html.escape(str(row.get('provider_label') or row.get('provider') or 'провайдер'))} · {html.escape(BENCHMARK_LABELS.get(str(row.get('benchmark') or ''), str(row.get('benchmark') or 'набор')))}</div><h1>{html.escape(_display_model(row))}</h1><p class=lead>Полная карточка прогона с метриками, стоимостью, токенами, provenance и сохранённым транскриптом. Режим: {html.escape(_execution_mode(row))}.</p></div><div class="status{' bad' if errors else ''}">{html.escape(status_label)}</div></section>
-<div class=run-columns><div class=run-main><section class=grid><div class=metric><small title="F1 правил = 100% и точность severity = 100% в каждом кейсе">Идеальные кейсы</small><strong>{_percent(summary.get('case_pass_rate'))}</strong></div><div class=metric><small>F1 правил</small><strong>{_percent(summary.get('finding_f1') or summary.get('extraction_f1'))}</strong></div><div class=metric><small>Стоимость</small><strong>{_cost(row)}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
+<div class=run-columns><div class=run-main><section class=grid><div class=metric><small title="{html.escape(primary_help, quote=True)}">{html.escape(primary_label)}</small><strong>{_percent(primary_score)}</strong></div><div class=metric><small title="{html.escape(diagnostic_help, quote=True)}">{html.escape(diagnostic_label)}</small><strong>{_percent(diagnostic_score)}</strong></div><div class=metric><small>Стоимость</small><strong>{_cost(row)}</strong></div><div class=metric><small>Время</small><strong>{_seconds(_wall_time(row))}</strong></div></section>
 <div class=actions>{transcript_link}<a class=button href="{html.escape(_href(card_path, result_path))}">Результаты · results.json ↗</a><a class=button href="{html.escape(_href(card_path, report))}">Отчёт · report.md ↗</a></div>
 {response_contract.replace('<p>', '<div class=alert>').replace('</p>', '</div>')}
 <section class="panel report-preview"><h2>Отчёт</h2>{report_html}</section>
@@ -399,19 +401,59 @@ def _all_or_missing(values: list[Any]) -> Any:
     return None if not values or any(value is None for value in values) else sum(values)
 
 
+def _primary_score(row: dict[str, Any]) -> tuple[Any, str, str]:
+    """Return the predeclared ranking score for one suite measurement.
+
+    Conformance is an exact decision task, so its score is the share of fully
+    correct cases.  Rule extraction is a set-matching task: its score is mean
+    rule F1 over *all* cases (an errored response contributes zero).  The
+    latter avoids turning a severity-only diagnostic into a leaderboard.
+    """
+    summary = row["summary"]
+    if row.get("benchmark") == "rule_extraction":
+        cases = row.get("cases")
+        if isinstance(cases, list) and cases:
+            values = [case.get("finding_f1", case.get("f1")) for case in cases]
+            score = sum(float(value) if isinstance(value, (int, float)) else 0.0
+                        for value in values) / len(cases)
+        else:
+            # Legacy result files do not have per-case metrics.  Keep them
+            # visible, but do not pretend their score is error-penalised.
+            score = summary.get("finding_f1", summary.get("extraction_f1"))
+        return score, "F1 правил", "Средний F1 извлечённых правил; ошибка ответа даёт 0 за кейс"
+    return (summary.get("case_pass_rate"), "Полное совпадение",
+            "Доля кейсов с полностью верным решением")
+
+
+def _diagnostic_score(row: dict[str, Any]) -> tuple[Any, str, str]:
+    """Return a useful secondary metric without changing the ranking basis."""
+    if row.get("benchmark") == "rule_extraction":
+        return (row["summary"].get("case_pass_rate"), "Идеальные кейсы",
+                "F1 правил = 100% и точность severity = 100% в каждом кейсе")
+    return (row["summary"].get("finding_f1") or row["summary"].get("extraction_f1"),
+            "F1 правил", "Частичное совпадение правил")
+
+
 def _table(rows: list[dict[str, Any]], output: Path) -> str:
+    _, primary_label, primary_help = _primary_score(rows[0]) if rows else (None, "Score", "")
+    _, diagnostic_label, diagnostic_help = _diagnostic_score(rows[0]) if rows else (None, "Диагностика", "")
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Конфигурация</th><th>Кейсы</th><th title=\"F1 правил = 100% и точность severity = 100% в каждом кейсе\">Идеальные кейсы</th><th>Ошибки</th><th>F1 правил</th>"
+        "<div class=table-shell><table><thead><tr><th>Конфигурация</th><th>Кейсы</th><th title=\"%s\">%s</th><th>Ошибки</th><th title=\"%s\">%s</th>"
         "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
         "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th><th>Режим</th>"
-        "<th>Транскрипт</th></tr></thead><tbody>"
+        "<th>Транскрипт</th></tr></thead><tbody>" % (
+            html.escape(primary_help, quote=True), html.escape(primary_label),
+            html.escape(diagnostic_help, quote=True), html.escape(diagnostic_label),
+        )
     ]
-    for row in sorted(rows, key=lambda x: (x["summary"].get("case_pass_rate") or -1), reverse=True):
+    for row in sorted(rows, key=lambda x: (_primary_score(x)[0] if _primary_score(x)[0] is not None else -1), reverse=True):
         result_path = Path(row["_path"])
         card = result_path.with_name("run.html")
         _run_card(row, card, output)
         transcript = result_path.with_name("transcript.json")
         summary = row["summary"]
+        primary, _, _ = _primary_score(row)
+        diagnostic, _, _ = _diagnostic_score(row)
         errors = int(summary.get("n_errors") or 0)
         status = "ok" if errors == 0 else "error"
         parts.append(
@@ -421,8 +463,8 @@ def _table(rows: list[dict[str, Any]], output: Path) -> str:
             "<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
                 html.escape(_href(output, card)), html.escape(str(row.get("model", "")).lower()), errors,
                 html.escape(_display_model(row)), summary.get("n_cases", "—"),
-                _percent(summary.get("case_pass_rate")), status, "ошибок нет" if errors == 0 else f"{errors} ошибок",
-                _percent(summary.get("finding_f1") or summary.get("extraction_f1")),
+                _percent(primary), status, "ошибок нет" if errors == 0 else f"{errors} ошибок",
+                _percent(diagnostic),
                 _cost(row), _rub(summary.get("cost_per_case_rub")),
                 _count(_tokens(row, "input_tokens")), _count(_tokens(row, "output_tokens")),
                 _count(_tokens(row, "cache_input_tokens")), _count(_tokens(row, "reasoning_tokens")),
@@ -439,7 +481,7 @@ def _overall_table(rows: list[dict[str, Any]], suites: dict[str, tuple[str, int]
     for row in rows:
         by_model[str(row.get("model", ""))].append(row)
     parts = [
-        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th title=\"Среднее pass rate по трём наборам с одинаковым весом\">Среднее по наборам</th><th>Статус</th>"
+        "<div class=table-shell><table><thead><tr><th>Модель</th><th>Покрытие</th><th title=\"Средний основной score по всем кейсам: полное совпадение для conformance и F1 правил для rule extraction\">Основной score</th><th>Статус</th>"
         "<th>Стоимость, ₽</th><th>₽ / кейс</th><th>Вход</th><th>Выход</th>"
         "<th>Кэш</th><th>Размышления</th><th>p50</th><th>Время</th>"
         "</tr></thead><tbody>"
@@ -447,9 +489,10 @@ def _overall_table(rows: list[dict[str, Any]], suites: dict[str, tuple[str, int]
     aggregates = []
     for model, model_rows in by_model.items():
         covered = sum(int(r["summary"].get("n_cases") or 0) for r in model_rows)
-        suite_rates = [r["summary"].get("case_pass_rate") for r in model_rows]
-        rate = (sum(suite_rates) / len(suite_rates)
-                if suite_rates and all(value is not None for value in suite_rates) else None)
+        weighted_scores = [(_primary_score(r)[0], int(r["summary"].get("n_cases") or 0)) for r in model_rows]
+        score_weight = sum(weight for score, weight in weighted_scores if score is not None)
+        rate = (sum(float(score) * weight for score, weight in weighted_scores if score is not None) / score_weight
+                if score_weight and len(weighted_scores) == len(model_rows) else None)
         complete = (
             covered == sum(expected for _, expected in suites.values())
             and {r["_cases_key"] for r in model_rows} == set(suites)

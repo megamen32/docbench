@@ -115,6 +115,26 @@ def test_leaderboard_uses_dash_for_unpriced_or_missing_measurements(tmp_path):
     assert "—" in text
 
 
+def test_policy_leaderboard_ranks_by_rule_f1_not_all_or_nothing_severity(tmp_path):
+    runs = tmp_path / "runs"
+    for model, f1 in [("lower-f1", 0.75), ("higher-f1", 0.95)]:
+        out = runs / model
+        out.mkdir(parents=True)
+        data = _result(model, "cases/seed-policy", 12, 0.0)
+        data["benchmark"] = "rule_extraction"
+        data["cases"] = [{"finding_f1": f1, "ok": False} for _ in range(12)]
+        data["summary"]["finding_f1"] = f1
+        (out / "results.json").write_text(json.dumps(data))
+        (out / "report.md").write_text("report")
+
+    index = tmp_path / "leaderboard" / "index.html"
+    write_leaderboard(runs, index)
+
+    text = index.read_text(encoding="utf-8")
+    assert 'title="Средний F1 извлечённых правил; ошибка ответа даёт 0 за кейс">F1 правил' in text
+    assert text.index("higher-f1") < text.index("lower-f1")
+
+
 def test_publish_pages_copies_campaign_and_renders_relative_artifacts(tmp_path):
     campaign = tmp_path / "campaign"
     run = campaign / "grant" / "test-model"
